@@ -1,5 +1,5 @@
 
-using RxInfer
+using Turing
 
 include("../common/lgssm.jl")
 

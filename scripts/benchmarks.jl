@@ -2,15 +2,19 @@ using Distributed
 
 const ProjectFolder = joinpath(@__DIR__, "..")
 const BenchmarksFolder = joinpath(ProjectFolder, "benchmarks")
-const BenchmarksProjectGroup = "rxinfer"
+
+const BenchmarksRxInferGroup = "rxinfer"
+const BenchmarksTuringGroup = "turing"
 
 # We add two groups by default, `baseline` and `develop`
 # `baseline` uses the released version of the RxInfer
 # `develop` group uses the development version of the RxInfer core packages 
-# the remaining groups should be taken from the remaining `folders`
+# `turing` uses the released version of the Turing
+
 const groups = Dict(
     # "baseline" => readdir(joinpath(BenchmarksFolder, BenchmarksProjectGroup)),
-    "develop" => readdir(joinpath(BenchmarksFolder, BenchmarksProjectGroup), join = true)
+    "develop" => readdir(joinpath(BenchmarksFolder, BenchmarksRxInferGroup), join = true),
+    "turing"  => readdir(joinpath(BenchmarksFolder, BenchmarksTuringGroup), join = true)
 )
 
 const groupsinit = Dict(
@@ -24,8 +28,9 @@ const groupsinit = Dict(
         Pkg.develop(PackageSpec(path = joinpath(Pkg.devdir(), "ReactiveMP.jl")))
         Pkg.develop(PackageSpec(path = joinpath(Pkg.devdir(), "GraphPPL.jl"))) 
         Pkg.develop(PackageSpec(path = joinpath(Pkg.devdir(), "Rocket.jl"))) 
-        Pkg.instantiate() 
-        Pkg.precompile()
+    end,
+    "turing" => () -> begin 
+        Pkg.add("Turing")
     end
 )
 
@@ -72,8 +77,11 @@ const benchmarks = map(collect(workergroups)) do (group, workerid)
             mktempdir() do path 
                 # Activate temporary environment inside the worker
                 Pkg.activate(path)
+
                 # Instantiate the environment with the correct packages set
                 initcallback()
+                Pkg.instantiate() 
+                Pkg.precompile()
 
                 # Perform benchmarks for each file in the directory
                 results = map((b) -> perform_benchmark(group, b), benchmarks) 
