@@ -1,52 +1,47 @@
 using Distributed
 
-const BenchmarksFolder = joinpath(@__DIR__, "..", "benchmarks")
-const BenchmarksBaselineGroup = "rxinfer"
+const ProjectFolder = joinpath(@__DIR__, "..")
+const BenchmarksFolder = joinpath(ProjectFolder, "benchmarks")
+const BenchmarksProjectGroup = "rxinfer"
 
-struct BenchmarkResult
+# We add two groups by default, `baseline` and `develop`
+# `baseline` uses the released version of the RxInfer
+# `develop` group uses the development version of the RxInfer core packages 
+# the remaining groups should be taken from the remaining `folders`
+const groups = Dict(
+    # "baseline" => readdir(joinpath(BenchmarksFolder, BenchmarksProjectGroup)),
+    "develop" => readdir(joinpath(BenchmarksFolder, BenchmarksProjectGroup), join = true)
+)
+
+const groupsinit = Dict(
+    # "baseline" => () -> begin 
+    #     Pkg.add("RxInfer")
+    #     Pkg.instantiate()
+    #     Pkg.precompile()
+    # end,
+    "develop" => () -> begin 
+        Pkg.develop(PackageSpec(path = ProjectFolder))
+        Pkg.develop(PackageSpec(path = joinpath(Pkg.devdir(), "ReactiveMP.jl")))
+        Pkg.develop(PackageSpec(path = joinpath(Pkg.devdir(), "GraphPPL.jl"))) 
+        Pkg.develop(PackageSpec(path = joinpath(Pkg.devdir(), "Rocket.jl"))) 
+        Pkg.instantiate() 
+        Pkg.precompile()
+    end
+)
+
+# We create a separate worker for each group to avoid code incompatibility
+const workerids = addprocs(length(groups))
+
+# Mapping between the name of the group and worker id
+const workergroups = Dict(key => workerids[i] for (i, (key, _)) in enumerate(groups))
+
+@everywhere struct BenchmarkResult
     group     :: String
     filename  :: String
     benchmark 
 end
 
-struct BenchmarksRunner 
-    jobschannel
-    resultschannel
-    exschannel
-
-    BenchmarksRunner() = begin 
-        jobschannel = RemoteChannel(() -> Channel(Inf), myid()) # Channel for jobs
-        resultschannel = RemoteChannel(() -> Channel(Inf), myid()) # Channel for results
-        exschannel = RemoteChannel(() -> Channel(Inf), myid()) # Channel for exceptions
-        return new(jobschannel, resultschannel, exschannel)
-    end
-end
-
-const runner = BenchmarksRunner()
-
-function Base.run(runner::BenchmarksRunner)
-    @info "Reading `groups` in the `benchmarks` folder"
-
-    # We add two groups by default, `baseline` and `develop`
-    # `baseline` uses the released version of the RxInfer
-    # `develop` group uses the development version of the RxInfer core packages 
-    # the remaining groups should be taken from the remaining `folders`
-    groups = Dict(
-        "baseline" => readdir(joinpath(BenchmarksFolder, BenchmarksBaselineGroup)),
-        "develop" => readdir(joinpath(BenchmarksFolder, BenchmarksBaselineGroup))
-    )
-
-    for group in readdir(BenchmarksFolder)
-        if !isequal(group, BenchmarksBaselineGroup)
-            !haskey(groups, group) || error("Cannot add the group `$(group)` twice")
-            groups[group] = readdir(joinpath(BenchmarksFolder, group))
-        end
-    end
-
-    return groups 
-end
-
-function perform_benchmark(group, filename)
+@everywhere function perform_benchmark(group, path)
 
     # Create an anonymous isolated module 
     mod  = Module()
@@ -56,11 +51,49 @@ function perform_benchmark(group, filename)
 
     # This expression will be `eval`uated in the anonymous module
     expr = quote 
-        Base.include($mod, $filename) 
+        Base.include($mod, $path) 
         return @benchmark run_benchmark()
     end
 
+    # Extract the file name from the path
+    name      = first(splitext(last(splitpath(path))))
+    # Evaluate the actual benchmark
     benchmark = Core.eval(mod, expr)
 
-    return BenchmarkResult(group, filename, benchmark)
+    return BenchmarkResult(group, name, benchmark)
 end
+
+@everywhere using Pkg
+@everywhere using BenchmarkTools
+
+const benchmarks = map(collect(workergroups)) do (group, workerid)
+    f = let initcallback = groupsinit[group], benchmarks = groups[group]
+        () -> begin 
+            mktempdir() do path 
+                # Activate temporary environment inside the worker
+                Pkg.activate(path)
+                # Instantiate the environment with the correct packages set
+                initcallback()
+
+                # Perform benchmarks for each file in the directory
+                results = map((b) -> perform_benchmark(group, b), benchmarks) 
+
+                # Deactivate the temporary environment
+                Pkg.activate()
+
+                # Pkg.gc at the end will cleanup the environment's packages
+                rm(joinpath(path, "Project.toml"))
+                rm(joinpath(path, "Manifest.toml"))
+
+                return results
+            end
+        end
+    end
+    return remotecall(f, workerid)
+end
+
+const results = map(fetch, benchmarks) 
+
+println(results)
+
+Pkg.gc()

@@ -28,6 +28,11 @@ examples: scripts_init examples_init ## Precompile examples and put them in the 
 devexamples: scripts_init dev_examples_init ## Same as `make examples` but uses `dev-ed` versions of core packages
 	julia --startup-file=no --project=scripts/ scripts/examples.jl $(specific)
 
+.PHONY: benchmarks
+
+benchmarks: ## Run and evaluate benchmarks
+	julia --startup-file=no --project=scripts/ scripts/benchmarks.jl
+
 .PHONY: docs
 
 doc_init:
