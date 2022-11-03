@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Advanced Tutorial · RxInfer.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link rel="canonical" href="https://biaslab.github.io/RxInfer.jl/examples/Advanced Tutorial/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/theme.css" rel="stylesheet" type="text/css"/><link href="../../assets/header.css" rel="stylesheet" type="text/css"/><script src="../../assets/header.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.svg" alt="RxInfer.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">RxInfer.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">User guide</span><ul><li><a class="tocitem" href="../../manuals/getting-started/">Getting started</a></li><li><a class="tocitem" href="../../manuals/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../manuals/constraints-specification/">Constraints specification</a></li><li><a class="tocitem" href="../../manuals/meta-specification/">Meta specification</a></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">Inference specification</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../manuals/inference/overview/">Overview</a></li><li><a class="tocitem" href="../../manuals/inference/inference/">Static dataset</a></li><li><a class="tocitem" href="../../manuals/inference/rxinference/">Real-time dataset / reactive inference</a></li><li><a class="tocitem" href="../../manuals/inference/manual/">Manual inference specification</a></li></ul></li></ul></li><li><span class="tocitem">Library</span><ul><li><a class="tocitem" href="../../library/functional-forms/">Built-in functional form constraints</a></li><li><a class="tocitem" href="../../library/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../library/bethe-free-energy/">Bethe Free Energy</a></li><li><a class="tocitem" href="../../library/exported-methods/">Exported methods</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../Overview/">Overview</a></li><li class="is-active"><a class="tocitem" href>Advanced Tutorial</a><ul class="internal"><li><a class="tocitem" href="#General-model-specification-syntax"><span>General model specification syntax</span></a></li><li><a class="tocitem" href="#Probabilistic-inference-in-RxInfer.jl"><span>Probabilistic inference in RxInfer.jl</span></a></li><li><a class="tocitem" href="#Reactive-Online-Inference"><span>Reactive Online Inference</span></a></li><li><a class="tocitem" href="#Variational-inference"><span>Variational inference</span></a></li></ul></li><li><a class="tocitem" href="../Assessing People Skills/">Assessing People Skills</a></li><li><a class="tocitem" href="../Autoregressive Model/">Autoregressive Model</a></li><li><a class="tocitem" href="../Coin Toss Model/">Coin Toss Model</a></li><li><a class="tocitem" href="../Conjugate-NonConjugate Variational Message Passing/">Conjugate-NonConjugate Variational Message Passing</a></li><li><a class="tocitem" href="../Custom nonlinear node/">Custom nonlinear node</a></li><li><a class="tocitem" href="../GPRegression by SSM/">GPRegression by SSM</a></li><li><a class="tocitem" href="../Gamma Mixture/">Gamma Mixture</a></li><li><a class="tocitem" href="../Gaussian Linear Dynamical System/">Gaussian Linear Dynamical System</a></li><li><a class="tocitem" href="../Gaussian Mixture Univariate/">Gaussian Mixture Univariate</a></li><li><a class="tocitem" href="../Gaussian Mixtures Multivariate/">Gaussian Mixtures Multivariate</a></li><li><a class="tocitem" href="../Global Parameter Optimisation/">Global Parameter Optimisation</a></li><li><a class="tocitem" href="../Handling Missing Data/">Handling Missing Data</a></li><li><a class="tocitem" href="../Hidden Markov Model/">Hidden Markov Model</a></li><li><a class="tocitem" href="../Hierarchical Gaussian Filter/">Hierarchical Gaussian Filter</a></li><li><a class="tocitem" href="../Identification Problem/">Identification Problem</a></li><li><a class="tocitem" href="../Infinite Data Stream/">Infinite Data Stream</a></li><li><a class="tocitem" href="../Invertible Neural Network Tutorial/">Invertible Neural Network Tutorial</a></li><li><a class="tocitem" href="../Kalman filter with LSTM network driven dynamic/">Kalman filter with LSTM network driven dynamic</a></li><li><a class="tocitem" href="../Linear Regression/">Linear Regression</a></li><li><a class="tocitem" href="../Nonlinear Noisy Pendulum/">Nonlinear Noisy Pendulum</a></li><li><a class="tocitem" href="../Nonlinear Rabbit Population/">Nonlinear Rabbit Population</a></li><li><a class="tocitem" href="../Nonlinear Sensor Fusion/">Nonlinear Sensor Fusion</a></li><li><a class="tocitem" href="../Nonlinear Virus Spread/">Nonlinear Virus Spread</a></li><li><a class="tocitem" href="../Probit Model (EP)/">Probit Model (EP)</a></li><li><a class="tocitem" href="../RTS vs BIFM Smoothing/">RTS vs BIFM Smoothing</a></li></ul></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../contributing/overview/">Overview</a></li><li><a class="tocitem" href="../../contributing/new-example/">Adding a new example</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Advanced Tutorial</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Advanced Tutorial</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/biaslab/RxInfer.jl/blob/main/docs/src/examples/Advanced Tutorial.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><p>This example has been auto-generated from the <a href="https://github.com/biaslab/RxInfer.jl/tree/main/examples"><code>examples/</code></a> folder at GitHub repository.</p><h1 id="examples-advanced-tutorial"><a class="docs-heading-anchor" href="#examples-advanced-tutorial">Advanced Tutorial</a><a id="examples-advanced-tutorial-1"></a><a class="docs-heading-anchor-permalink" href="#examples-advanced-tutorial" title="Permalink"></a></h1><pre><code class="language-julia hljs"># Activate local environment, see `Project.toml`
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Advanced Tutorial · RxInfer.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link rel="canonical" href="https://biaslab.github.io/RxInfer.jl/examples/Advanced Tutorial/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/theme.css" rel="stylesheet" type="text/css"/><link href="../../assets/header.css" rel="stylesheet" type="text/css"/><script src="../../assets/header.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.svg" alt="RxInfer.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.svg" alt="RxInfer.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">RxInfer.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">User guide</span><ul><li><a class="tocitem" href="../../manuals/getting-started/">Getting started</a></li><li><a class="tocitem" href="../../manuals/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../manuals/constraints-specification/">Constraints specification</a></li><li><a class="tocitem" href="../../manuals/meta-specification/">Meta specification</a></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">Inference specification</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../manuals/inference/overview/">Overview</a></li><li><a class="tocitem" href="../../manuals/inference/inference/">Static dataset</a></li><li><a class="tocitem" href="../../manuals/inference/rxinference/">Real-time dataset / reactive inference</a></li><li><a class="tocitem" href="../../manuals/inference/manual/">Manual inference specification</a></li></ul></li></ul></li><li><span class="tocitem">Library</span><ul><li><a class="tocitem" href="../../library/functional-forms/">Built-in functional form constraints</a></li><li><a class="tocitem" href="../../library/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../library/bethe-free-energy/">Bethe Free Energy</a></li><li><a class="tocitem" href="../../library/exported-methods/">Exported methods</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../Overview/">Overview</a></li><li class="is-active"><a class="tocitem" href>Advanced Tutorial</a><ul class="internal"><li><a class="tocitem" href="#General-model-specification-syntax"><span>General model specification syntax</span></a></li><li><a class="tocitem" href="#Probabilistic-inference-in-RxInfer.jl"><span>Probabilistic inference in RxInfer.jl</span></a></li><li><a class="tocitem" href="#Reactive-Online-Inference"><span>Reactive Online Inference</span></a></li><li><a class="tocitem" href="#Variational-inference"><span>Variational inference</span></a></li></ul></li><li><a class="tocitem" href="../Assessing People Skills/">Assessing People Skills</a></li><li><a class="tocitem" href="../Autoregressive Model/">Autoregressive Model</a></li><li><a class="tocitem" href="../Coin Toss Model/">Coin Toss Model</a></li><li><a class="tocitem" href="../Conjugate-NonConjugate Variational Message Passing/">Conjugate-NonConjugate Variational Message Passing</a></li><li><a class="tocitem" href="../Custom nonlinear node/">Custom nonlinear node</a></li><li><a class="tocitem" href="../GPRegression by SSM/">GPRegression by SSM</a></li><li><a class="tocitem" href="../Gamma Mixture/">Gamma Mixture</a></li><li><a class="tocitem" href="../Gaussian Linear Dynamical System/">Gaussian Linear Dynamical System</a></li><li><a class="tocitem" href="../Gaussian Mixture Univariate/">Gaussian Mixture Univariate</a></li><li><a class="tocitem" href="../Gaussian Mixtures Multivariate/">Gaussian Mixtures Multivariate</a></li><li><a class="tocitem" href="../Global Parameter Optimisation/">Global Parameter Optimisation</a></li><li><a class="tocitem" href="../Handling Missing Data/">Handling Missing Data</a></li><li><a class="tocitem" href="../Hidden Markov Model/">Hidden Markov Model</a></li><li><a class="tocitem" href="../Hierarchical Gaussian Filter/">Hierarchical Gaussian Filter</a></li><li><a class="tocitem" href="../Identification Problem/">Identification Problem</a></li><li><a class="tocitem" href="../Infinite Data Stream/">Infinite Data Stream</a></li><li><a class="tocitem" href="../Invertible Neural Network Tutorial/">Invertible Neural Network Tutorial</a></li><li><a class="tocitem" href="../Kalman filter with LSTM network driven dynamic/">Kalman filter with LSTM network driven dynamic</a></li><li><a class="tocitem" href="../Linear Regression/">Linear Regression</a></li><li><a class="tocitem" href="../Nonlinear Noisy Pendulum/">Nonlinear Noisy Pendulum</a></li><li><a class="tocitem" href="../Nonlinear Rabbit Population/">Nonlinear Rabbit Population</a></li><li><a class="tocitem" href="../Nonlinear Sensor Fusion/">Nonlinear Sensor Fusion</a></li><li><a class="tocitem" href="../Nonlinear Virus Spread/">Nonlinear Virus Spread</a></li><li><a class="tocitem" href="../Probit Model (EP)/">Probit Model (EP)</a></li><li><a class="tocitem" href="../RTS vs BIFM Smoothing/">RTS vs BIFM Smoothing</a></li></ul></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../contributing/overview/">Overview</a></li><li><a class="tocitem" href="../../contributing/new-example/">Adding a new example</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Advanced Tutorial</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Advanced Tutorial</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/biaslab/RxInfer.jl/blob/main/docs/src/examples/Advanced Tutorial.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><p>This example has been auto-generated from the <a href="https://github.com/biaslab/RxInfer.jl/tree/main/examples"><code>examples/</code></a> folder at GitHub repository.</p><h1 id="examples-advanced-tutorial"><a class="docs-heading-anchor" href="#examples-advanced-tutorial">Advanced Tutorial</a><a id="examples-advanced-tutorial-1"></a><a class="docs-heading-anchor-permalink" href="#examples-advanced-tutorial" title="Permalink"></a></h1><pre><code class="language-julia hljs"># Activate local environment, see `Project.toml`
 import Pkg; Pkg.activate(&quot;.&quot;); Pkg.instantiate();</code></pre><pre><code class="language-julia hljs">using RxInfer, Plots</code></pre><p>This notebook covers the fundamentals and advanced usage of the <code>RxInfer.jl</code> package.</p><p>This tutorial is also available in the <a href="https://biaslab.github.io/RxInfer.jl/stable/">documentation</a>.</p><h2 id="General-model-specification-syntax"><a class="docs-heading-anchor" href="#General-model-specification-syntax">General model specification syntax</a><a id="General-model-specification-syntax-1"></a><a class="docs-heading-anchor-permalink" href="#General-model-specification-syntax" title="Permalink"></a></h2><p>We use the <code>@model</code> macro from the <code>RxInfer.jl</code> package to create a probabilistic model <span>$p(s, y)$</span> and we also specify extra constraints on the variational family of distributions <span>$\mathcal{Q}$</span>, used for approximating intractable posterior distributions. Below there is a simple example of the general syntax for model specification. In this tutorial we do not cover all possible ways to create models or advanced features of <code>RxInfer.jl</code>.  Instead we refer the interested reader to the documentation for a more rigorous explanation and illustrative examples.</p><pre><code class="language-julia hljs"># the `@model` macro accepts a regular Julia function
 @model function test_model1(s_mean, s_precision)
     
@@ -121,21 +121,21 @@ result = inference(
     data  = (y = dataset, )
 )
 
-println(&quot;Inferred bias: &quot;, mean_var(result.posteriors[:θ]))</code></pre><pre><code class="nohighlight hljs">Inferred bias: (0.730844793713163, 0.0003857072180696612)</code></pre><p>We can see that the inferred bias is quite close to the actual value we used in the dataset generation.</p><p>The <code>RxInfer.jl</code> package&#39;s API is more flexible (and reactive!) and can return posterior marginal distributions in our specified model in the form of an observable. It is possible to subscribe on its future updates, but for convenience <code>RxInfer.jl</code> only caches the last obtained values of all marginals in a model. To get a reference for the posterior marginal of some random variable in a model <code>RxInfer.jl</code> exports two functions: </p><ul><li><code>getmarginal(x)</code>: for a single random variable <code>x</code></li><li><code>getmarginals(xs)</code>: for a dense sequence of random variables <code>sx</code></li></ul><p>Let&#39;s see how it works in practice. Here we create a simple coin toss model. We assume that observations are governed by the <code>Bernoulli</code> distribution with unknown bias parameter <code>θ</code>. To have a fully Bayesian treatment of this problem we endow <code>θ</code> with the <code>Beta</code> prior.</p><pre><code class="language-julia hljs">_, (y, θ) = create_model(coin_toss_model(length(dataset)));</code></pre><pre><code class="language-julia hljs"># As soon as we have a new value for the marginal posterior over the `θ` variable
+println(&quot;Inferred bias: &quot;, mean_var(result.posteriors[:θ]))</code></pre><pre><code class="nohighlight hljs">Inferred bias: (0.7053045186640472, 0.0004075491266982822)</code></pre><p>We can see that the inferred bias is quite close to the actual value we used in the dataset generation.</p><p>The <code>RxInfer.jl</code> package&#39;s API is more flexible (and reactive!) and can return posterior marginal distributions in our specified model in the form of an observable. It is possible to subscribe on its future updates, but for convenience <code>RxInfer.jl</code> only caches the last obtained values of all marginals in a model. To get a reference for the posterior marginal of some random variable in a model <code>RxInfer.jl</code> exports two functions: </p><ul><li><code>getmarginal(x)</code>: for a single random variable <code>x</code></li><li><code>getmarginals(xs)</code>: for a dense sequence of random variables <code>sx</code></li></ul><p>Let&#39;s see how it works in practice. Here we create a simple coin toss model. We assume that observations are governed by the <code>Bernoulli</code> distribution with unknown bias parameter <code>θ</code>. To have a fully Bayesian treatment of this problem we endow <code>θ</code> with the <code>Beta</code> prior.</p><pre><code class="language-julia hljs">_, (y, θ) = create_model(coin_toss_model(length(dataset)));</code></pre><pre><code class="language-julia hljs"># As soon as we have a new value for the marginal posterior over the `θ` variable
 # we simply print the first two statistics of it
-θ_subscription = subscribe!(getmarginal(θ), (marginal) -&gt; println(&quot;New update: mean(θ) = &quot;, mean(marginal), &quot;, std(θ) = &quot;, std(marginal)));</code></pre><p>To pass data to our model we use <code>update!</code> function</p><pre><code class="language-julia hljs">update!(y, dataset)</code></pre><pre><code class="nohighlight hljs">New update: mean(θ) = 0.730844793713163, std(θ) = 0.01963943018699018</code></pre><pre><code class="language-julia hljs"># It is necessary to always unsubscribe from running observables
+θ_subscription = subscribe!(getmarginal(θ), (marginal) -&gt; println(&quot;New update: mean(θ) = &quot;, mean(marginal), &quot;, std(θ) = &quot;, std(marginal)));</code></pre><p>To pass data to our model we use <code>update!</code> function</p><pre><code class="language-julia hljs">update!(y, dataset)</code></pre><pre><code class="nohighlight hljs">New update: mean(θ) = 0.7053045186640472, std(θ) = 0.020187846014329568</code></pre><pre><code class="language-julia hljs"># It is necessary to always unsubscribe from running observables
 unsubscribe!(θ_subscription)</code></pre><pre><code class="language-julia hljs"># The ReactiveMP.jl inference backend is lazy and does not compute posterior marginals if no-one is listening for them
 # At this moment we have already unsubscribed from the new posterior updates so this `update!` does nothing
 update!(y, dataset)</code></pre><p><code>Rocket.jl</code> provides some useful built-in actors for obtaining posterior marginals especially with static datasets.</p><pre><code class="language-julia hljs"># the `keep` actor simply keeps all incoming updates in an internal storage, ordered
 θvalues = keep(Marginal)</code></pre><pre><code class="nohighlight hljs">KeepActor{Marginal}(Marginal[])</code></pre><pre><code class="language-julia hljs"># `getmarginal` always emits last cached value as its first value
 subscribe!(getmarginal(θ) |&gt; take(1), θvalues);</code></pre><pre><code class="language-julia hljs">getvalues(θvalues)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=372.0, β=137.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginal(θ) |&gt; take(1), θvalues);</code></pre><pre><code class="language-julia hljs">getvalues(θvalues)</code></pre><pre><code class="nohighlight hljs">2-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=372.0, β=137.0))
- Marginal(Beta{Float64}(α=372.0, β=137.0))</code></pre><pre><code class="language-julia hljs"># the `buffer` actor keeps very last incoming update in an internal storage and can also store 
+ Marginal(Beta{Float64}(α=359.0, β=150.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginal(θ) |&gt; take(1), θvalues);</code></pre><pre><code class="language-julia hljs">getvalues(θvalues)</code></pre><pre><code class="nohighlight hljs">2-element Vector{Marginal}:
+ Marginal(Beta{Float64}(α=359.0, β=150.0))
+ Marginal(Beta{Float64}(α=359.0, β=150.0))</code></pre><pre><code class="language-julia hljs"># the `buffer` actor keeps very last incoming update in an internal storage and can also store 
 # an array of updates for a sequence of random variables
 θbuffer = buffer(Marginal, 1)</code></pre><pre><code class="nohighlight hljs">BufferActor{Marginal, Vector{Marginal}}(Marginal[#undef])</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginals([ θ ]) |&gt; take(1), θbuffer);</code></pre><pre><code class="language-julia hljs">getvalues(θbuffer)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=372.0, β=137.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginals([ θ ]) |&gt; take(1), θbuffer);</code></pre><pre><code class="language-julia hljs">getvalues(θbuffer)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=372.0, β=137.0))</code></pre><h2 id="Reactive-Online-Inference"><a class="docs-heading-anchor" href="#Reactive-Online-Inference">Reactive Online Inference</a><a id="Reactive-Online-Inference-1"></a><a class="docs-heading-anchor-permalink" href="#Reactive-Online-Inference" title="Permalink"></a></h2><p>RxInfer.jl naturally supports reactive streams of data and it is possible to run reactive inference with some external datasource.</p><pre><code class="language-julia hljs">@model function online_coin_toss_model()
+ Marginal(Beta{Float64}(α=359.0, β=150.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginals([ θ ]) |&gt; take(1), θbuffer);</code></pre><pre><code class="language-julia hljs">getvalues(θbuffer)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
+ Marginal(Beta{Float64}(α=359.0, β=150.0))</code></pre><h2 id="Reactive-Online-Inference"><a class="docs-heading-anchor" href="#Reactive-Online-Inference">Reactive Online Inference</a><a id="Reactive-Online-Inference-1"></a><a class="docs-heading-anchor-permalink" href="#Reactive-Online-Inference" title="Permalink"></a></h2><p>RxInfer.jl naturally supports reactive streams of data and it is possible to run reactive inference with some external datasource.</p><pre><code class="language-julia hljs">@model function online_coin_toss_model()
     
     # We create datavars for the prior 
     # over `θ` variable
@@ -164,7 +164,7 @@ end</code></pre><pre><code class="nohighlight hljs">(θ_a,θ_b = params(q(θ)),)
     hline!([ p ], label = &quot;Real bias&quot;, size = (600, 200))
 end
 
-gif(animation, fps = 30)</code></pre><pre><code class="nohighlight hljs">Plots.AnimatedGif(&quot;/tmp/jl_Fm5Q3YfqTK.gif&quot;)</code></pre><p>In this example we used static dataset and the <code>history</code> field of the reactive inference result, but the <code>rxinference</code> function also supports any real-time reactive stream and can run indefinitely.</p><p>That was an example of exact Bayesian inference with Sum-Product (or Belief Propagation) algorithm. However, <code>RxInfer</code> is not limited to only the sum-product algorithm but it also supports variational message passing with <a href="https://www.mdpi.com/1099-4300/23/7/807">Constrained Bethe Free Energy Minimisation</a>.</p><h2 id="Variational-inference"><a class="docs-heading-anchor" href="#Variational-inference">Variational inference</a><a id="Variational-inference-1"></a><a class="docs-heading-anchor-permalink" href="#Variational-inference" title="Permalink"></a></h2><p>On a very high-level, ReactiveMP.jl is aimed to solve the Constrained Bethe Free Energy minimisation problem. For this task we approximate our exact posterior marginal distribution by some family of distributions <span>$q \in \mathcal{Q}$</span>. Often this involves assuming some factorization over <span>$q$</span>. For this purpose the <code>@model</code> macro supports optional <code>where { ... }</code> clauses for every <code>~</code> expression in a model specification.</p><pre><code class="language-julia hljs">@model function test_model6_with_manual_constraints(n)
+gif(animation, fps = 30)</code></pre><pre><code class="nohighlight hljs">Plots.AnimatedGif(&quot;/tmp/jl_uPqtWH4v2r.gif&quot;)</code></pre><p>In this example we used static dataset and the <code>history</code> field of the reactive inference result, but the <code>rxinference</code> function also supports any real-time reactive stream and can run indefinitely.</p><p>That was an example of exact Bayesian inference with Sum-Product (or Belief Propagation) algorithm. However, <code>RxInfer</code> is not limited to only the sum-product algorithm but it also supports variational message passing with <a href="https://www.mdpi.com/1099-4300/23/7/807">Constrained Bethe Free Energy Minimisation</a>.</p><h2 id="Variational-inference"><a class="docs-heading-anchor" href="#Variational-inference">Variational inference</a><a id="Variational-inference-1"></a><a class="docs-heading-anchor-permalink" href="#Variational-inference" title="Permalink"></a></h2><p>On a very high-level, ReactiveMP.jl is aimed to solve the Constrained Bethe Free Energy minimisation problem. For this task we approximate our exact posterior marginal distribution by some family of distributions <span>$q \in \mathcal{Q}$</span>. Often this involves assuming some factorization over <span>$q$</span>. For this purpose the <code>@model</code> macro supports optional <code>where { ... }</code> clauses for every <code>~</code> expression in a model specification.</p><pre><code class="language-julia hljs">@model function test_model6_with_manual_constraints(n)
     τ ~ Gamma(shape = 1.0, rate = 1.0) 
     μ ~ Normal(mean = 0.0, variance = 100.0)
     
@@ -277,8 +277,8 @@ result = inference(
 ```
 Inference results:
   Posteriors       | available for (μ, τ)
-  Free Energy:     | Real[14763.3, 3275.74, 674.894, 635.715, 635.715, 635.
-715, 635.715, 635.715, 635.715, 635.715]
+  Free Energy:     | Real[14763.3, 3275.23, 711.581, 677.154, 677.154, 677.
+154, 677.154, 677.154, 677.154, 677.154]
 ```
 
 
@@ -288,7 +288,7 @@ println(&quot;μ: mean = &quot;, mean(result.posteriors[:μ]), &quot;, std = &qu
 ```
 
 ```
-μ: mean = -2.996548452410546, std = 0.014338574409993332
+μ: mean = -2.971872353197491, std = 0.014944631146411699
 ```
 
 
@@ -298,7 +298,7 @@ println(&quot;τ: mean = &quot;, mean(result.posteriors[:τ]), &quot;, std = &qu
 ```
 
 ```
-τ: mean = 4.863928232053235, std = 0.21730428754710823
+τ: mean = 4.477428186915035, std = 0.20003673898580324
 ```
 
 
@@ -342,26 +342,26 @@ getvalues(μ_values)
 
 ```
 10-element Vector{Marginal}:
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-3.0025477223672155e-9, w
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-2.9778227486057664e-9, w
 =0.010000001002000566))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-27.49960333077105, w=9.1
-87073966856127))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-9542.198322706185, w=318
-4.3999259411326))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14567.358712411931, w=48
-61.379336769353))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14575.018925319653, w=48
-63.935676932103))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14575.026574238149, w=48
-63.938229503183))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14575.026581871818, w=48
-63.938232050674))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14575.026581879409, w=48
-63.938232053169))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14575.026581879423, w=48
-63.938232053169))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14575.026581879409, w=48
-63.938232053169))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-27.305541720402683, w=9.
+197972258055358))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-8961.35878923723, w=3015
+.3948179642957))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13299.939039330546, w=44
+75.2726473581515))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.368334888894, w=44
+77.436024661919))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.374754430191, w=44
+77.438184757114))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.374760836907, w=44
+77.4381869128165))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.374760843295, w=44
+77.43818691497))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.374760843308, w=44
+77.438186914974))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.374760843311, w=44
+77.438186914974))
 ```
 
 
@@ -372,16 +372,16 @@ getvalues(τ_values)
 
 ```
 10-element Vector{Marginal}:
- Marginal(GammaShapeRate{Float64}(a=501.0, b=5.000000000045929e14))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=54592.564232282115))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=157.32997894468764))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=103.05738266184504))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=103.00321865032983))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=103.00316459463248))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=103.00316454068484))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=103.00316454063105))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=103.00316454063096))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=103.00316454063105))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=5.000000000045277e14))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=54527.80939349945))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=166.14794802151863))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=111.94873675084978))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89464599536808))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89459201279816))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89459195892357))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89459195886992))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89459195886981))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89459195886978))
 ```
 
 
@@ -391,7 +391,7 @@ println(&quot;μ: mean = &quot;, mean(last(μ_values)), &quot;, std = &quot;, st
 ```
 
 ```
-μ: mean = -2.996548452410546, std = 0.014338574409993332
+μ: mean = -2.971872353197491, std = 0.014944631146411699
 ```
 
 
@@ -401,7 +401,7 @@ println(&quot;τ: mean = &quot;, mean(last(τ_values)), &quot;, std = &quot;, st
 ```
 
 ```
-τ: mean = 4.863928232053235, std = 0.21730428754710823
+τ: mean = 4.477428186915035, std = 0.20003673898580324
 ```
 
 
@@ -512,7 +512,7 @@ getvalues(μ_values) |&gt; last
 ```
 
 ```
-Marginal(PointMass{Float64}(-2.9965484585589826))
+Marginal(PointMass{Float64}(-2.971872359821657))
 ```
 
 
@@ -522,7 +522,7 @@ getvalues(τ_values) |&gt; last
 ```
 
 ```
-Marginal(GammaShapeRate{Float64}(a=501.0, b=102.90036718253758))
+Marginal(GammaShapeRate{Float64}(a=501.0, b=111.78292095877487))
 ```
 
 
@@ -586,16 +586,16 @@ end
 ```
 
 ```
-Current BFE value: 648.2393114402093
-Current BFE value: 635.7149749278365
-Current BFE value: 635.7149746789182
-Current BFE value: 635.7149746789169
-Current BFE value: 635.7149746789178
-Current BFE value: 635.7149746789169
-Current BFE value: 635.7149746789164
-Current BFE value: 635.7149746789169
-Current BFE value: 635.7149746789164
-Current BFE value: 635.7149746789169
+Current BFE value: 689.7201594542112
+Current BFE value: 677.1544242374439
+Current BFE value: 677.1544239885261
+Current BFE value: 677.1544239885247
+Current BFE value: 677.1544239885247
+Current BFE value: 677.1544239885252
+Current BFE value: 677.1544239885252
+Current BFE value: 677.1544239885252
+Current BFE value: 677.1544239885252
+Current BFE value: 677.1544239885252
 ```
 
 
@@ -752,5 +752,5 @@ end</code></pre><pre><code class="language-julia hljs">_, (y, θ) = RxInfer.crea
 [y[3]][Bernoulli][p]: VariationalMessage()
 [y[4]][Bernoulli][p]: VariationalMessage()
 [y[5]][Bernoulli][p]: VariationalMessage()
-New posterior marginal for θ: Marginal(Beta{Float64}(α=3.0, β=11.0))</code></pre><pre><code class="language-julia hljs">unsubscribe!(θ_subscription)</code></pre><pre><code class="language-julia hljs"># Inference is lazy and does not send messages if no one is listening for them
-update!(y, coinflips)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Overview/">« Overview</a><a class="docs-footer-nextpage" href="../Assessing People Skills/">Assessing People Skills »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 3 November 2022 13:04">Thursday 3 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+New posterior marginal for θ: Marginal(Beta{Float64}(α=4.0, β=10.0))</code></pre><pre><code class="language-julia hljs">unsubscribe!(θ_subscription)</code></pre><pre><code class="language-julia hljs"># Inference is lazy and does not send messages if no one is listening for them
+update!(y, coinflips)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Overview/">« Overview</a><a class="docs-footer-nextpage" href="../Assessing People Skills/">Assessing People Skills »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 3 November 2022 14:21">Thursday 3 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
