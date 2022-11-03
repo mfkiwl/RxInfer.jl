@@ -121,21 +121,21 @@ result = inference(
     data  = (y = dataset, )
 )
 
-println(&quot;Inferred bias: &quot;, mean_var(result.posteriors[:θ]))</code></pre><pre><code class="nohighlight hljs">Inferred bias: (0.7053045186640472, 0.0004075491266982822)</code></pre><p>We can see that the inferred bias is quite close to the actual value we used in the dataset generation.</p><p>The <code>RxInfer.jl</code> package&#39;s API is more flexible (and reactive!) and can return posterior marginal distributions in our specified model in the form of an observable. It is possible to subscribe on its future updates, but for convenience <code>RxInfer.jl</code> only caches the last obtained values of all marginals in a model. To get a reference for the posterior marginal of some random variable in a model <code>RxInfer.jl</code> exports two functions: </p><ul><li><code>getmarginal(x)</code>: for a single random variable <code>x</code></li><li><code>getmarginals(xs)</code>: for a dense sequence of random variables <code>sx</code></li></ul><p>Let&#39;s see how it works in practice. Here we create a simple coin toss model. We assume that observations are governed by the <code>Bernoulli</code> distribution with unknown bias parameter <code>θ</code>. To have a fully Bayesian treatment of this problem we endow <code>θ</code> with the <code>Beta</code> prior.</p><pre><code class="language-julia hljs">_, (y, θ) = create_model(coin_toss_model(length(dataset)));</code></pre><pre><code class="language-julia hljs"># As soon as we have a new value for the marginal posterior over the `θ` variable
+println(&quot;Inferred bias: &quot;, mean_var(result.posteriors[:θ]))</code></pre><pre><code class="nohighlight hljs">Inferred bias: (0.756385068762279, 0.00036130724807012055)</code></pre><p>We can see that the inferred bias is quite close to the actual value we used in the dataset generation.</p><p>The <code>RxInfer.jl</code> package&#39;s API is more flexible (and reactive!) and can return posterior marginal distributions in our specified model in the form of an observable. It is possible to subscribe on its future updates, but for convenience <code>RxInfer.jl</code> only caches the last obtained values of all marginals in a model. To get a reference for the posterior marginal of some random variable in a model <code>RxInfer.jl</code> exports two functions: </p><ul><li><code>getmarginal(x)</code>: for a single random variable <code>x</code></li><li><code>getmarginals(xs)</code>: for a dense sequence of random variables <code>sx</code></li></ul><p>Let&#39;s see how it works in practice. Here we create a simple coin toss model. We assume that observations are governed by the <code>Bernoulli</code> distribution with unknown bias parameter <code>θ</code>. To have a fully Bayesian treatment of this problem we endow <code>θ</code> with the <code>Beta</code> prior.</p><pre><code class="language-julia hljs">_, (y, θ) = create_model(coin_toss_model(length(dataset)));</code></pre><pre><code class="language-julia hljs"># As soon as we have a new value for the marginal posterior over the `θ` variable
 # we simply print the first two statistics of it
-θ_subscription = subscribe!(getmarginal(θ), (marginal) -&gt; println(&quot;New update: mean(θ) = &quot;, mean(marginal), &quot;, std(θ) = &quot;, std(marginal)));</code></pre><p>To pass data to our model we use <code>update!</code> function</p><pre><code class="language-julia hljs">update!(y, dataset)</code></pre><pre><code class="nohighlight hljs">New update: mean(θ) = 0.7053045186640472, std(θ) = 0.020187846014329568</code></pre><pre><code class="language-julia hljs"># It is necessary to always unsubscribe from running observables
+θ_subscription = subscribe!(getmarginal(θ), (marginal) -&gt; println(&quot;New update: mean(θ) = &quot;, mean(marginal), &quot;, std(θ) = &quot;, std(marginal)));</code></pre><p>To pass data to our model we use <code>update!</code> function</p><pre><code class="language-julia hljs">update!(y, dataset)</code></pre><pre><code class="nohighlight hljs">New update: mean(θ) = 0.756385068762279, std(θ) = 0.019008083755868727</code></pre><pre><code class="language-julia hljs"># It is necessary to always unsubscribe from running observables
 unsubscribe!(θ_subscription)</code></pre><pre><code class="language-julia hljs"># The ReactiveMP.jl inference backend is lazy and does not compute posterior marginals if no-one is listening for them
 # At this moment we have already unsubscribed from the new posterior updates so this `update!` does nothing
 update!(y, dataset)</code></pre><p><code>Rocket.jl</code> provides some useful built-in actors for obtaining posterior marginals especially with static datasets.</p><pre><code class="language-julia hljs"># the `keep` actor simply keeps all incoming updates in an internal storage, ordered
 θvalues = keep(Marginal)</code></pre><pre><code class="nohighlight hljs">KeepActor{Marginal}(Marginal[])</code></pre><pre><code class="language-julia hljs"># `getmarginal` always emits last cached value as its first value
 subscribe!(getmarginal(θ) |&gt; take(1), θvalues);</code></pre><pre><code class="language-julia hljs">getvalues(θvalues)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=359.0, β=150.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginal(θ) |&gt; take(1), θvalues);</code></pre><pre><code class="language-julia hljs">getvalues(θvalues)</code></pre><pre><code class="nohighlight hljs">2-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=359.0, β=150.0))
- Marginal(Beta{Float64}(α=359.0, β=150.0))</code></pre><pre><code class="language-julia hljs"># the `buffer` actor keeps very last incoming update in an internal storage and can also store 
+ Marginal(Beta{Float64}(α=385.0, β=124.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginal(θ) |&gt; take(1), θvalues);</code></pre><pre><code class="language-julia hljs">getvalues(θvalues)</code></pre><pre><code class="nohighlight hljs">2-element Vector{Marginal}:
+ Marginal(Beta{Float64}(α=385.0, β=124.0))
+ Marginal(Beta{Float64}(α=385.0, β=124.0))</code></pre><pre><code class="language-julia hljs"># the `buffer` actor keeps very last incoming update in an internal storage and can also store 
 # an array of updates for a sequence of random variables
 θbuffer = buffer(Marginal, 1)</code></pre><pre><code class="nohighlight hljs">BufferActor{Marginal, Vector{Marginal}}(Marginal[#undef])</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginals([ θ ]) |&gt; take(1), θbuffer);</code></pre><pre><code class="language-julia hljs">getvalues(θbuffer)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=359.0, β=150.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginals([ θ ]) |&gt; take(1), θbuffer);</code></pre><pre><code class="language-julia hljs">getvalues(θbuffer)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=359.0, β=150.0))</code></pre><h2 id="Reactive-Online-Inference"><a class="docs-heading-anchor" href="#Reactive-Online-Inference">Reactive Online Inference</a><a id="Reactive-Online-Inference-1"></a><a class="docs-heading-anchor-permalink" href="#Reactive-Online-Inference" title="Permalink"></a></h2><p>RxInfer.jl naturally supports reactive streams of data and it is possible to run reactive inference with some external datasource.</p><pre><code class="language-julia hljs">@model function online_coin_toss_model()
+ Marginal(Beta{Float64}(α=385.0, β=124.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginals([ θ ]) |&gt; take(1), θbuffer);</code></pre><pre><code class="language-julia hljs">getvalues(θbuffer)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
+ Marginal(Beta{Float64}(α=385.0, β=124.0))</code></pre><h2 id="Reactive-Online-Inference"><a class="docs-heading-anchor" href="#Reactive-Online-Inference">Reactive Online Inference</a><a id="Reactive-Online-Inference-1"></a><a class="docs-heading-anchor-permalink" href="#Reactive-Online-Inference" title="Permalink"></a></h2><p>RxInfer.jl naturally supports reactive streams of data and it is possible to run reactive inference with some external datasource.</p><pre><code class="language-julia hljs">@model function online_coin_toss_model()
     
     # We create datavars for the prior 
     # over `θ` variable
@@ -164,7 +164,7 @@ end</code></pre><pre><code class="nohighlight hljs">(θ_a,θ_b = params(q(θ)),)
     hline!([ p ], label = &quot;Real bias&quot;, size = (600, 200))
 end
 
-gif(animation, fps = 30)</code></pre><pre><code class="nohighlight hljs">Plots.AnimatedGif(&quot;/tmp/jl_uPqtWH4v2r.gif&quot;)</code></pre><p>In this example we used static dataset and the <code>history</code> field of the reactive inference result, but the <code>rxinference</code> function also supports any real-time reactive stream and can run indefinitely.</p><p>That was an example of exact Bayesian inference with Sum-Product (or Belief Propagation) algorithm. However, <code>RxInfer</code> is not limited to only the sum-product algorithm but it also supports variational message passing with <a href="https://www.mdpi.com/1099-4300/23/7/807">Constrained Bethe Free Energy Minimisation</a>.</p><h2 id="Variational-inference"><a class="docs-heading-anchor" href="#Variational-inference">Variational inference</a><a id="Variational-inference-1"></a><a class="docs-heading-anchor-permalink" href="#Variational-inference" title="Permalink"></a></h2><p>On a very high-level, ReactiveMP.jl is aimed to solve the Constrained Bethe Free Energy minimisation problem. For this task we approximate our exact posterior marginal distribution by some family of distributions <span>$q \in \mathcal{Q}$</span>. Often this involves assuming some factorization over <span>$q$</span>. For this purpose the <code>@model</code> macro supports optional <code>where { ... }</code> clauses for every <code>~</code> expression in a model specification.</p><pre><code class="language-julia hljs">@model function test_model6_with_manual_constraints(n)
+gif(animation, fps = 30)</code></pre><pre><code class="nohighlight hljs">Plots.AnimatedGif(&quot;/tmp/jl_eDEBELY9w3.gif&quot;)</code></pre><p>In this example we used static dataset and the <code>history</code> field of the reactive inference result, but the <code>rxinference</code> function also supports any real-time reactive stream and can run indefinitely.</p><p>That was an example of exact Bayesian inference with Sum-Product (or Belief Propagation) algorithm. However, <code>RxInfer</code> is not limited to only the sum-product algorithm but it also supports variational message passing with <a href="https://www.mdpi.com/1099-4300/23/7/807">Constrained Bethe Free Energy Minimisation</a>.</p><h2 id="Variational-inference"><a class="docs-heading-anchor" href="#Variational-inference">Variational inference</a><a id="Variational-inference-1"></a><a class="docs-heading-anchor-permalink" href="#Variational-inference" title="Permalink"></a></h2><p>On a very high-level, ReactiveMP.jl is aimed to solve the Constrained Bethe Free Energy minimisation problem. For this task we approximate our exact posterior marginal distribution by some family of distributions <span>$q \in \mathcal{Q}$</span>. Often this involves assuming some factorization over <span>$q$</span>. For this purpose the <code>@model</code> macro supports optional <code>where { ... }</code> clauses for every <code>~</code> expression in a model specification.</p><pre><code class="language-julia hljs">@model function test_model6_with_manual_constraints(n)
     τ ~ Gamma(shape = 1.0, rate = 1.0) 
     μ ~ Normal(mean = 0.0, variance = 100.0)
     
@@ -277,8 +277,8 @@ result = inference(
 ```
 Inference results:
   Posteriors       | available for (μ, τ)
-  Free Energy:     | Real[14763.3, 3275.23, 711.581, 677.154, 677.154, 677.
-154, 677.154, 677.154, 677.154, 677.154]
+  Free Energy:     | Real[14763.3, 3276.39, 690.635, 653.456, 653.456, 653.
+456, 653.456, 653.456, 653.456, 653.456]
 ```
 
 
@@ -288,7 +288,7 @@ println(&quot;μ: mean = &quot;, mean(result.posteriors[:μ]), &quot;, std = &qu
 ```
 
 ```
-μ: mean = -2.971872353197491, std = 0.014944631146411699
+μ: mean = -3.0174478233771813, std = 0.014594957604591976
 ```
 
 
@@ -298,7 +298,7 @@ println(&quot;τ: mean = &quot;, mean(result.posteriors[:τ]), &quot;, std = &qu
 ```
 
 ```
-τ: mean = 4.477428186915035, std = 0.20003673898580324
+τ: mean = 4.694543842663902, std = 0.20973675112350582
 ```
 
 
@@ -342,26 +342,26 @@ getvalues(μ_values)
 
 ```
 10-element Vector{Marginal}:
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-2.9778227486057664e-9, w
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-3.0234891594142364e-9, w
 =0.010000001002000566))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-27.305541720402683, w=9.
-197972258055358))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-8961.35878923723, w=3015
-.3948179642957))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13299.939039330546, w=44
-75.2726473581515))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.368334888894, w=44
-77.436024661919))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.374754430191, w=44
-77.438184757114))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.374760836907, w=44
-77.4381869128165))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.374760843295, w=44
-77.43818691497))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.374760843308, w=44
-77.438186914974))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-13306.374760843311, w=44
-77.438186914974))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-27.657681217121894, w=9.
+175899104684465))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-9383.358917527048, w=310
+9.703846924871))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14158.369923724787, w=46
+92.167277715616))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14165.564083672305, w=46
+94.551459661568))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14165.571267096682, w=46
+94.553840285707))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14165.571274265758, w=46
+94.553842661538))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14165.57127427289, w=469
+4.553842663814))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14165.571274272907, w=46
+94.553842663815))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14165.57127427291, w=469
+4.553842663815))
 ```
 
 
@@ -372,16 +372,16 @@ getvalues(τ_values)
 
 ```
 10-element Vector{Marginal}:
- Marginal(GammaShapeRate{Float64}(a=501.0, b=5.000000000045277e14))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=54527.80939349945))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=166.14794802151863))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=111.94873675084978))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89464599536808))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89459201279816))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89459195892357))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89459195886992))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89459195886981))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=111.89459195886978))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=5.000000000046594e14))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=54659.12228337279))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=161.1091074111467))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=106.77391450183947))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=106.71968802595688))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=106.71963390792695))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=106.7196338539171))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=106.71963385386346))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=106.71963385386333))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=106.7196338538633))
 ```
 
 
@@ -391,7 +391,7 @@ println(&quot;μ: mean = &quot;, mean(last(μ_values)), &quot;, std = &quot;, st
 ```
 
 ```
-μ: mean = -2.971872353197491, std = 0.014944631146411699
+μ: mean = -3.0174478233771813, std = 0.014594957604591976
 ```
 
 
@@ -401,7 +401,7 @@ println(&quot;τ: mean = &quot;, mean(last(τ_values)), &quot;, std = &quot;, st
 ```
 
 ```
-τ: mean = 4.477428186915035, std = 0.20003673898580324
+τ: mean = 4.694543842663902, std = 0.20973675112350582
 ```
 
 
@@ -512,7 +512,7 @@ getvalues(μ_values) |&gt; last
 ```
 
 ```
-Marginal(PointMass{Float64}(-2.971872359821657))
+Marginal(PointMass{Float64}(-3.017447829791895))
 ```
 
 
@@ -522,7 +522,7 @@ getvalues(τ_values) |&gt; last
 ```
 
 ```
-Marginal(GammaShapeRate{Float64}(a=501.0, b=111.78292095877487))
+Marginal(GammaShapeRate{Float64}(a=501.0, b=106.61312746008201))
 ```
 
 
@@ -586,16 +586,16 @@ end
 ```
 
 ```
-Current BFE value: 689.7201594542112
-Current BFE value: 677.1544242374439
-Current BFE value: 677.1544239885261
-Current BFE value: 677.1544239885247
-Current BFE value: 677.1544239885247
-Current BFE value: 677.1544239885252
-Current BFE value: 677.1544239885252
-Current BFE value: 677.1544239885252
-Current BFE value: 677.1544239885252
-Current BFE value: 677.1544239885252
+Current BFE value: 665.9981052673666
+Current BFE value: 653.4560460674779
+Current BFE value: 653.4560458185606
+Current BFE value: 653.4560458185601
+Current BFE value: 653.4560458185601
+Current BFE value: 653.4560458185601
+Current BFE value: 653.4560458185601
+Current BFE value: 653.4560458185601
+Current BFE value: 653.4560458185601
+Current BFE value: 653.4560458185601
 ```
 
 
@@ -753,4 +753,4 @@ end</code></pre><pre><code class="language-julia hljs">_, (y, θ) = RxInfer.crea
 [y[4]][Bernoulli][p]: VariationalMessage()
 [y[5]][Bernoulli][p]: VariationalMessage()
 New posterior marginal for θ: Marginal(Beta{Float64}(α=4.0, β=10.0))</code></pre><pre><code class="language-julia hljs">unsubscribe!(θ_subscription)</code></pre><pre><code class="language-julia hljs"># Inference is lazy and does not send messages if no one is listening for them
-update!(y, coinflips)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Overview/">« Overview</a><a class="docs-footer-nextpage" href="../Assessing People Skills/">Assessing People Skills »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 3 November 2022 14:21">Thursday 3 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+update!(y, coinflips)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Overview/">« Overview</a><a class="docs-footer-nextpage" href="../Assessing People Skills/">Assessing People Skills »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 3 November 2022 15:16">Thursday 3 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
