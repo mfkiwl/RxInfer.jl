@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Identification Problem · RxInfer.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link rel="canonical" href="https://biaslab.github.io/RxInfer.jl/examples/Identification Problem/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/theme.css" rel="stylesheet" type="text/css"/><link href="../../assets/header.css" rel="stylesheet" type="text/css"/><script src="../../assets/header.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.svg" alt="RxInfer.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">RxInfer.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">User guide</span><ul><li><a class="tocitem" href="../../manuals/getting-started/">Getting started</a></li><li><a class="tocitem" href="../../manuals/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../manuals/constraints-specification/">Constraints specification</a></li><li><a class="tocitem" href="../../manuals/meta-specification/">Meta specification</a></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">Inference specification</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../manuals/inference/overview/">Overview</a></li><li><a class="tocitem" href="../../manuals/inference/inference/">Static dataset</a></li><li><a class="tocitem" href="../../manuals/inference/rxinference/">Real-time dataset / reactive inference</a></li><li><a class="tocitem" href="../../manuals/inference/manual/">Manual inference specification</a></li></ul></li></ul></li><li><span class="tocitem">Library</span><ul><li><a class="tocitem" href="../../library/functional-forms/">Built-in functional form constraints</a></li><li><a class="tocitem" href="../../library/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../library/bethe-free-energy/">Bethe Free Energy</a></li><li><a class="tocitem" href="../../library/exported-methods/">Exported methods</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../Overview/">Overview</a></li><li><a class="tocitem" href="../Advanced Tutorial/">Advanced Tutorial</a></li><li><a class="tocitem" href="../Assessing People Skills/">Assessing People Skills</a></li><li><a class="tocitem" href="../Autoregressive Model/">Autoregressive Model</a></li><li><a class="tocitem" href="../Coin Toss Model/">Coin Toss Model</a></li><li><a class="tocitem" href="../Conjugate-NonConjugate Variational Message Passing/">Conjugate-NonConjugate Variational Message Passing</a></li><li><a class="tocitem" href="../Custom nonlinear node/">Custom nonlinear node</a></li><li><a class="tocitem" href="../GPRegression by SSM/">GPRegression by SSM</a></li><li><a class="tocitem" href="../Gamma Mixture/">Gamma Mixture</a></li><li><a class="tocitem" href="../Gaussian Linear Dynamical System/">Gaussian Linear Dynamical System</a></li><li><a class="tocitem" href="../Gaussian Mixture Univariate/">Gaussian Mixture Univariate</a></li><li><a class="tocitem" href="../Gaussian Mixtures Multivariate/">Gaussian Mixtures Multivariate</a></li><li><a class="tocitem" href="../Global Parameter Optimisation/">Global Parameter Optimisation</a></li><li><a class="tocitem" href="../Handling Missing Data/">Handling Missing Data</a></li><li><a class="tocitem" href="../Hidden Markov Model/">Hidden Markov Model</a></li><li><a class="tocitem" href="../Hierarchical Gaussian Filter/">Hierarchical Gaussian Filter</a></li><li class="is-active"><a class="tocitem" href>Identification Problem</a></li><li><a class="tocitem" href="../Infinite Data Stream/">Infinite Data Stream</a></li><li><a class="tocitem" href="../Invertible Neural Network Tutorial/">Invertible Neural Network Tutorial</a></li><li><a class="tocitem" href="../Kalman filter with LSTM network driven dynamic/">Kalman filter with LSTM network driven dynamic</a></li><li><a class="tocitem" href="../Linear Regression/">Linear Regression</a></li><li><a class="tocitem" href="../Nonlinear Noisy Pendulum/">Nonlinear Noisy Pendulum</a></li><li><a class="tocitem" href="../Nonlinear Rabbit Population/">Nonlinear Rabbit Population</a></li><li><a class="tocitem" href="../Nonlinear Sensor Fusion/">Nonlinear Sensor Fusion</a></li><li><a class="tocitem" href="../Nonlinear Virus Spread/">Nonlinear Virus Spread</a></li><li><a class="tocitem" href="../Probit Model (EP)/">Probit Model (EP)</a></li><li><a class="tocitem" href="../RTS vs BIFM Smoothing/">RTS vs BIFM Smoothing</a></li></ul></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../contributing/overview/">Overview</a></li><li><a class="tocitem" href="../../contributing/new-example/">Adding a new example</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Identification Problem</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Identification Problem</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/biaslab/RxInfer.jl/blob/main/docs/src/examples/Identification Problem.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><p>This example has been auto-generated from the <a href="https://github.com/biaslab/RxInfer.jl/tree/main/examples"><code>examples/</code></a> folder at GitHub repository.</p><h1 id="examples-system-identification-problem"><a class="docs-heading-anchor" href="#examples-system-identification-problem">System Identification Problem</a><a id="examples-system-identification-problem-1"></a><a class="docs-heading-anchor-permalink" href="#examples-system-identification-problem" title="Permalink"></a></h1><pre><code class="language-julia hljs"># Activate local environment, see `Project.toml`
+import Pkg; Pkg.activate(&quot;.&quot;); Pkg.instantiate();</code></pre><pre><code class="language-julia hljs">using RxInfer, Distributions, StableRNGs, Plots</code></pre><pre><code class="language-julia hljs">function generate_data(n; seed = 123)
+
+    rng = StableRNG(seed)
+
+    real_x = Vector{Float64}(undef, n)
+    real_w = Vector{Float64}(undef, n)
+    real_y = Vector{Float64}(undef, n)
+
+    real_x_τ = 0.1
+    real_w_τ = 1.0
+    noise = 20.0
+
+    x_i_min = -20.0
+    w_i_min = 20.0
+
+    for i in 1:n
+        real_x[i] = rand(rng, Normal(x_i_min, sqrt(1.0 / real_x_τ)))
+        real_w[i] = rand(rng, Normal(w_i_min, sqrt(1.0 / real_w_τ)))
+        real_y[i] = rand(rng, Normal(real_x[i] + real_w[i], sqrt(noise)))
+
+        x_i_min = real_x[i]
+        w_i_min = real_w[i]
+    end
+    
+    return real_x, real_w, real_y
+end</code></pre><pre><code class="nohighlight hljs">generate_data (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">n = 250
+real_x, real_w, real_y = generate_data(n);
+
+p = plot()
+p = plot!(p, real_x .+ real_w)
+p = scatter!(p, real_y)</code></pre><p><img src="../../assets/examples/Identification Problem_4_1.png" alt/></p><pre><code class="language-julia hljs">@model function identification_problem(n, m_x_0, τ_x_0, a_x, b_x, m_w_0, τ_w_0, a_w, b_w, a_y, b_y)
+    
+    x0 ~ Normal(mean = m_x_0, precision = τ_x_0)
+    τ_x ~ Gamma(shape = a_x, rate = b_x)
+    w0 ~ Normal(mean = m_w_0, precision = τ_w_0)
+    τ_w ~ Gamma(shape = a_w, rate = b_w)
+    τ_y ~ Gamma(shape = a_y, rate = b_y)
+    
+    x = randomvar(n)
+    w = randomvar(n)
+    s = randomvar(n)
+    y = datavar(Float64, n)
+    
+    x_i_min = x0
+    w_i_min = w0
+    
+    for i in 1:n
+        x[i] ~ Normal(mean = x_i_min, precision = τ_x)
+        w[i] ~ Normal(mean = w_i_min, precision = τ_w)
+        s[i] ~ x[i] + w[i]
+        y[i] ~ Normal(mean = s[i], precision = τ_y)
+        
+        x_i_min = x[i]
+        w_i_min = w[i]
+    end
+    
+end</code></pre><pre><code class="language-julia hljs">constraints = @constraints begin 
+    q(x0, w0, x, w, τ_x, τ_w, τ_y, s) = q(x, x0, w, w0, s)q(τ_w)q(τ_x)q(τ_y)
+end;</code></pre><pre><code class="language-julia hljs">m_x_0, τ_x_0 = -20.0, 1.0
+m_w_0, τ_w_0 = 20.0, 1.0
+
+a_x, b_x = 0.01, 0.01var(real_x)
+a_w, b_w = 0.01, 0.01var(real_w)
+a_y, b_y = 1.0, 1.0
+
+# We set relatively strong priors for messges
+xinit = map(r -&gt; NormalMeanPrecision(r, τ_x_0), reverse(range(-60, -20, length = n)))
+winit = map(r -&gt; NormalMeanPrecision(r, τ_w_0), range(20, 60, length = n))
+
+imessages = (x = xinit, w = winit)
+imarginals = (τ_x = GammaShapeRate(a_x, b_x), τ_w = GammaShapeRate(a_w, b_w), τ_y = GammaShapeRate(a_y, b_y))
+
+result = inference(
+    model = identification_problem(n, m_x_0, τ_x_0, a_x, b_x, m_w_0, τ_w_0, a_w, b_w, a_y, b_y),
+    data  = (y = real_y,), 
+    options = (limit_stack_depth = 100, ),
+    constraints = constraints, 
+    initmessages = imessages, 
+    initmarginals = imarginals, 
+    iterations = 20
+);</code></pre><pre><code class="language-julia hljs">τ_x_marginals, τ_w_marginals = result.posteriors[:τ_x], result.posteriors[:τ_w]
+
+xmarginals, wmarginals = result.posteriors[:x], result.posteriors[:w];</code></pre><pre><code class="language-julia hljs">mean.(τ_x_marginals)[end], mean.(τ_w_marginals)[end]</code></pre><pre><code class="nohighlight hljs">(0.2113939702003459, 0.31746938833110916)</code></pre><pre><code class="language-julia hljs">px1 = plot()
+px2 = plot()
+
+px1 = plot!(px1, real_x, label = &quot;Real hidden X&quot;)
+px1 = plot!(px1, mean.(xmarginals[end]), ribbon = var.(xmarginals[end]), label = &quot;Estimated X&quot;)
+
+px2 = plot!(px2, real_w, label = &quot;Real hidden W&quot;)
+px2 = plot!(px2, mean.(wmarginals[end]), ribbon = var.(wmarginals[end]), label = &quot;Estimated W&quot;)
+
+plot(px1, px2, size = (1200, 400))</code></pre><p><img src="../../assets/examples/Identification Problem_10_1.png" alt/></p><pre><code class="language-julia hljs">p = plot(legend = :bottomright)
+
+p = plot!(p, real_x .+ real_w, label = &quot;Combined real hidden signal&quot;)
+p = plot!(p, mean.(xmarginals[end]) + mean.(wmarginals[end]), ribbon = (var.(xmarginals[end]) + var.(wmarginals[end])) .|&gt; sqrt, label = &quot;Combined estimated signal&quot;)
+p = scatter!(p, real_y, label = &quot;Observations&quot;, ms = 3, alpha = 0.2)</code></pre><p><img src="../../assets/examples/Identification Problem_11_1.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Hierarchical Gaussian Filter/">« Hierarchical Gaussian Filter</a><a class="docs-footer-nextpage" href="../Infinite Data Stream/">Infinite Data Stream »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 3 November 2022 13:04">Thursday 3 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
