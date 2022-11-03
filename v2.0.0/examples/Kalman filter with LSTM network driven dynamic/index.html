@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Kalman filter with LSTM network driven dynamic · RxInfer.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link rel="canonical" href="https://biaslab.github.io/RxInfer.jl/examples/Kalman filter with LSTM network driven dynamic/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/theme.css" rel="stylesheet" type="text/css"/><link href="../../assets/header.css" rel="stylesheet" type="text/css"/><script src="../../assets/header.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.svg" alt="RxInfer.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.svg" alt="RxInfer.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">RxInfer.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">User guide</span><ul><li><a class="tocitem" href="../../manuals/getting-started/">Getting started</a></li><li><a class="tocitem" href="../../manuals/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../manuals/constraints-specification/">Constraints specification</a></li><li><a class="tocitem" href="../../manuals/meta-specification/">Meta specification</a></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">Inference specification</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../manuals/inference/overview/">Overview</a></li><li><a class="tocitem" href="../../manuals/inference/inference/">Static dataset</a></li><li><a class="tocitem" href="../../manuals/inference/rxinference/">Real-time dataset / reactive inference</a></li><li><a class="tocitem" href="../../manuals/inference/manual/">Manual inference specification</a></li></ul></li></ul></li><li><span class="tocitem">Library</span><ul><li><a class="tocitem" href="../../library/functional-forms/">Built-in functional form constraints</a></li><li><a class="tocitem" href="../../library/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../library/bethe-free-energy/">Bethe Free Energy</a></li><li><a class="tocitem" href="../../library/exported-methods/">Exported methods</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../Overview/">Overview</a></li><li><a class="tocitem" href="../Advanced Tutorial/">Advanced Tutorial</a></li><li><a class="tocitem" href="../Assessing People Skills/">Assessing People Skills</a></li><li><a class="tocitem" href="../Autoregressive Model/">Autoregressive Model</a></li><li><a class="tocitem" href="../Coin Toss Model/">Coin Toss Model</a></li><li><a class="tocitem" href="../Conjugate-NonConjugate Variational Message Passing/">Conjugate-NonConjugate Variational Message Passing</a></li><li><a class="tocitem" href="../Custom nonlinear node/">Custom nonlinear node</a></li><li><a class="tocitem" href="../GPRegression by SSM/">GPRegression by SSM</a></li><li><a class="tocitem" href="../Gamma Mixture/">Gamma Mixture</a></li><li><a class="tocitem" href="../Gaussian Linear Dynamical System/">Gaussian Linear Dynamical System</a></li><li><a class="tocitem" href="../Gaussian Mixture Univariate/">Gaussian Mixture Univariate</a></li><li><a class="tocitem" href="../Gaussian Mixtures Multivariate/">Gaussian Mixtures Multivariate</a></li><li><a class="tocitem" href="../Global Parameter Optimisation/">Global Parameter Optimisation</a></li><li><a class="tocitem" href="../Handling Missing Data/">Handling Missing Data</a></li><li><a class="tocitem" href="../Hidden Markov Model/">Hidden Markov Model</a></li><li><a class="tocitem" href="../Hierarchical Gaussian Filter/">Hierarchical Gaussian Filter</a></li><li><a class="tocitem" href="../Identification Problem/">Identification Problem</a></li><li><a class="tocitem" href="../Infinite Data Stream/">Infinite Data Stream</a></li><li><a class="tocitem" href="../Invertible Neural Network Tutorial/">Invertible Neural Network Tutorial</a></li><li class="is-active"><a class="tocitem" href>Kalman filter with LSTM network driven dynamic</a><ul class="internal"><li><a class="tocitem" href="#Generate-data"><span>Generate data</span></a></li></ul></li><li><a class="tocitem" href="../Linear Regression/">Linear Regression</a></li><li><a class="tocitem" href="../Nonlinear Noisy Pendulum/">Nonlinear Noisy Pendulum</a></li><li><a class="tocitem" href="../Nonlinear Rabbit Population/">Nonlinear Rabbit Population</a></li><li><a class="tocitem" href="../Nonlinear Sensor Fusion/">Nonlinear Sensor Fusion</a></li><li><a class="tocitem" href="../Nonlinear Virus Spread/">Nonlinear Virus Spread</a></li><li><a class="tocitem" href="../Probit Model (EP)/">Probit Model (EP)</a></li><li><a class="tocitem" href="../RTS vs BIFM Smoothing/">RTS vs BIFM Smoothing</a></li></ul></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../contributing/overview/">Overview</a></li><li><a class="tocitem" href="../../contributing/new-example/">Adding a new example</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Kalman filter with LSTM network driven dynamic</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Kalman filter with LSTM network driven dynamic</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/biaslab/RxInfer.jl/blob/main/docs/src/examples/Kalman filter with LSTM network driven dynamic.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><p>This example has been auto-generated from the <a href="https://github.com/biaslab/RxInfer.jl/tree/main/examples"><code>examples/</code></a> folder at GitHub repository.</p><h1 id="examples-kalman-filter-with-lstm-network-driven-dynamic"><a class="docs-heading-anchor" href="#examples-kalman-filter-with-lstm-network-driven-dynamic">Kalman filter with LSTM network driven dynamic</a><a id="examples-kalman-filter-with-lstm-network-driven-dynamic-1"></a><a class="docs-heading-anchor-permalink" href="#examples-kalman-filter-with-lstm-network-driven-dynamic" title="Permalink"></a></h1><p>In this demo, we are interested in Bayesian state estimation in Nonlinear State-Space Model. For example, we will use the time series induced by <a href="https://en.wikipedia.org/wiki/Lorenz_system">Lorenz system</a>.</p><p>In other words, we want to compute the  marginal posterior distribution of the latent (hidden) state <span>$x_k$</span> at each time step <span>$k$</span> given the history of the measurements up to the time step k: $ p(x<em>k | y</em>{1:k}). $ </p><pre><code class="language-julia hljs"># Activate local environment, see `Project.toml`
+import Pkg; Pkg.activate(&quot;.&quot;); Pkg.instantiate();</code></pre><pre><code class="language-julia hljs">using RxInfer, BenchmarkTools, Flux, ReverseDiff, Random, Plots, LinearAlgebra, ProgressMeter</code></pre><pre><code class="language-julia hljs">Random.seed!(1234);</code></pre><h2 id="Generate-data"><a class="docs-heading-anchor" href="#Generate-data">Generate data</a><a id="Generate-data-1"></a><a class="docs-heading-anchor-permalink" href="#Generate-data" title="Permalink"></a></h2><pre><code class="language-julia hljs"># Lorenz system equations to be used to generate dataset
+Base.@kwdef mutable struct Lorenz
+    dt::Float64
+    σ::Float64
+    ρ::Float64
+    β::Float64
+    x::Float64
+    y::Float64
+    z::Float64
+end
+
+function step!(l::Lorenz)
+    dx = l.σ * (l.y - l.x);         l.x += l.dt * dx
+    dy = l.x * (l.ρ - l.z) - l.y;   l.y += l.dt * dy
+    dz = l.x * l.y - l.β * l.z;     l.z += l.dt * dz
+end
+;</code></pre><pre><code class="language-julia hljs">#Dataset
+ordered_dataset = []
+ordered_parameters = []
+
+for σ = 11:15
+    for ρ = 23:27
+        for β_nom = 6:9
+            attractor = Lorenz(0.02, σ, ρ, β_nom/3.0, 1, 1, 1)
+            noise_free_data = [[1.0, 1.0, 1.0]]
+            for i=1:99
+                step!(attractor)
+                push!(noise_free_data, [attractor.x, attractor.y, attractor.z])
+            end
+            push!(ordered_dataset, noise_free_data)
+            push!(ordered_parameters, [σ, ρ, β_nom/3.0])
+        end
+    end
+end
+
+new_order = collect(1:100)
+shuffle!(new_order)
+
+dataset = [] #noisy dataset
+noise_free_dataset = [] #noise free dataset
+lorenz_parameters = []
+
+for i in new_order
+    data = []
+    push!(noise_free_dataset, ordered_dataset[i])
+    push!(lorenz_parameters, ordered_parameters[i])
+    for nfd in ordered_dataset[i]
+        push!(data,nfd+randn(3))
+    end
+    push!(dataset, data)
+end
+
+trainset = dataset[1:60]
+validset = dataset[61:80]
+testset = dataset[81:end]
+
+noise_free_trainset = noise_free_dataset[1:60]
+noise_free_validset = noise_free_dataset[61:80]
+noise_free_testset = noise_free_dataset[81:end]
+;</code></pre><h3 id="Data-visualization"><a class="docs-heading-anchor" href="#Data-visualization">Data visualization</a><a id="Data-visualization-1"></a><a class="docs-heading-anchor-permalink" href="#Data-visualization" title="Permalink"></a></h3><pre><code class="language-julia hljs">one_nonoise=noise_free_trainset[1]
+one=trainset[1]
+
+gx, gy, gz = zeros(100), zeros(100), zeros(100)
+rx, ry, rz = zeros(100), zeros(100), zeros(100)
+
+for i=1:100
+    rx[i], ry[i], rz[i] = one[i][1], one[i][2], one[i][3]
+    gx[i], gy[i], gz[i] = one_nonoise[i][1], one_nonoise[i][2], one_nonoise[i][3]
+
+end
+p1=plot(rx,ry,label=&quot;Noise observations&quot;)
+p1=plot!(gx,gy,label=&quot;True state&quot;)
+xlabel!(&quot;x&quot;)
+ylabel!(&quot;y&quot;)
+
+p2=plot(rx,rz,label=&quot;Noise observations&quot;)
+p2=plot!(gx,gz,label=&quot;True state&quot;)
+xlabel!(&quot;x&quot;)
+ylabel!(&quot;z&quot;)
+
+p3=plot(ry,rz,label=&quot;Noise observations&quot;)
+p3=plot!(gy,gz,label=&quot;True state&quot;)
+xlabel!(&quot;y&quot;)
+ylabel!(&quot;z&quot;)
+
+plot(p1, p2, p3, size = (800, 200),layout=(1,3))</code></pre><p><img src="../../assets/examples/Kalman filter with LSTM network driven dynamic_6_1.png" alt/></p><h3 id="Inference"><a class="docs-heading-anchor" href="#Inference">Inference</a><a id="Inference-1"></a><a class="docs-heading-anchor-permalink" href="#Inference" title="Permalink"></a></h3><p>We use the following state-space model representation: $ x<em>k \sim p(x</em>k | x<em>{k-1}) \
+y</em>k \sim p(y<em>k | x</em>k). $ where <span>$x_k \sim p(x_k | x_{k-1})$</span> represents the hidden dynamics of our system.  The hidden dynamics of the Lorenz system exhibit nonlinearities and hence cannot be solved in the closed form. One manner of solving this problem is by introducing a neural network to approximate the transition matrix of the Lorenz system.  $ A<em>{k-1}=NN(y</em>{k-1}) \
+p(x<em>k | x</em>{k-1})=\mathcal{N}(x<em>k | A</em>{k-1}x<em>{k-1}, Q) \
+p(y</em>k | x<em>k)=\mathcal{N}(y</em>k | Bx<em>k, R) $ where <span>$NN$</span> is the neural network. The input is the observation y</em>{k-1}<span>$, and output is the trasition matrix $A_{k-1}$</span>. <span>$B$</span> denote distortion or measurment matrix. <span>$Q$</span> and <span>$R$</span> are covariance matrices. Note that the hidden state <span>$x_k$</span> comprises three coordinates, i.e. <span>$x_k = (rx_k, ry_k, rz_k)$</span></p><pre><code class="language-julia hljs"># Neural Network model
+mutable struct NN
+    InputLayer
+    OutputLater
+    g
+    params
+    function NN(W1,b1,W2_1,W2_2,b2,s2_1,W3,b3)
+        InputLayer = Dense(W1, b1, relu)
+        Lstm = LSTM(W2_1,W2_2,b2,s2_1)
+        OutputLayer = Dense(W3, b3)
+        g = Chain(InputLayer, OutputLayer);
+        new(InputLayer, OutputLayer, g, (W1,b1,W2_1,W2_2,b2,s2_1,W3,b3))
+    end
+end</code></pre><h3 id="Model-specification"><a class="docs-heading-anchor" href="#Model-specification">Model specification</a><a id="Model-specification-1"></a><a class="docs-heading-anchor-permalink" href="#Model-specification" title="Permalink"></a></h3><p>Note that we treat the trasition matrix <span>$A_{k-1}$</span> as time-varying.</p><pre><code class="language-julia hljs">#State Space Model
+@model function ssm(n, As, Q::ConstVariable, B::ConstVariable, R::ConstVariable)
+   
+    x = randomvar(n)
+    y = datavar(Vector{Float64}, n)
+    
+    x_prior_mean = zeros(3)
+    x_prior_cov  = Matrix(Diagonal(ones(3)))
+    
+    x[1] ~ MvNormalMeanCovariance(x_prior_mean, x_prior_cov)
+    y[1] ~ MvNormalMeanCovariance(B * x[1], R) where { q = q(mean)q(out)q(cov) }
+    
+    for i in 2:n
+        x[i] ~ MvNormalMeanCovariance(As[i - 1] * x[i - 1], Q) where { q = q(mean, out)q(cov) }
+        y[i] ~ MvNormalMeanCovariance(B * x[i], R) where { q = q(mean)q(out)q(cov) }
+    end
+    
+    return x, y
+end</code></pre><p>We set distortion matrix <span>$B$</span> and the covariance matrices <span>$Q$</span> and <span>$R$</span> as identity matrix.</p><pre><code class="language-julia hljs">Q = Matrix(Diagonal(ones(3)))
+B = Matrix(Diagonal(ones(3)))
+R = Matrix(Diagonal(ones(3)))
+;</code></pre><p>We use the <em>inference</em> function in the <strong>RxInfer.jl</strong>. Before that, we need to bulid a function to get the matrix <span>$A$</span> output by the neural network. And the <span>$A$</span> is treated as a datavar in the inference function.</p><pre><code class="language-julia hljs">function get_matrix_AS(data,W1,b1,W2_1,W2_2,b2,s2_1,W3,b3)
+    n = length(data)
+    neural = NN(W1,b1,W2_1,W2_2,b2,s2_1,W3,b3)
+    Flux.reset!(neural)
+    As  = map((d) -&gt; Matrix(Diagonal(neural.g(d))), data[1:end-1])
+    return As
+end</code></pre><pre><code class="nohighlight hljs">get_matrix_AS (generic function with 1 method)</code></pre><p>The weights of neural network <span>$NN$</span> are initialized as follows:</p><pre><code class="language-julia hljs"># Initial model parameters
+W1, b1 = randn(5,3)./100, randn(5)./100
+W2_1, W2_2, b2, s2_1, s2_2 = randn(5 * 4, 5)./100, randn(5 * 4, 5)./100, randn(5*4)./100, zeros(5), zeros(5)
+W3, b3 = randn(3,5)./100, randn(3)./100
+;</code></pre><p>Before network training, we show the inference results for the hidden states:</p><pre><code class="language-julia hljs"># Performance on an instance from the testset before training
+index = 1
+data=testset[index]
+n=length(data)
+result = inference(
+    model = ssm(n, get_matrix_AS(data,W1,b1,W2_1,W2_2,b2,s2_1,W3,b3),Q,B,R), 
+    data  = (y = data, ), 
+    returnvars = (x = KeepLast(), ),
+    free_energy = true
+)
+x_est=result.posteriors[:x]
+rx, ry, rz = zeros(100), zeros(100), zeros(100)
+rx_est_m, ry_est_m, rz_est_m = zeros(100), zeros(100), zeros(100)
+rx_est_var, ry_est_var, rz_est_var = zeros(100), zeros(100), zeros(100)
+
+for i=1:100
+    rx[i], ry[i], rz[i] = testset[index][i][1], testset[index][i][2], testset[index][i][3]
+    rx_est_m[i], ry_est_m[i], rz_est_m[i] = mean(x_est[i])[1], mean(x_est[i])[2], mean(x_est[i])[3]
+    rx_est_var[i], ry_est_var[i], rz_est_var[i] = var(x_est[i])[1], var(x_est[i])[2], var(x_est[i])[3]
+end
+
+p1 = plot(rx,label=&quot;Hidden state rx&quot;)
+p1 = plot!(rx_est_m,label=&quot;Inferred states&quot;, ribbon=rx_est_var)
+p1 = scatter!(first.(testset[index]), label=&quot;Observations&quot;, markersize=1.0)
+
+p2 = plot(ry,label=&quot;Hidden state ry&quot;)
+p2 = plot!(ry_est_m,label=&quot;Inferred states&quot;, ribbon=ry_est_var)
+p2 = scatter!(getindex.(testset[index], 2), label=&quot;Observations&quot;, markersize=1.0)
+
+p3 = plot(rz,label=&quot;Hidden state rz&quot;)
+p3 = plot!(rz_est_m,label=&quot;Inferred states&quot;, ribbon=rz_est_var)
+p3 = scatter!(last.(testset[index]), label=&quot;Observations&quot;, markersize=1.0)
+
+
+plot(p1, p2, p3, size = (1000, 300))</code></pre><p><img src="../../assets/examples/Kalman filter with LSTM network driven dynamic_12_1.png" alt/></p><h3 id="Training-network"><a class="docs-heading-anchor" href="#Training-network">Training network</a><a id="Training-network-1"></a><a class="docs-heading-anchor-permalink" href="#Training-network" title="Permalink"></a></h3><p>In this part, we use the Free Energy as the objective function to optimize the weights of network.</p><pre><code class="language-julia hljs"># free energy objective to be optimized during training
+function fe_tot_est(W1,b1,W2_1,W2_2,b2,s2_1,W3,b3)
+    fe_ = 0
+    for train_instance in trainset
+        result = inference(
+            model = ssm(n, get_matrix_AS(train_instance,W1,b1,W2_1,W2_2,b2,s2_1,W3,b3),Q,B,R), 
+            data  = (y = train_instance, ), 
+            returnvars = (x = KeepLast(), ),
+            free_energy = true
+        )
+        fe_ += result.free_energy[end]
+    end
+    return fe_
+end</code></pre><pre><code class="nohighlight hljs">fe_tot_est (generic function with 1 method)</code></pre><pre><code class="language-julia hljs"># To track the performance on validation set
+function fe_valid_est(W1,b1,W2_1,W2_2,b2,s2_1,W3,b3)
+    fe_ = 0
+    for valid_instance in validset
+        result = inference(
+            model = Model(ssm, n, get_matrix_AS(valid_instance,W1,b1,W2_1,W2_2,b2,s2_1,W3,b3),Q,B,R), 
+            data  = (y = valid_instance, ), 
+            returnvars = (x = KeepLast(), ),
+            free_energy = true
+        )
+        fe_ += result.free_energy[end]
+    end
+    return fe_
+end</code></pre><pre><code class="nohighlight hljs">fe_valid_est (generic function with 1 method)</code></pre><pre><code class="language-julia hljs"># training
+opt = Flux.Optimise.RMSProp(0.02, 0.9)
+params = (W1,b1,W2_1,W2_2,b2,s2_1,W3,b3)
+#if you want get more accurate result, please refine the learning rate and epoch.
+@showprogress for epoch in 1:8
+    grads = ReverseDiff.gradient(fe_tot_est, params);
+    for i=1:length(params)
+        Flux.Optimise.update!(opt,params[i],grads[i])
+    end
+end</code></pre><p>The following figure shows the state estimation results after training the trained neural network with respect to free energy.</p><pre><code class="language-julia hljs"># test after training
+index = 1
+data = testset[index]
+n = length(data)
+result = inference(
+    model = ssm(n, get_matrix_AS(data,W1,b1,W2_1,W2_2,b2,s2_1,W3,b3),Q,B,R), 
+    data  = (y = data, ), 
+    returnvars = (x = KeepLast(), ),
+    free_energy = true
+)
+x_est=result.posteriors[:x]
+
+gx, gy, gz = zeros(100), zeros(100), zeros(100)
+rx, ry, rz = zeros(100), zeros(100), zeros(100)
+rx_est_m, ry_est_m, rz_est_m = zeros(100), zeros(100), zeros(100)
+rx_est_var, ry_est_var, rz_est_var = zeros(100), zeros(100), zeros(100)
+
+for i=1:100
+    gx[i], gy[i], gz[i] = noise_free_testset[index][i][1], noise_free_testset[index][i][2], noise_free_testset[index][i][3]
+    rx[i], ry[i], rz[i] = testset[index][i][1], testset[index][i][2], testset[index][i][3]
+    rx_est_m[i], ry_est_m[i], rz_est_m[i] = mean(x_est[i])[1], mean(x_est[i])[2], mean(x_est[i])[3]
+    rx_est_var[i], ry_est_var[i], rz_est_var[i] = var(x_est[i])[1], var(x_est[i])[2], var(x_est[i])[3]
+end
+
+p1 = plot(rx,label=&quot;Hidden state rx&quot;)
+p1 = plot!(rx_est_m,label=&quot;Inferred states&quot;, ribbon=rx_est_var)
+p1 = scatter!(first.(testset[index]), label=&quot;Observations&quot;, markersize=1.0)
+
+p2 = plot(ry,label=&quot;Hidden state ry&quot;)
+p2 = plot!(ry_est_m,label=&quot;Inferred states&quot;, ribbon=ry_est_var)
+p2 = scatter!(getindex.(testset[index], 2), label=&quot;Observations&quot;, markersize=1.0)
+
+p3 = plot(rz,label=&quot;Hidden state rz&quot;)
+p3 = plot!(rz_est_m,label=&quot;Inferred states&quot;, ribbon=rz_est_var)
+p3 = scatter!(last.(testset[index]), label=&quot;Observations&quot;, markersize=1.0)
+
+plot(p1, p2, p3, size = (1000, 300))</code></pre><p><img src="../../assets/examples/Kalman filter with LSTM network driven dynamic_16_1.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Invertible Neural Network Tutorial/">« Invertible Neural Network Tutorial</a><a class="docs-footer-nextpage" href="../Linear Regression/">Linear Regression »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 3 November 2022 18:40">Thursday 3 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

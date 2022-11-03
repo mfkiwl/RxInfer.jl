@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Hidden Markov Model · RxInfer.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link rel="canonical" href="https://biaslab.github.io/RxInfer.jl/examples/Hidden Markov Model/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/theme.css" rel="stylesheet" type="text/css"/><link href="../../assets/header.css" rel="stylesheet" type="text/css"/><script src="../../assets/header.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.svg" alt="RxInfer.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.svg" alt="RxInfer.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">RxInfer.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">User guide</span><ul><li><a class="tocitem" href="../../manuals/getting-started/">Getting started</a></li><li><a class="tocitem" href="../../manuals/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../manuals/constraints-specification/">Constraints specification</a></li><li><a class="tocitem" href="../../manuals/meta-specification/">Meta specification</a></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">Inference specification</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../manuals/inference/overview/">Overview</a></li><li><a class="tocitem" href="../../manuals/inference/inference/">Static dataset</a></li><li><a class="tocitem" href="../../manuals/inference/rxinference/">Real-time dataset / reactive inference</a></li><li><a class="tocitem" href="../../manuals/inference/manual/">Manual inference specification</a></li></ul></li></ul></li><li><span class="tocitem">Library</span><ul><li><a class="tocitem" href="../../library/functional-forms/">Built-in functional form constraints</a></li><li><a class="tocitem" href="../../library/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../library/bethe-free-energy/">Bethe Free Energy</a></li><li><a class="tocitem" href="../../library/exported-methods/">Exported methods</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../Overview/">Overview</a></li><li><a class="tocitem" href="../Advanced Tutorial/">Advanced Tutorial</a></li><li><a class="tocitem" href="../Assessing People Skills/">Assessing People Skills</a></li><li><a class="tocitem" href="../Autoregressive Model/">Autoregressive Model</a></li><li><a class="tocitem" href="../Coin Toss Model/">Coin Toss Model</a></li><li><a class="tocitem" href="../Conjugate-NonConjugate Variational Message Passing/">Conjugate-NonConjugate Variational Message Passing</a></li><li><a class="tocitem" href="../Custom nonlinear node/">Custom nonlinear node</a></li><li><a class="tocitem" href="../GPRegression by SSM/">GPRegression by SSM</a></li><li><a class="tocitem" href="../Gamma Mixture/">Gamma Mixture</a></li><li><a class="tocitem" href="../Gaussian Linear Dynamical System/">Gaussian Linear Dynamical System</a></li><li><a class="tocitem" href="../Gaussian Mixture Univariate/">Gaussian Mixture Univariate</a></li><li><a class="tocitem" href="../Gaussian Mixtures Multivariate/">Gaussian Mixtures Multivariate</a></li><li><a class="tocitem" href="../Global Parameter Optimisation/">Global Parameter Optimisation</a></li><li><a class="tocitem" href="../Handling Missing Data/">Handling Missing Data</a></li><li class="is-active"><a class="tocitem" href>Hidden Markov Model</a><ul class="internal"><li class="toplevel"><a class="tocitem" href="#Benchmark-timings"><span>Benchmark timings</span></a></li></ul></li><li><a class="tocitem" href="../Hierarchical Gaussian Filter/">Hierarchical Gaussian Filter</a></li><li><a class="tocitem" href="../Identification Problem/">Identification Problem</a></li><li><a class="tocitem" href="../Infinite Data Stream/">Infinite Data Stream</a></li><li><a class="tocitem" href="../Invertible Neural Network Tutorial/">Invertible Neural Network Tutorial</a></li><li><a class="tocitem" href="../Kalman filter with LSTM network driven dynamic/">Kalman filter with LSTM network driven dynamic</a></li><li><a class="tocitem" href="../Linear Regression/">Linear Regression</a></li><li><a class="tocitem" href="../Nonlinear Noisy Pendulum/">Nonlinear Noisy Pendulum</a></li><li><a class="tocitem" href="../Nonlinear Rabbit Population/">Nonlinear Rabbit Population</a></li><li><a class="tocitem" href="../Nonlinear Sensor Fusion/">Nonlinear Sensor Fusion</a></li><li><a class="tocitem" href="../Nonlinear Virus Spread/">Nonlinear Virus Spread</a></li><li><a class="tocitem" href="../Probit Model (EP)/">Probit Model (EP)</a></li><li><a class="tocitem" href="../RTS vs BIFM Smoothing/">RTS vs BIFM Smoothing</a></li></ul></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../contributing/overview/">Overview</a></li><li><a class="tocitem" href="../../contributing/new-example/">Adding a new example</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Hidden Markov Model</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Hidden Markov Model</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/biaslab/RxInfer.jl/blob/main/docs/src/examples/Hidden Markov Model.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><p>This example has been auto-generated from the <a href="https://github.com/biaslab/RxInfer.jl/tree/main/examples"><code>examples/</code></a> folder at GitHub repository.</p><h1 id="examples-ensemble-learning-of-a-hidden-markov-model"><a class="docs-heading-anchor" href="#examples-ensemble-learning-of-a-hidden-markov-model">Ensemble Learning of a Hidden Markov Model</a><a id="examples-ensemble-learning-of-a-hidden-markov-model-1"></a><a class="docs-heading-anchor-permalink" href="#examples-ensemble-learning-of-a-hidden-markov-model" title="Permalink"></a></h1><pre><code class="language-julia hljs"># Activate local environment, see `Project.toml`
+import Pkg; Pkg.activate(&quot;.&quot;); Pkg.instantiate();</code></pre><p>In this demo we are interested in Bayesian inference of parameters of a hidden Markov model (HMM)., Specifically, we consider a first-order HMM with hidden states <span>$s_0, s_1, \dots, s_T$</span> and observations <span>$x_1, \dots, x_T$</span> governed by a state transition probability matrix <span>$A$</span> and an observation probability matrix <span>$B$</span>:</p><p class="math-container">\[\begin{aligned}
+    s_t &amp; \sim \mathcal{C}at(A s_{t-1}),\\
+    x_t &amp; \sim \mathcal{C}at(B s_t).\\
+\end{aligned}\]</p><p>We assume three possible states (\&quot;red\&quot;, \&quot;green\&quot; and \&quot;blue\&quot;), and the goal is to estimate matrices <span>$A$</span> and <span>$B$</span> from a simulated data set. To have a full Bayesian treatment of the problem, both <span>$A$</span> and <span>$B$</span> are endowed with priors (Dirichlet distributions on the columns).&quot;</p><pre><code class="language-julia hljs">using RxInfer, Random, BenchmarkTools, Distributions, LinearAlgebra, Plots</code></pre><pre><code class="language-julia hljs">function rand_vec(rng, distribution::Categorical) 
+    k = ncategories(distribution)
+    s = zeros(k)
+    s[ rand(rng, distribution) ] = 1.0
+    s
+end
+
+function generate_data(n_samples; seed = 124)
+    
+    rng = MersenneTwister(seed)
+    
+    # Transition probabilities (some transitions are impossible)
+    A = [0.9 0.0 0.1; 0.1 0.9 0.0; 0.0 0.1 0.9] 
+    # Observation noise
+    B = [0.9 0.05 0.05; 0.05 0.9 0.05; 0.05 0.05 0.9] 
+    # Initial state
+    s_0 = [1.0, 0.0, 0.0] 
+    # Generate some data
+    s = Vector{Vector{Float64}}(undef, n_samples) # one-hot encoding of the states
+    x = Vector{Vector{Float64}}(undef, n_samples) # one-hot encoding of the observations
+    
+    s_prev = s_0
+    
+    for t = 1:n_samples
+        a = A * s_prev
+        s[t] = rand_vec(rng, Categorical(a ./ sum(a)))
+        b = B * s[t]
+        x[t] = rand_vec(rng, Categorical(b ./ sum(b)))
+        s_prev = s[t]
+    end
+    
+    return x, s
+end</code></pre><pre><code class="nohighlight hljs">generate_data (generic function with 1 method)</code></pre><pre><code class="language-julia hljs"># Test data
+N = 100
+x_data, s_data = generate_data(N);</code></pre><pre><code class="language-julia hljs">scatter(argmax.(s_data))</code></pre><p><img src="../../assets/examples/Hidden Markov Model_5_1.png" alt/></p><pre><code class="language-julia hljs"># Model specification
+@model function hidden_markov_model(n)
+    
+    A ~ MatrixDirichlet(ones(3, 3)) 
+    B ~ MatrixDirichlet([ 10.0 1.0 1.0; 1.0 10.0 1.0; 1.0 1.0 10.0 ])
+    
+    s_0 ~ Categorical(fill(1.0 / 3.0, 3))
+    
+    s = randomvar(n)
+    x = datavar(Vector{Float64}, n)
+    
+    s_prev = s_0
+    
+    for t in 1:n
+        s[t] ~ Transition(s_prev, A) 
+        x[t] ~ Transition(s[t], B)
+        s_prev = s[t]
+    end
+    
+end
+
+@constraints function hidden_markov_model_constraints()
+    q(s_0, s, A, B) = q(s_0, s)q(A)q(B)
+end</code></pre><pre><code class="nohighlight hljs">hidden_markov_model_constraints (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">idata = (x = x_data, )
+
+imodel = hidden_markov_model(N)
+
+imarginals = (
+    A = vague(MatrixDirichlet, 3, 3), 
+    B = vague(MatrixDirichlet, 3, 3), 
+    s = vague(Categorical, 3)
+)
+
+ireturnvars = (
+    A = KeepLast(),
+    B = KeepLast(),
+    s = KeepLast()
+)
+
+result = inference(
+    model         = imodel, 
+    data          = idata,
+    constraints   = hidden_markov_model_constraints(),
+    initmarginals = imarginals, 
+    returnvars    = ireturnvars, 
+    iterations    = 20, 
+    free_energy   = true
+);</code></pre><pre><code class="language-julia hljs">mean(result.posteriors[:A])</code></pre><pre><code class="nohighlight hljs">3×3 Matrix{Float64}:
+ 0.892911   0.0830398  0.133822
+ 0.0858821  0.691112   0.042798
+ 0.0212073  0.225849   0.82338</code></pre><pre><code class="language-julia hljs">mean(result.posteriors[:B])</code></pre><pre><code class="nohighlight hljs">3×3 Matrix{Float64}:
+ 0.908176   0.0422229  0.0718142
+ 0.0694807  0.882211   0.0430307
+ 0.0223437  0.0755656  0.885155</code></pre><pre><code class="language-julia hljs">p1 = scatter(argmax.(s_data), title=&quot;Inference results&quot;, label = &quot;real&quot;, ms = 6)
+p1 = scatter!(p1, argmax.(ReactiveMP.probvec.(result.posteriors[:s])), label = &quot;inferred&quot;, ms = 2)
+p2 = plot(result.free_energy, label=&quot;Free energy&quot;)
+
+plot(p1, p2, layout = @layout([ a; b ]))</code></pre><p><img src="../../assets/examples/Hidden Markov Model_10_1.png" alt/></p><h1 id="Benchmark-timings"><a class="docs-heading-anchor" href="#Benchmark-timings">Benchmark timings</a><a id="Benchmark-timings-1"></a><a class="docs-heading-anchor-permalink" href="#Benchmark-timings" title="Permalink"></a></h1><pre><code class="language-julia hljs">@benchmark inference(
+    model         = $imodel, 
+    data          = $idata,
+    constraints   = hidden_markov_model_constraints(),
+    initmarginals = $imarginals, 
+    returnvars    = $ireturnvars, 
+    iterations    = 20, 
+    free_energy   = true
+)</code></pre><pre><code class="nohighlight hljs">BenchmarkTools.Trial: 96 samples with 1 evaluation.
+ Range (min … max):  44.544 ms … 84.230 ms  ┊ GC (min … max):  0.00% … 42.3
+0%
+ Time  (median):     45.770 ms              ┊ GC (median):     0.00%
+ Time  (mean ± σ):   52.361 ms ± 12.716 ms  ┊ GC (mean ± σ):  12.01% ± 15.7
+2%
+
+  █▆▄                                                          
+  ███▃▃▃▃▃▃▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▄▃▄▃▄▄▃▁▁▁▃▃ ▁
+  44.5 ms         Histogram: frequency by time        80.7 ms &lt;
+
+ Memory estimate: 23.38 MiB, allocs estimate: 398511.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Handling Missing Data/">« Handling Missing Data</a><a class="docs-footer-nextpage" href="../Hierarchical Gaussian Filter/">Hierarchical Gaussian Filter »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 3 November 2022 18:40">Thursday 3 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
