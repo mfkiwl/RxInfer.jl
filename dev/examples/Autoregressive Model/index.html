@@ -143,7 +143,7 @@ plot!(subrange, first.(mean.(x))[subrange], ribbon = sqrt.(first.(var.(x)))[subr
     end
     
     plot(pθ, legend = :outertopright, size = (800, 300))
-end</code></pre><p><img src="../../assets/examples/Autoregressive Model_14_1.png" alt/></p><pre><code class="language-julia hljs">println(&quot;$(length(real_θ))-order AR inference Bethe Free Energy: &quot;, last(fe))</code></pre><pre><code class="nohighlight hljs">5-order AR inference Bethe Free Energy: 1026.377974436585</code></pre><p>We can also run a 1-order AR inference on 5-order AR data:</p><pre><code class="language-julia hljs">uorder  = 1
+end</code></pre><p><img src="../../assets/examples/Autoregressive Model_14_1.png" alt/></p><pre><code class="language-julia hljs">println(&quot;$(length(real_θ))-order AR inference Bethe Free Energy: &quot;, last(fe))</code></pre><pre><code class="nohighlight hljs">5-order AR inference Bethe Free Energy: 1026.3779744365854</code></pre><p>We can also run a 1-order AR inference on 5-order AR data:</p><pre><code class="language-julia hljs">uorder  = 1
 uartype = Univariate
 uc      = ReactiveMP.ar_unit(uartype, uorder)
 uconstraints = ar_constraints()
@@ -178,16 +178,16 @@ uresult = inference(
     iterations = 15, 
     showprogress = false
 )</code></pre><pre><code class="nohighlight hljs">Benchmark for n = 500 and AR 1 order inference
-BenchmarkTools.Trial: 15 samples with 1 evaluation.
- Range (min … max):  292.497 ms … 427.071 ms  ┊ GC (min … max):  0.00% … 20
-.43%
- Time  (median):     351.833 ms               ┊ GC (median):    12.13%
- Time  (mean ± σ):   344.927 ms ±  40.791 ms  ┊ GC (mean ± σ):  11.35% ±  9
-.18%
+BenchmarkTools.Trial: 11 samples with 1 evaluation.
+ Range (min … max):  390.570 ms … 503.901 ms  ┊ GC (min … max):  0.00% … 19
+.07%
+ Time  (median):     471.905 ms               ┊ GC (median):    14.32%
+ Time  (mean ± σ):   458.000 ms ±  38.666 ms  ┊ GC (mean ± σ):  10.80% ±  8
+.44%
 
-  █ ███     █  █    █       ███ █        █  █    █            █  
-  █▁███▁▁▁▁▁█▁▁█▁▁▁▁█▁▁▁▁▁▁▁███▁█▁▁▁▁▁▁▁▁█▁▁█▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁█ ▁
-  292 ms           Histogram: frequency by time          427 ms &lt;
+  ▁              █       ▁   ▁               ▁▁        ▁  ▁▁  ▁  
+  █▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁█▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁██▁▁▁▁▁▁▁▁█▁▁██▁▁█ ▁
+  391 ms           Histogram: frequency by time          504 ms &lt;
 
  Memory estimate: 94.09 MiB, allocs estimate: 1945568.</code></pre><pre><code class="language-julia hljs">println(&quot;Benchmark for n = $n and AR $(morder) order inference&quot;);
 
@@ -201,15 +201,13 @@ BenchmarkTools.Trial: 15 samples with 1 evaluation.
     iterations = 15, 
     showprogress = false
 )</code></pre><pre><code class="nohighlight hljs">Benchmark for n = 500 and AR 5 order inference
-BenchmarkTools.Trial: 7 samples with 1 evaluation.
- Range (min … max):  702.387 ms … 796.614 ms  ┊ GC (min … max):  9.79% … 15
-.47%
- Time  (median):     762.373 ms               ┊ GC (median):    14.73%
- Time  (mean ± σ):   751.351 ms ±  38.440 ms  ┊ GC (mean ± σ):  15.15% ±  3
-.17%
+BenchmarkTools.Trial: 5 samples with 1 evaluation.
+ Range (min … max):  1.019 s …   1.106 s  ┊ GC (min … max):  7.11% … 14.42%
+ Time  (median):     1.079 s              ┊ GC (median):    12.48%
+ Time  (mean ± σ):   1.069 s ± 35.955 ms  ┊ GC (mean ± σ):  12.17% ±  3.39%
 
-  █       █ █                           █           █ █       █  
-  █▁▁▁▁▁▁▁█▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁█▁█▁▁▁▁▁▁▁█ ▁
-  702 ms           Histogram: frequency by time          797 ms &lt;
+  █               █                     █          █      █  
+  █▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁█ ▁
+  1.02 s         Histogram: frequency by time        1.11 s &lt;
 
- Memory estimate: 299.48 MiB, allocs estimate: 2698594.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Assessing People Skills/">« Assessing People Skills</a><a class="docs-footer-nextpage" href="../Coin Toss Model/">Coin Toss Model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 7 November 2022 08:41">Monday 7 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ Memory estimate: 299.48 MiB, allocs estimate: 2698594.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Assessing People Skills/">« Assessing People Skills</a><a class="docs-footer-nextpage" href="../Coin Toss Model/">Coin Toss Model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 7 November 2022 12:28">Monday 7 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
