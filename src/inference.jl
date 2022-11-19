@@ -275,7 +275,7 @@ Loopy belief propagation may need some messages in a model to be pre-initialised
 
 - ### `returnvars`
 
-`returnvars` specifies the variables of interests and the amount of information to return about their posterior updates. 
+`returnvars` specifies the variables of interest and the amount of information to return about their posterior updates. 
 
 `returnvars` accepts a `NamedTuple` or `Dict` or return var specification. There are two specifications:
 - `KeepLast`: saves the last update for a variable, ignoring any intermediate results during iterations
@@ -1240,7 +1240,7 @@ See `@autoupdates` for more information.
 
 - ### `returnvars`
 
-`returnvars` accepts a tuple of symbols and specifies the latent variables of interests. For each symbol in the `returnvars` specification the `rxinference` function will prepare an observable stream (see `Rocket.jl`) of posterior updates. An agent may subscribe on the new posteriors events and perform some actions.
+`returnvars` accepts a tuple of symbols and specifies the latent variables of interest. For each symbol in the `returnvars` specification the `rxinference` function will prepare an observable stream (see `Rocket.jl`) of posterior updates. An agent may subscribe on the new posteriors events and perform some actions.
 For example:
 
 ```julia
@@ -1265,7 +1265,7 @@ RxInfer.stop(engine)
 
 - ### `historyvars`
 
-`historyvars` specifies the variables of interests and the amount of information to keep in history about the posterior updates. The specification is similar to the `returnvars` in the `inference` procedure.
+`historyvars` specifies the variables of interest and the amount of information to keep in history about the posterior updates. The specification is similar to the `returnvars` in the `inference` procedure.
 The `historyvars` requires `keephistory` to be greater than zero.
 
 `historyvars` accepts a `NamedTuple` or `Dict` or return var specification. There are two specifications:

@@ -6,10 +6,10 @@ SHELL = /bin/bash
 scripts_init:
 	julia --startup-file=no --project=scripts/ -e 'using Pkg; Pkg.instantiate(); Pkg.update(); Pkg.precompile();'
 
-lint: scripts_init ## Code formating check
+lint: scripts_init ## Code formatting check
 	julia --startup-file=no --project=scripts/ scripts/format.jl
 
-format: scripts_init ## Code formating run
+format: scripts_init ## Code formatting run
 	julia --startup-file=no --project=scripts/ scripts/format.jl --overwrite
 
 .PHONY: examples

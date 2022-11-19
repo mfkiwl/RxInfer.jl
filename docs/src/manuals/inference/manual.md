@@ -26,12 +26,12 @@ using RxInfer, Distributions, Random
     y = datavar(Float64)
     y ~ NormalMeanVariance(m1, 1.0)
 
-    # Return variables of interests, optional
+    # Return variables of interest, optional
     return m1, y
 end
 ```
 
-And later on we may create our model and obtain references for variables of interests:
+And later on we may create our model and obtain references for variables of interest:
 
 ```@example hierarchical-normal
 model, (m1, y) = create_model(my_model())

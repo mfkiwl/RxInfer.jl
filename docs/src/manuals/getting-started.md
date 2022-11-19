@@ -109,7 +109,7 @@ end
 
 ```
 
-As you can see, `RxInfer` offers a model specification syntax that resembles closely to the mathematical equations defined above. We use `datavar` function to create "clamped" variables that take specific values at a later date. `θ ~ Beta(2.0, 7.0)` expression creates random variable `θ` and assigns it as an output of `Beta` node in the corresponding FFG. 
+As you can see, `RxInfer` offers a model specification syntax that resembles closely the mathematical equations defined above. We use the `datavar` function to create "clamped" variables that take specific values at a later date. The `θ ~ Beta(2.0, 7.0)` expression creates random variable `θ` and assigns it as an output to the `Beta` node in the corresponding FFG.
 
 !!! note
     To quickly check the list of all available factor nodes that can be used in the model specification language call `?make_node` or `Base.doc(make_node)`.
@@ -118,7 +118,7 @@ As you can see, `RxInfer` offers a model specification syntax that resembles clo
 
 #### Automatic inference specification
 
-Once we have defined our model, the next step is to use `RxInfer` API to infer quantities of interests. To do this we can use a generic `inference` function that supports static datasets.
+Once we have defined our model, the next step is to use `RxInfer` API to infer quantities of interest. To do this we can use a generic `inference` function that supports static datasets.
 
 ```@example coin 
 result = inference(
@@ -143,8 +143,8 @@ Read more information about the `inference` function in the [Static Inference](@
 
 There is a way to manually specify an inference procedure for advanced use-cases. `RxInfer` API is flexible in terms of inference specification and is compatible both with real-time inference processing and with static datasets. In most of the cases for static datasets, as in our example, it consists of same basic building blocks:
 
-1. Return variables of interests from model specification
-2. Subscribe on variables of interests posterior marginal updates
+1. Return variables of interest from model specification
+2. Subscribe on variables of interest posterior marginal updates
 3. Pass data to the model
 4. Unsubscribe 
 

@@ -32,13 +32,13 @@ Optionally, use `] test RxInfer` to validate the installation by running the tes
 
 # Getting Started
 
-There are examples available to get you started in the `examples/` folder. 
+There are examples available to get you started in the `examples/` folder.
 
 ### Coin flip simulation
 
 Here we show a simple example of how to use RxInfer.jl for Bayesian inference problems. In this example we want to estimate a bias of a coin in a form of a probability distribution in a coin flip simulation.
 
-Let's start by creating some dataset. For simplicity in this example we will use static pre-generated dataset. Each sample can be thought of as the outcome of single flip which is either heads or tails (1 or 0). We will assume that our virtual coin is biased, and lands heads up on 75% of the trials (on average).
+Let's start by creating some dataset. For simplicity we will use a static, pre-generated dataset. Each sample can be thought of as the outcome of single flip which is either heads or tails (1 or 0). We will assume that our virtual coin is biased, and lands heads up on 75% of the trials (on average).
 
 First let's setup our environment by importing all needed packages:
 
@@ -101,24 +101,24 @@ Now let's see how to specify this model using GraphPPL's package syntax.
     # We endow θ parameter of our model with some prior
     θ ~ Beta(2.0, 7.0)
     
-    # We assume that outcome of each coin flip 
+    # We assume that the outcome of each coin flip 
     # is governed by the Bernoulli distribution
     for i in 1:n
         y[i] ~ Bernoulli(θ)
     end
     
     # We return references to our data inputs and θ parameter
-    # We will use these references later on during inference step
+    # We will use these references later on during the inference step
     return y, θ
 end
 
 ```
 
-As you can see, `RxInfer` offers a model specification syntax that resembles closely to the mathematical equations defined above. We use `datavar` function to create "clamped" variables that take specific values at a later date. `θ ~ Beta(2.0, 7.0)` expression creates random variable `θ` and assigns it as an output of `Beta` node in the corresponding FFG. 
+As you can see, `RxInfer` offers a model specification syntax that resembles closely the mathematical equations defined above. We use the `datavar` function to create "clamped" variables that take specific values at a later date. The `θ ~ Beta(2.0, 7.0)` expression creates random variable `θ` and assigns it as an output to the `Beta` node in the corresponding FFG.
 
 ### Inference specification
 
-Once we have defined our model, the next step is to use `RxInfer` API to infer quantities of interests. To do this we can use a generic `inference` function from `RxInfer.jl` that supports static datasets.
+Once we have defined our model, the next step is to use the `RxInfer` API to infer quantities of interest. To do this we can use a generic `inference` function from `RxInfer.jl` that supports static datasets.
 
 ```julia
 result = inference(
@@ -130,7 +130,7 @@ result = inference(
 ![Coin Flip](docs/src/assets/img/coin-flip.svg?raw=true&sanitize=true "Coin-Flip readme results")
 
 # Where to go next?
-There are a set of [examples](https://biaslab.github.io/RxInfer.jl/stable/examples/overview/) available in `RxInfer` repository that demonstrate the more advanced features of the package. Alternatively, you can head to the [documentation][docs-stable-url] that provides more detailed information of how to use `RxInfer` to specify more complex probabilistic models.
+There are a set of [examples](https://biaslab.github.io/RxInfer.jl/stable/examples/overview/) available in the `RxInfer` repository that demonstrate the more advanced features of the package. Alternatively, you can head to the [documentation][docs-stable-url] which provides more detailed information of how to use `RxInfer` to specify more complex probabilistic models.
 
 See also:
 - [`ReactiveMP.jl`](https://github.com/biaslab/ReactiveMP.jl)

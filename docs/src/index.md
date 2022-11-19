@@ -46,7 +46,7 @@ Given a probabilistic model, RxInfer allows for an efficient message-passing bas
 
 The `RxInfer` unites 3 core packages into one powerful reactive message passing-based Bayesian inference framework:
 
-- [`ReactiveMP.jl`](https://github.com/biaslab/ReactiveMP.jl) - core package for efficient and scalable for reactive message passing 
+- [`ReactiveMP.jl`](https://github.com/biaslab/ReactiveMP.jl) - core package for efficient and scalable reactive message passing
 - [`GraphPPL.jl`](https://github.com/biaslab/GraphPPL.jl) - package for model and constraints specification
 - [`Rocket.jl`](https://github.com/biaslab/Rocket.jl) - reactive programming tools
 
