@@ -1451,7 +1451,7 @@ function rxinference(;
     datavars = ntuple(N) do i
         datavarname = datavarnames[i]
         hasdatavar(_model, datavarname) || error("The `datastream` produces data for `$(datavarname)`, but the model does not have a datavar named `$(datavarname)`")
-        return _model[datavarname]::DataVariable
+        return _model[datavarname]
     end
 
     # Second we check autoupdates and pregenerate all necessary structures here
