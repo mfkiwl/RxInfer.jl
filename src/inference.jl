@@ -28,7 +28,7 @@ make_actor(::Array{<:RandomVariable, N}, ::KeepEach) where {N} = keep(Array{Marg
 make_actor(x::AbstractArray{<:RandomVariable}, ::KeepEach)     = keep(typeof(similar(x, Marginal)))
 
 make_actor(::RandomVariable, ::KeepEach, capacity::Integer)                      = circularkeep(Marginal, capacity)
-make_actor(::Array{<:RandomVariable, N}, ::KeepEach, capcity::Integer) where {N} = circularkeep(Array{Marginal, N}, capacity)
+make_actor(::Array{<:RandomVariable, N}, ::KeepEach, capacity::Integer) where {N} = circularkeep(Array{Marginal, N}, capacity)
 make_actor(x::AbstractArray{<:RandomVariable}, ::KeepEach, capacity::Integer)    = circularkeep(typeof(similar(x, Marginal)), capacity)
 
 make_actor(::RandomVariable, ::KeepLast)                   = storage(Marginal)
