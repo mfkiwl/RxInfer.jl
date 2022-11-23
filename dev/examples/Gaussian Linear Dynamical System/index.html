@@ -81,15 +81,15 @@ plot(px)</code></pre><p><img src="../../assets/examples/Gaussian Linear Dynamica
  1882.2434870101347</code></pre><p>We may be also interested in performance of our resulting Belief Propagation algorithm:</p><pre><code class="language-julia hljs">@benchmark inference(
     model = rotate_ssm(length($y), $x0, $A, $B, $Q, $P), 
     data = (y = $y,)
-)</code></pre><pre><code class="nohighlight hljs">BenchmarkTools.Trial: 237 samples with 1 evaluation.
- Range (min … max):  18.095 ms … 48.575 ms  ┊ GC (min … max):  0.00% … 57.3
-0%
- Time  (median):     18.752 ms              ┊ GC (median):     0.00%
- Time  (mean ± σ):   21.106 ms ±  7.122 ms  ┊ GC (mean ± σ):  10.17% ± 15.5
+)</code></pre><pre><code class="nohighlight hljs">BenchmarkTools.Trial: 185 samples with 1 evaluation.
+ Range (min … max):  21.505 ms … 69.988 ms  ┊ GC (min … max):  0.00% … 62.2
 5%
+ Time  (median):     23.418 ms              ┊ GC (median):     0.00%
+ Time  (mean ± σ):   27.056 ms ± 11.270 ms  ┊ GC (mean ± σ):  12.30% ± 16.8
+8%
 
-  ▇█▄▂                                                         
-  ████▇▄▄▅▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▄▅▁▆▇▄▅▁▇▄▄ ▅
-  18.1 ms      Histogram: log(frequency) by time      45.3 ms &lt;
+  ▃██▆▄▁                                                       
+  ██████▆▄▄▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▄▆▇▁▁█▇▄▁▁▄ ▄
+  21.5 ms      Histogram: log(frequency) by time      66.1 ms &lt;
 
- Memory estimate: 11.74 MiB, allocs estimate: 234896.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Gamma Mixture/">« Gamma Mixture</a><a class="docs-footer-nextpage" href="../Gaussian Mixture Univariate/">Gaussian Mixture Univariate »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 22 November 2022 11:29">Tuesday 22 November 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ Memory estimate: 11.74 MiB, allocs estimate: 234896.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Gamma Mixture/">« Gamma Mixture</a><a class="docs-footer-nextpage" href="../Gaussian Mixture Univariate/">Gaussian Mixture Univariate »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Wednesday 23 November 2022 10:02">Wednesday 23 November 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
