@@ -81,15 +81,15 @@ plot(px)</code></pre><p><img src="../../assets/examples/Gaussian Linear Dynamica
  1882.2434870101347</code></pre><p>We may be also interested in performance of our resulting Belief Propagation algorithm:</p><pre><code class="language-julia hljs">@benchmark inference(
     model = rotate_ssm(length($y), $x0, $A, $B, $Q, $P), 
     data = (y = $y,)
-)</code></pre><pre><code class="nohighlight hljs">BenchmarkTools.Trial: 196 samples with 1 evaluation.
- Range (min … max):  21.081 ms … 59.914 ms  ┊ GC (min … max):  0.00% … 59.0
+)</code></pre><pre><code class="nohighlight hljs">BenchmarkTools.Trial: 239 samples with 1 evaluation.
+ Range (min … max):  17.989 ms … 48.414 ms  ┊ GC (min … max):  0.00% … 58.5
 8%
- Time  (median):     22.753 ms              ┊ GC (median):     0.00%
- Time  (mean ± σ):   25.496 ms ±  8.712 ms  ┊ GC (mean ± σ):  10.09% ± 15.4
-1%
+ Time  (median):     18.592 ms              ┊ GC (median):     0.00%
+ Time  (mean ± σ):   20.934 ms ±  7.220 ms  ┊ GC (mean ± σ):  10.35% ± 15.6
+8%
 
-  ▃▆█▆▃▁                                                       
-  ██████▇▄▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▄▁▁▆▇▆▄▆▄▁▄▄▁▁▁▄ ▄
-  21.1 ms      Histogram: log(frequency) by time      57.6 ms &lt;
+  ██▃▂                                                         
+  ████▇▄▁▄▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▅▇▄▆▄▁▅▆▄▆ ▅
+  18 ms        Histogram: log(frequency) by time      45.5 ms &lt;
 
- Memory estimate: 11.74 MiB, allocs estimate: 234896.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Gamma Mixture/">« Gamma Mixture</a><a class="docs-footer-nextpage" href="../Gaussian Mixture Univariate/">Gaussian Mixture Univariate »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 28 November 2022 08:43">Monday 28 November 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ Memory estimate: 11.74 MiB, allocs estimate: 234896.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Gamma Mixture/">« Gamma Mixture</a><a class="docs-footer-nextpage" href="../Gaussian Mixture Univariate/">Gaussian Mixture Univariate »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 29 November 2022 09:31">Tuesday 29 November 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
