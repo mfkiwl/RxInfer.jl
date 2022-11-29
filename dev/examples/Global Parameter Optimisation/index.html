@@ -37,9 +37,9 @@ function f(c)
     return result.free_energy[end]
 end</code></pre><pre><code class="nohighlight hljs">f (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">using Optim</code></pre><pre><code class="language-julia hljs">res = optimize(f, ones(2), GradientDescent(), Optim.Options(g_tol = 1e-3, iterations = 100, store_trace = true, show_trace = true, show_every = 10))</code></pre><pre><code class="nohighlight hljs">Iter     Function value   Gradient norm 
      0     3.683766e+02     7.580911e+02
- * time: 0.018999814987182617
+ * time: 0.018635988235473633
     10     3.679682e+02     2.192867e+01
- * time: 5.315091848373413
+ * time: 5.273222923278809
  * Status: success
 
  * Candidate solution
@@ -130,7 +130,7 @@ plot(px, size = (1200, 450))</code></pre><p><img src="../../assets/examples/Glob
     return result.free_energy[end]
 end</code></pre><pre><code class="nohighlight hljs">f (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">res = optimize(f, zeros(3), LBFGS(), Optim.Options(f_tol = 1e-14, g_tol = 1e-12, show_trace = true, show_every = 10))</code></pre><pre><code class="nohighlight hljs">Iter     Function value   Gradient norm 
      0     2.192003e+04     9.032537e+04
- * time: 7.605552673339844e-5
+ * time: 7.891654968261719e-5
  * Status: success (objective increased between iterations)
 
  * Candidate solution
@@ -177,4 +177,4 @@ px = plot!(px, getindex.(x, 2), ribbon = diag(Q)[2] .|&gt; sqrt, fillalpha = 0.2
 px = plot!(px, getindex.(mean.(xmarginals), 1), ribbon = getindex.(var.(xmarginals), 1) .|&gt; sqrt, fillalpha = 0.5, label = &quot;dim1_e&quot;)
 px = plot!(px, getindex.(mean.(xmarginals), 2), ribbon = getindex.(var.(xmarginals), 2) .|&gt; sqrt, fillalpha = 0.5, label = &quot;dim2_e&quot;)
 
-plot(px, size = (1200, 450))</code></pre><p><img src="../../assets/examples/Global Parameter Optimisation_17_1.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Gaussian Mixtures Multivariate/">« Gaussian Mixtures Multivariate</a><a class="docs-footer-nextpage" href="../Handling Missing Data/">Handling Missing Data »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 29 November 2022 09:31">Tuesday 29 November 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+plot(px, size = (1200, 450))</code></pre><p><img src="../../assets/examples/Global Parameter Optimisation_17_1.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Gaussian Mixtures Multivariate/">« Gaussian Mixtures Multivariate</a><a class="docs-footer-nextpage" href="../Handling Missing Data/">Handling Missing Data »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 29 November 2022 10:35">Tuesday 29 November 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

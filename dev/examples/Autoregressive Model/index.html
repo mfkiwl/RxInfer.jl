@@ -178,16 +178,16 @@ uresult = inference(
     iterations = 15, 
     showprogress = false
 )</code></pre><pre><code class="nohighlight hljs">Benchmark for n = 500 and AR 1 order inference
-BenchmarkTools.Trial: 23 samples with 1 evaluation.
- Range (min … max):  183.643 ms … 266.501 ms  ┊ GC (min … max):  0.00% … 24
-.02%
- Time  (median):     229.302 ms               ┊ GC (median):    14.76%
- Time  (mean ± σ):   219.682 ms ±  25.866 ms  ┊ GC (mean ± σ):  12.47% ±  9
-.74%
+BenchmarkTools.Trial: 20 samples with 1 evaluation.
+ Range (min … max):  207.372 ms … 299.732 ms  ┊ GC (min … max):  0.00% … 22
+.27%
+ Time  (median):     257.077 ms               ┊ GC (median):    13.36%
+ Time  (mean ± σ):   250.101 ms ±  25.533 ms  ┊ GC (mean ± σ):  11.69% ±  9
+.55%
 
-      ▃                           ▃   █           ▃              
-  ▇▇▇▇█▇▁▁▁▁▇▇▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▇▇▇█▇▇▁▁▁▁▁▁▁▁▁█▁▁▁▇▁▁▁▁▁▁▁▇ ▁
-  184 ms           Histogram: frequency by time          267 ms &lt;
+  ▁    ▁  █ ▁ ▁     ▁ ▁    ▁      ▁▁ █ ▁ ▁█    ▁       ▁      ▁  
+  █▁▁▁▁█▁▁█▁█▁█▁▁▁▁▁█▁█▁▁▁▁█▁▁▁▁▁▁██▁█▁█▁██▁▁▁▁█▁▁▁▁▁▁▁█▁▁▁▁▁▁█ ▁
+  207 ms           Histogram: frequency by time          300 ms &lt;
 
  Memory estimate: 94.09 MiB, allocs estimate: 1945568.</code></pre><pre><code class="language-julia hljs">println(&quot;Benchmark for n = $n and AR $(morder) order inference&quot;);
 
@@ -202,14 +202,14 @@ BenchmarkTools.Trial: 23 samples with 1 evaluation.
     showprogress = false
 )</code></pre><pre><code class="nohighlight hljs">Benchmark for n = 500 and AR 5 order inference
 BenchmarkTools.Trial: 9 samples with 1 evaluation.
- Range (min … max):  552.778 ms … 606.971 ms  ┊ GC (min … max):  9.40% … 17
-.19%
- Time  (median):     592.710 ms               ┊ GC (median):    16.40%
- Time  (mean ± σ):   588.852 ms ±  16.458 ms  ┊ GC (mean ± σ):  15.39% ±  2
-.87%
+ Range (min … max):  553.475 ms … 623.744 ms  ┊ GC (min … max):  9.19% … 17
+.21%
+ Time  (median):     610.220 ms               ┊ GC (median):    16.94%
+ Time  (mean ± σ):   604.762 ms ±  21.730 ms  ┊ GC (mean ± σ):  15.51% ±  2
+.89%
 
-  ▁                         ▁    ▁            █      █▁       ▁  
-  █▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁██▁▁▁▁▁▁▁█ ▁
-  553 ms           Histogram: frequency by time          607 ms &lt;
+  ▁                             ▁             ▁    █ ▁   ▁  ▁ ▁  
+  █▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁█▁█▁▁▁█▁▁█▁█ ▁
+  553 ms           Histogram: frequency by time          624 ms &lt;
 
- Memory estimate: 299.48 MiB, allocs estimate: 2698594.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Assessing People Skills/">« Assessing People Skills</a><a class="docs-footer-nextpage" href="../Coin Toss Model/">Coin Toss Model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 29 November 2022 09:31">Tuesday 29 November 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ Memory estimate: 299.48 MiB, allocs estimate: 2698594.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Assessing People Skills/">« Assessing People Skills</a><a class="docs-footer-nextpage" href="../Coin Toss Model/">Coin Toss Model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 29 November 2022 10:35">Tuesday 29 November 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

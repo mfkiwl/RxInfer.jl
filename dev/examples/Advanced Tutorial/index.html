@@ -121,21 +121,21 @@ result = inference(
     data  = (y = dataset, )
 )
 
-println(&quot;Inferred bias: &quot;, mean_var(result.posteriors[:θ]))</code></pre><pre><code class="nohighlight hljs">Inferred bias: (0.724950884086444, 0.0003909747053896612)</code></pre><p>We can see that the inferred bias is quite close to the actual value we used in the dataset generation.</p><p>The <code>RxInfer.jl</code> package&#39;s API is more flexible (and reactive!) and can return posterior marginal distributions in our specified model in the form of an observable. It is possible to subscribe on its future updates, but for convenience <code>RxInfer.jl</code> only caches the last obtained values of all marginals in a model. To get a reference for the posterior marginal of some random variable in a model <code>RxInfer.jl</code> exports two functions: </p><ul><li><code>getmarginal(x)</code>: for a single random variable <code>x</code></li><li><code>getmarginals(xs)</code>: for a dense sequence of random variables <code>sx</code></li></ul><p>Let&#39;s see how it works in practice. Here we create a simple coin toss model. We assume that observations are governed by the <code>Bernoulli</code> distribution with unknown bias parameter <code>θ</code>. To have a fully Bayesian treatment of this problem we endow <code>θ</code> with the <code>Beta</code> prior.</p><pre><code class="language-julia hljs">_, (y, θ) = create_model(coin_toss_model(length(dataset)));</code></pre><pre><code class="language-julia hljs"># As soon as we have a new value for the marginal posterior over the `θ` variable
+println(&quot;Inferred bias: &quot;, mean_var(result.posteriors[:θ]))</code></pre><pre><code class="nohighlight hljs">Inferred bias: (0.6915520628683693, 0.00041825060237425936)</code></pre><p>We can see that the inferred bias is quite close to the actual value we used in the dataset generation.</p><p>The <code>RxInfer.jl</code> package&#39;s API is more flexible (and reactive!) and can return posterior marginal distributions in our specified model in the form of an observable. It is possible to subscribe on its future updates, but for convenience <code>RxInfer.jl</code> only caches the last obtained values of all marginals in a model. To get a reference for the posterior marginal of some random variable in a model <code>RxInfer.jl</code> exports two functions: </p><ul><li><code>getmarginal(x)</code>: for a single random variable <code>x</code></li><li><code>getmarginals(xs)</code>: for a dense sequence of random variables <code>sx</code></li></ul><p>Let&#39;s see how it works in practice. Here we create a simple coin toss model. We assume that observations are governed by the <code>Bernoulli</code> distribution with unknown bias parameter <code>θ</code>. To have a fully Bayesian treatment of this problem we endow <code>θ</code> with the <code>Beta</code> prior.</p><pre><code class="language-julia hljs">_, (y, θ) = create_model(coin_toss_model(length(dataset)));</code></pre><pre><code class="language-julia hljs"># As soon as we have a new value for the marginal posterior over the `θ` variable
 # we simply print the first two statistics of it
-θ_subscription = subscribe!(getmarginal(θ), (marginal) -&gt; println(&quot;New update: mean(θ) = &quot;, mean(marginal), &quot;, std(θ) = &quot;, std(marginal)));</code></pre><p>To pass data to our model we use <code>update!</code> function</p><pre><code class="language-julia hljs">update!(y, dataset)</code></pre><pre><code class="nohighlight hljs">New update: mean(θ) = 0.724950884086444, std(θ) = 0.01977308032122616</code></pre><pre><code class="language-julia hljs"># It is necessary to always unsubscribe from running observables
+θ_subscription = subscribe!(getmarginal(θ), (marginal) -&gt; println(&quot;New update: mean(θ) = &quot;, mean(marginal), &quot;, std(θ) = &quot;, std(marginal)));</code></pre><p>To pass data to our model we use <code>update!</code> function</p><pre><code class="language-julia hljs">update!(y, dataset)</code></pre><pre><code class="nohighlight hljs">New update: mean(θ) = 0.6915520628683693, std(θ) = 0.020451176063352918</code></pre><pre><code class="language-julia hljs"># It is necessary to always unsubscribe from running observables
 unsubscribe!(θ_subscription)</code></pre><pre><code class="language-julia hljs"># The ReactiveMP.jl inference backend is lazy and does not compute posterior marginals if no-one is listening for them
 # At this moment we have already unsubscribed from the new posterior updates so this `update!` does nothing
 update!(y, dataset)</code></pre><p><code>Rocket.jl</code> provides some useful built-in actors for obtaining posterior marginals especially with static datasets.</p><pre><code class="language-julia hljs"># the `keep` actor simply keeps all incoming updates in an internal storage, ordered
 θvalues = keep(Marginal)</code></pre><pre><code class="nohighlight hljs">KeepActor{Marginal}(Marginal[])</code></pre><pre><code class="language-julia hljs"># `getmarginal` always emits last cached value as its first value
 subscribe!(getmarginal(θ) |&gt; take(1), θvalues);</code></pre><pre><code class="language-julia hljs">getvalues(θvalues)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=369.0, β=140.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginal(θ) |&gt; take(1), θvalues);</code></pre><pre><code class="language-julia hljs">getvalues(θvalues)</code></pre><pre><code class="nohighlight hljs">2-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=369.0, β=140.0))
- Marginal(Beta{Float64}(α=369.0, β=140.0))</code></pre><pre><code class="language-julia hljs"># the `buffer` actor keeps very last incoming update in an internal storage and can also store 
+ Marginal(Beta{Float64}(α=352.0, β=157.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginal(θ) |&gt; take(1), θvalues);</code></pre><pre><code class="language-julia hljs">getvalues(θvalues)</code></pre><pre><code class="nohighlight hljs">2-element Vector{Marginal}:
+ Marginal(Beta{Float64}(α=352.0, β=157.0))
+ Marginal(Beta{Float64}(α=352.0, β=157.0))</code></pre><pre><code class="language-julia hljs"># the `buffer` actor keeps very last incoming update in an internal storage and can also store 
 # an array of updates for a sequence of random variables
 θbuffer = buffer(Marginal, 1)</code></pre><pre><code class="nohighlight hljs">BufferActor{Marginal, Vector{Marginal}}(Marginal[#undef])</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginals([ θ ]) |&gt; take(1), θbuffer);</code></pre><pre><code class="language-julia hljs">getvalues(θbuffer)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=369.0, β=140.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginals([ θ ]) |&gt; take(1), θbuffer);</code></pre><pre><code class="language-julia hljs">getvalues(θbuffer)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
- Marginal(Beta{Float64}(α=369.0, β=140.0))</code></pre><h2 id="Reactive-Online-Inference"><a class="docs-heading-anchor" href="#Reactive-Online-Inference">Reactive Online Inference</a><a id="Reactive-Online-Inference-1"></a><a class="docs-heading-anchor-permalink" href="#Reactive-Online-Inference" title="Permalink"></a></h2><p>RxInfer.jl naturally supports reactive streams of data and it is possible to run reactive inference with some external datasource.</p><pre><code class="language-julia hljs">@model function online_coin_toss_model()
+ Marginal(Beta{Float64}(α=352.0, β=157.0))</code></pre><pre><code class="language-julia hljs">subscribe!(getmarginals([ θ ]) |&gt; take(1), θbuffer);</code></pre><pre><code class="language-julia hljs">getvalues(θbuffer)</code></pre><pre><code class="nohighlight hljs">1-element Vector{Marginal}:
+ Marginal(Beta{Float64}(α=352.0, β=157.0))</code></pre><h2 id="Reactive-Online-Inference"><a class="docs-heading-anchor" href="#Reactive-Online-Inference">Reactive Online Inference</a><a id="Reactive-Online-Inference-1"></a><a class="docs-heading-anchor-permalink" href="#Reactive-Online-Inference" title="Permalink"></a></h2><p>RxInfer.jl naturally supports reactive streams of data and it is possible to run reactive inference with some external datasource.</p><pre><code class="language-julia hljs">@model function online_coin_toss_model()
     
     # We create datavars for the prior 
     # over `θ` variable
@@ -164,7 +164,7 @@ end</code></pre><pre><code class="nohighlight hljs">(θ_a,θ_b = params(q(θ)),)
     hline!([ p ], label = &quot;Real bias&quot;, size = (600, 200))
 end
 
-gif(animation, fps = 30)</code></pre><pre><code class="nohighlight hljs">Plots.AnimatedGif(&quot;/tmp/jl_F8J6pSx2PO.gif&quot;)</code></pre><p>In this example we used static dataset and the <code>history</code> field of the reactive inference result, but the <code>rxinference</code> function also supports any real-time reactive stream and can run indefinitely.</p><p>That was an example of exact Bayesian inference with Sum-Product (or Belief Propagation) algorithm. However, <code>RxInfer</code> is not limited to only the sum-product algorithm but it also supports variational message passing with <a href="https://www.mdpi.com/1099-4300/23/7/807">Constrained Bethe Free Energy Minimisation</a>.</p><h2 id="Variational-inference"><a class="docs-heading-anchor" href="#Variational-inference">Variational inference</a><a id="Variational-inference-1"></a><a class="docs-heading-anchor-permalink" href="#Variational-inference" title="Permalink"></a></h2><p>On a very high-level, ReactiveMP.jl is aimed to solve the Constrained Bethe Free Energy minimisation problem. For this task we approximate our exact posterior marginal distribution by some family of distributions <span>$q \in \mathcal{Q}$</span>. Often this involves assuming some factorization over <span>$q$</span>. For this purpose the <code>@model</code> macro supports optional <code>where { ... }</code> clauses for every <code>~</code> expression in a model specification.</p><pre><code class="language-julia hljs">@model function test_model6_with_manual_constraints(n)
+gif(animation, fps = 30)</code></pre><pre><code class="nohighlight hljs">Plots.AnimatedGif(&quot;/tmp/jl_0JQxGHuFsT.gif&quot;)</code></pre><p>In this example we used static dataset and the <code>history</code> field of the reactive inference result, but the <code>rxinference</code> function also supports any real-time reactive stream and can run indefinitely.</p><p>That was an example of exact Bayesian inference with Sum-Product (or Belief Propagation) algorithm. However, <code>RxInfer</code> is not limited to only the sum-product algorithm but it also supports variational message passing with <a href="https://www.mdpi.com/1099-4300/23/7/807">Constrained Bethe Free Energy Minimisation</a>.</p><h2 id="Variational-inference"><a class="docs-heading-anchor" href="#Variational-inference">Variational inference</a><a id="Variational-inference-1"></a><a class="docs-heading-anchor-permalink" href="#Variational-inference" title="Permalink"></a></h2><p>On a very high-level, ReactiveMP.jl is aimed to solve the Constrained Bethe Free Energy minimisation problem. For this task we approximate our exact posterior marginal distribution by some family of distributions <span>$q \in \mathcal{Q}$</span>. Often this involves assuming some factorization over <span>$q$</span>. For this purpose the <code>@model</code> macro supports optional <code>where { ... }</code> clauses for every <code>~</code> expression in a model specification.</p><pre><code class="language-julia hljs">@model function test_model6_with_manual_constraints(n)
     τ ~ Gamma(shape = 1.0, rate = 1.0) 
     μ ~ Normal(mean = 0.0, variance = 100.0)
     
@@ -213,8 +213,8 @@ end</code></pre><h3 id="Inference"><a class="docs-heading-anchor" href="#Inferen
     showprogress  = true
 )</code></pre><pre><code class="nohighlight hljs">Inference results:
   Posteriors       | available for (μ, τ)
-  Free Energy:     | Real[14763.3, 3275.83, 670.636, 630.861, 630.861, 630.
-861, 630.861, 630.861, 630.861, 630.861]</code></pre><pre><code class="language-julia hljs">println(&quot;μ: mean = &quot;, mean(result.posteriors[:μ]), &quot;, std = &quot;, std(result.posteriors[:μ]))</code></pre><pre><code class="nohighlight hljs">μ: mean = -3.0004886581548487, std = 0.014269214850413783</code></pre><pre><code class="language-julia hljs">println(&quot;τ: mean = &quot;, mean(result.posteriors[:τ]), &quot;, std = &quot;, std(result.posteriors[:τ]))</code></pre><pre><code class="nohighlight hljs">τ: mean = 4.911328251681651, std = 0.21942196424866675</code></pre><h4 id="Manual-inference"><a class="docs-heading-anchor" href="#Manual-inference">Manual inference</a><a id="Manual-inference-1"></a><a class="docs-heading-anchor-permalink" href="#Manual-inference" title="Permalink"></a></h4><p>For advanced use cases it is advised to write inference functions manually as it provides more flexibility, here is an example of manual inference specification:</p><pre><code class="language-julia hljs">model, (μ, τ, y) = create_model(test_model6(length(dataset)), constraints = constraints6);</code></pre><p>For variational inference we also usually need to set initial marginals for our inference procedure. For that purpose <code>ReactiveMP</code> inference engine export the <code>setmarginal!</code> function:</p><pre><code class="language-julia hljs">setmarginal!(μ, vague(NormalMeanPrecision))
+  Free Energy:     | Real[14763.3, 3275.41, 649.296, 606.53, 606.53, 606.53
+, 606.53, 606.53, 606.53, 606.53]</code></pre><pre><code class="language-julia hljs">println(&quot;μ: mean = &quot;, mean(result.posteriors[:μ]), &quot;, std = &quot;, std(result.posteriors[:μ]))</code></pre><pre><code class="nohighlight hljs">μ: mean = -2.988441223626064, std = 0.013926561555610664</code></pre><pre><code class="language-julia hljs">println(&quot;τ: mean = &quot;, mean(result.posteriors[:τ]), &quot;, std = &quot;, std(result.posteriors[:τ]))</code></pre><pre><code class="nohighlight hljs">τ: mean = 5.155981513104114, std = 0.23035226587588511</code></pre><h4 id="Manual-inference"><a class="docs-heading-anchor" href="#Manual-inference">Manual inference</a><a id="Manual-inference-1"></a><a class="docs-heading-anchor-permalink" href="#Manual-inference" title="Permalink"></a></h4><p>For advanced use cases it is advised to write inference functions manually as it provides more flexibility, here is an example of manual inference specification:</p><pre><code class="language-julia hljs">model, (μ, τ, y) = create_model(test_model6(length(dataset)), constraints = constraints6);</code></pre><p>For variational inference we also usually need to set initial marginals for our inference procedure. For that purpose <code>ReactiveMP</code> inference engine export the <code>setmarginal!</code> function:</p><pre><code class="language-julia hljs">setmarginal!(μ, vague(NormalMeanPrecision))
 setmarginal!(τ, vague(GammaShapeRate))</code></pre><pre><code class="language-julia hljs">μ_values = keep(Marginal)
 τ_values = keep(Marginal)
 
@@ -224,36 +224,36 @@ setmarginal!(τ, vague(GammaShapeRate))</code></pre><pre><code class="language-j
 for i in 1:10
     update!(y, dataset)
 end</code></pre><pre><code class="language-julia hljs">getvalues(μ_values)</code></pre><pre><code class="nohighlight hljs">10-element Vector{Marginal}:
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-3.0064957569842555e-9, w
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-2.9944239137046937e-9, w
 =0.010000001002000566))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-27.530305259570444, w=9.
-185255213899017))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-9614.776741907823, w=320
-4.4071034792055))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14728.584735512868, w=49
-08.728687051005))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14736.406902055222, w=49
-11.335645952269))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14736.414712729838, w=49
-11.338249081098))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14736.414720524908, w=49
-11.338251679129))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14736.414720532675, w=49
-11.3382516815955))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14736.414720532684, w=49
-11.3382516815955))
- Marginal(NormalWeightedMeanPrecision{Float64}(xi=-14736.414720532692, w=49
-11.3382516815955))</code></pre><pre><code class="language-julia hljs">getvalues(τ_values)</code></pre><pre><code class="nohighlight hljs">10-element Vector{Marginal}:
- Marginal(GammaShapeRate{Float64}(a=501.0, b=5.000000000046038e14))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=54603.385771881105))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=156.34766348279115))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=102.06329430155024))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=102.00911853867986))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=102.00906447125247))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=102.00906441729305))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=102.00906441723934))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=102.00906441723922))
- Marginal(GammaShapeRate{Float64}(a=501.0, b=102.00906441723914))</code></pre><pre><code class="language-julia hljs">println(&quot;μ: mean = &quot;, mean(last(μ_values)), &quot;, std = &quot;, std(last(μ_values)))</code></pre><pre><code class="nohighlight hljs">μ: mean = -3.0004886581548487, std = 0.014269214850413783</code></pre><pre><code class="language-julia hljs">println(&quot;τ: mean = &quot;, mean(last(τ_values)), &quot;, std = &quot;, std(last(τ_values)))</code></pre><pre><code class="nohighlight hljs">τ: mean = 4.911328251681651, std = 0.21942196424866675</code></pre><h3 id="Form-constraints"><a class="docs-heading-anchor" href="#Form-constraints">Form constraints</a><a id="Form-constraints-1"></a><a class="docs-heading-anchor-permalink" href="#Form-constraints" title="Permalink"></a></h3><p>In order to support form constraints, the <code>randomvar()</code> function also supports a <code>where { ... }</code> clause with some optional arguments. One of these arguments is <code>form_constraint</code> that allows us to specify a form constraint to the random variables in our model. Another one is <code>prod_constraint</code> that allows to specify an additional constraints during computation of product of two colliding messages. For example we can perform the EM algorithm if we assign a point mass contraint on some variables in our model.</p><p>&lt;img style=&quot;display: block;   margin-left: auto;   margin-right: auto;   width: 50%;&quot; src=&quot;./pics/posterior.png&quot; /&gt;</p><pre><code class="language-julia hljs">@model function test_model7_with_manual_constraints(n)
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-27.440324050060678, w=9.
+19213502506154))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-9884.45749908112, w=3307
+.5665449033568))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-15399.78864532082, w=515
+3.117464794544))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-15408.369009883132, w=51
+55.988643204433))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-15408.377577866891, w=51
+55.991510240031))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-15408.377586417791, w=51
+55.991513101307))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-15408.37758642631, w=515
+5.991513104058))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-15408.377586426323, w=51
+55.99151310407))
+ Marginal(NormalWeightedMeanPrecision{Float64}(xi=-15408.377586426326, w=51
+55.99151310407))</code></pre><pre><code class="language-julia hljs">getvalues(τ_values)</code></pre><pre><code class="nohighlight hljs">10-element Vector{Marginal}:
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=5.000000000045629e14))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=54562.47361126549))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=151.47133335392408))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=97.22288995965756))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=97.16875004133662))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=97.16869600967304))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=97.1686959557492))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=97.16869595569553))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=97.16869595569545))
+ Marginal(GammaShapeRate{Float64}(a=501.0, b=97.16869595569541))</code></pre><pre><code class="language-julia hljs">println(&quot;μ: mean = &quot;, mean(last(μ_values)), &quot;, std = &quot;, std(last(μ_values)))</code></pre><pre><code class="nohighlight hljs">μ: mean = -2.988441223626064, std = 0.013926561555610664</code></pre><pre><code class="language-julia hljs">println(&quot;τ: mean = &quot;, mean(last(τ_values)), &quot;, std = &quot;, std(last(τ_values)))</code></pre><pre><code class="nohighlight hljs">τ: mean = 5.155981513104114, std = 0.23035226587588511</code></pre><h3 id="Form-constraints"><a class="docs-heading-anchor" href="#Form-constraints">Form constraints</a><a id="Form-constraints-1"></a><a class="docs-heading-anchor-permalink" href="#Form-constraints" title="Permalink"></a></h3><p>In order to support form constraints, the <code>randomvar()</code> function also supports a <code>where { ... }</code> clause with some optional arguments. One of these arguments is <code>form_constraint</code> that allows us to specify a form constraint to the random variables in our model. Another one is <code>prod_constraint</code> that allows to specify an additional constraints during computation of product of two colliding messages. For example we can perform the EM algorithm if we assign a point mass contraint on some variables in our model.</p><p>&lt;img style=&quot;display: block;   margin-left: auto;   margin-right: auto;   width: 50%;&quot; src=&quot;./pics/posterior.png&quot; /&gt;</p><pre><code class="language-julia hljs">@model function test_model7_with_manual_constraints(n)
     τ ~ Gamma(shape = 1.0, rate = 1.0) 
     
     # In case of form constraints `randomvar()` call is necessary
@@ -306,7 +306,7 @@ setmarginal!(τ, PointMass(1.0))
 
 for i in 1:10
     update!(y, dataset)
-end</code></pre><pre><code class="language-julia hljs">getvalues(μ_values) |&gt; last</code></pre><pre><code class="nohighlight hljs">Marginal(PointMass{Float64}(-3.0004886642519204))</code></pre><pre><code class="language-julia hljs">getvalues(τ_values) |&gt; last</code></pre><pre><code class="nohighlight hljs">Marginal(GammaShapeRate{Float64}(a=501.0, b=101.90725917097832))</code></pre><p>By default <code>RxInfer</code> tries to compute an analytical product of two colliding messages and throws an error if no analytical solution is known. However, it is possible to fall back to a generic product that does not require an analytical solution to be known. In this case the inference backend will simply propagate the product of two messages in a form of a tuple. It is not possible to use such a tuple-product during an inference and in this case it is mandatory to use some form constraint to approximate this product.</p><pre><code class="language-julia hljs">μ = randomvar() where { 
+end</code></pre><pre><code class="language-julia hljs">getvalues(μ_values) |&gt; last</code></pre><pre><code class="nohighlight hljs">Marginal(PointMass{Float64}(-2.9884412294104994))</code></pre><pre><code class="language-julia hljs">getvalues(τ_values) |&gt; last</code></pre><pre><code class="nohighlight hljs">Marginal(GammaShapeRate{Float64}(a=501.0, b=97.07172139728084))</code></pre><p>By default <code>RxInfer</code> tries to compute an analytical product of two colliding messages and throws an error if no analytical solution is known. However, it is possible to fall back to a generic product that does not require an analytical solution to be known. In this case the inference backend will simply propagate the product of two messages in a form of a tuple. It is not possible to use such a tuple-product during an inference and in this case it is mandatory to use some form constraint to approximate this product.</p><pre><code class="language-julia hljs">μ = randomvar() where { 
     prod_constraint = ProdGeneric(),
     form_constraint = SampleListFormConstraint() 
 }</code></pre><p>Sometimes it is useful to preserve a specific parametrisation of the resulting product later on in an inference procedure. The <code>ReactiveMP</code> inference engine exports a special <code>prod_constraint</code> called <code>ProdPreserveType</code> especially for that purpose:</p><pre><code class="language-julia hljs">μ = randomvar() where { prod_constraint = ProdPreserveType(NormalWeightedMeanPrecision) }</code></pre><p><strong>Note</strong>: <code>@constraints</code> macro specifies required <code>prod_constraint</code> automatically.</p><h3 id="Free-Energy"><a class="docs-heading-anchor" href="#Free-Energy">Free Energy</a><a id="Free-Energy-1"></a><a class="docs-heading-anchor-permalink" href="#Free-Energy" title="Permalink"></a></h3><p>During variational inference the <code>RxInfer</code> optimises a special functional called the Bethe Free Energy functional. It is possible to obtain its values for all VMP iterations with the <code>score</code> function.</p><pre><code class="language-julia hljs">model, (μ, τ, y) = create_model(test_model6(length(dataset)), constraints = constraints6);</code></pre><pre><code class="language-julia hljs">bfe_observable = score(model, Float64, BetheFreeEnergy())</code></pre><pre><code class="nohighlight hljs">ProxyObservable(Float64, MapProxy(Tuple{ReactiveMP.CountingReal{Float64}, R
@@ -316,16 +316,16 @@ setmarginal!(τ, vague(GammaShapeRate))
 
 for i in 1:10
     update!(y, dataset)
-end</code></pre><pre><code class="nohighlight hljs">Current BFE value: 643.380713901357
-Current BFE value: 630.8612263973573
-Current BFE value: 630.8612261484391
-Current BFE value: 630.8612261484377
-Current BFE value: 630.8612261484377
-Current BFE value: 630.8612261484382
-Current BFE value: 630.8612261484382
-Current BFE value: 630.8612261484377
-Current BFE value: 630.8612261484377
-Current BFE value: 630.8612261484377</code></pre><pre><code class="language-julia hljs"># It always necessary to unsubscribe and release computer resources
+end</code></pre><pre><code class="nohighlight hljs">Current BFE value: 619.0252026941289
+Current BFE value: 606.5300216842425
+Current BFE value: 606.5300214353247
+Current BFE value: 606.5300214353233
+Current BFE value: 606.5300214353238
+Current BFE value: 606.5300214353233
+Current BFE value: 606.5300214353233
+Current BFE value: 606.5300214353238
+Current BFE value: 606.5300214353242
+Current BFE value: 606.5300214353233</code></pre><pre><code class="language-julia hljs"># It always necessary to unsubscribe and release computer resources
 unsubscribe!([ μ_subscription, τ_subscription, bfe_subscription ])</code></pre><h3 id="Meta-data-specification"><a class="docs-heading-anchor" href="#Meta-data-specification">Meta data specification</a><a id="Meta-data-specification-1"></a><a class="docs-heading-anchor-permalink" href="#Meta-data-specification" title="Permalink"></a></h3><p>During model specification some functional dependencies may accept an optional <code>meta</code> object in the <code>where { ... }</code> clause. The purpose of the <code>meta</code> object is to adjust, modify or supply some extra information to the inference backend during the computations of the messages. The <code>meta</code> object for example may contain an approximation method that needs to be used during various approximations or it may specify the tradeoff between accuracy and performance:</p><pre><code class="language-julia hljs"># In this example the `meta` object for the autoregressive `AR` node specifies the variate type of 
 # the autoregressive process and its order. In addition it specifies that the message computation rules should
 # respect accuracy over speed with the `ARsafe()` strategy. In contrast, `ARunsafe()` strategy tries to speedup computations
@@ -412,5 +412,5 @@ end</code></pre><pre><code class="language-julia hljs">_, (y, θ) = RxInfer.crea
 [y[3]][Bernoulli][p]: VariationalMessage()
 [y[4]][Bernoulli][p]: VariationalMessage()
 [y[5]][Bernoulli][p]: VariationalMessage()
-New posterior marginal for θ: Marginal(Beta{Float64}(α=4.0, β=10.0))</code></pre><pre><code class="language-julia hljs">unsubscribe!(θ_subscription)</code></pre><pre><code class="language-julia hljs"># Inference is lazy and does not send messages if no one is listening for them
-update!(y, coinflips)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../overview/">« Overview</a><a class="docs-footer-nextpage" href="../Assessing People Skills/">Assessing People Skills »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 29 November 2022 09:31">Tuesday 29 November 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+New posterior marginal for θ: Marginal(Beta{Float64}(α=5.0, β=9.0))</code></pre><pre><code class="language-julia hljs">unsubscribe!(θ_subscription)</code></pre><pre><code class="language-julia hljs"># Inference is lazy and does not send messages if no one is listening for them
+update!(y, coinflips)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../overview/">« Overview</a><a class="docs-footer-nextpage" href="../Assessing People Skills/">Assessing People Skills »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 29 November 2022 10:35">Tuesday 29 November 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
