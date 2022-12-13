@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Active Inference Mountain car · RxInfer.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link rel="canonical" href="https://biaslab.github.io/RxInfer.jl/examples/Active Inference Mountain car/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/theme.css" rel="stylesheet" type="text/css"/><link href="../../assets/header.css" rel="stylesheet" type="text/css"/><script src="../../assets/header.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.svg" alt="RxInfer.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.svg" alt="RxInfer.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">RxInfer.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">User guide</span><ul><li><a class="tocitem" href="../../manuals/getting-started/">Getting started</a></li><li><a class="tocitem" href="../../manuals/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../manuals/constraints-specification/">Constraints specification</a></li><li><a class="tocitem" href="../../manuals/meta-specification/">Meta specification</a></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">Inference specification</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../manuals/inference/overview/">Overview</a></li><li><a class="tocitem" href="../../manuals/inference/inference/">Static dataset</a></li><li><a class="tocitem" href="../../manuals/inference/rxinference/">Real-time dataset / reactive inference</a></li><li><a class="tocitem" href="../../manuals/inference/manual/">Manual inference specification</a></li></ul></li></ul></li><li><span class="tocitem">Library</span><ul><li><a class="tocitem" href="../../library/functional-forms/">Built-in functional form constraints</a></li><li><a class="tocitem" href="../../library/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../library/bethe-free-energy/">Bethe Free Energy</a></li><li><a class="tocitem" href="../../library/exported-methods/">Exported methods</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../overview/">Overview</a></li><li><a class="tocitem" href="../Coin Toss Model/">Coin toss model (Beta-Bernoulli)</a></li><li><a class="tocitem" href="../Linear Regression/">Bayesian Linear Regression</a></li><li class="is-active"><a class="tocitem" href>Active Inference Mountain car</a><ul class="internal"><li><a class="tocitem" href="#The-mountain-and-physics"><span>The mountain and physics</span></a></li><li class="toplevel"><a class="tocitem" href="#World-agent-interaction"><span>World - agent interaction</span></a></li><li><a class="tocitem" href="#Naive-approach"><span>Naive approach</span></a></li><li class="toplevel"><a class="tocitem" href="#Active-inference-approach"><span>Active inference approach</span></a></li></ul></li><li><a class="tocitem" href="../Assessing People Skills/">Assessing People’s Skills</a></li><li><a class="tocitem" href="../Gaussian Linear Dynamical System/">Gaussian Linear Dynamical System</a></li><li><a class="tocitem" href="../Hidden Markov Model/">Ensemble Learning of a Hidden Markov Model</a></li><li><a class="tocitem" href="../Autoregressive Model/">Autoregressive Model</a></li><li><a class="tocitem" href="../Hierarchical Gaussian Filter/">Hierarchical Gaussian Filter</a></li><li><a class="tocitem" href="../Bayesian ARMA/">Bayesian ARMA model</a></li><li><a class="tocitem" href="../Infinite Data Stream/">Infinite Data Stream</a></li><li><a class="tocitem" href="../Identification Problem/">System Identification Problem</a></li><li><a class="tocitem" href="../Gaussian Mixture Univariate/">Univariate Gaussian Mixture Model</a></li><li><a class="tocitem" href="../Gaussian Mixtures Multivariate/">Multivariate Gaussian Mixture Model</a></li><li><a class="tocitem" href="../Gamma Mixture/">Gamma Mixture Model</a></li><li><a class="tocitem" href="../Global Parameter Optimisation/">Global Parameter Optimisation</a></li><li><a class="tocitem" href="../Invertible Neural Network Tutorial/">Invertible neural networks: a tutorial</a></li><li><a class="tocitem" href="../Conjugate-Computational Variational Message Passing/">Conjugate-Computational Variational Message Passing (CVI)</a></li><li><a class="tocitem" href="../GPRegression by SSM/">Solve GP regression by SDE</a></li><li><a class="tocitem" href="../Nonlinear Noisy Pendulum/">Nonlinear Smoothing: Noisy Pendulum</a></li><li><a class="tocitem" href="../Nonlinear Rabbit Population/">Nonlinear Smoothing: Rabbit Population</a></li><li><a class="tocitem" href="../Nonlinear Virus Spread/">Nonlinear Virus Spread</a></li><li><a class="tocitem" href="../Nonlinear Sensor Fusion/">Nonlinear Sensor Fusion</a></li><li><a class="tocitem" href="../Kalman filter with LSTM network driven dynamic/">Kalman filter with LSTM network driven dynamic</a></li><li><a class="tocitem" href="../Handling Missing Data/">Handling Missing Data</a></li><li><a class="tocitem" href="../Custom nonlinear node/">Custom Nonlinear Node</a></li><li><a class="tocitem" href="../Probit Model (EP)/">Probit Model (EP)</a></li><li><a class="tocitem" href="../RTS vs BIFM Smoothing/">RTS vs BIFM Smoothing</a></li><li><a class="tocitem" href="../Advanced Tutorial/">Advanced Tutorial</a></li></ul></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../contributing/overview/">Overview</a></li><li><a class="tocitem" href="../../contributing/new-example/">Adding a new example</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Active Inference Mountain car</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Active Inference Mountain car</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/biaslab/RxInfer.jl/blob/main/docs/src/examples/Active Inference Mountain car.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><p>This example has been auto-generated from the <a href="https://github.com/biaslab/RxInfer.jl/tree/main/examples"><code>examples/</code></a> folder at GitHub repository.</p><h1 id="examples-active-inference-mountain-car"><a class="docs-heading-anchor" href="#examples-active-inference-mountain-car">Active Inference Mountain car</a><a id="examples-active-inference-mountain-car-1"></a><a class="docs-heading-anchor-permalink" href="#examples-active-inference-mountain-car" title="Permalink"></a></h1><p>This notebooks covers fundamentals of the Active Inference framework implemented with the Bethe Free Energy optimisation with message passing on factor graphs. We use the mountain car problem as a simple example.</p><p>The original code has been written by <a href="https://biaslab.github.io/team/">Thijs van de Laar</a> and adapted by <a href="https://biaslab.github.io/team/">Dmitry Bagaev</a>. Visuals have been coded by <a href="https://biaslab.github.io/team/">Sepideh Adamiat</a>.</p><ul><li>We refer reader to the <a href="https://doi.org/10.3389/frobt.2019.00020">Thijs van de Laar (2019) &quot;Simulating active inference processes by message passing&quot;</a> original paper with more in-depth overview and explanation of the active inference agent implementation by message passing.</li><li>The original environment/task description is from <a href="https://arxiv.org/abs/1709.02341">Ueltzhoeffer (2017) &quot;Deep active inference&quot;</a>.</li></ul><pre><code class="language-julia hljs">import Pkg; Pkg.activate(&quot;.&quot;);</code></pre><pre><code class="language-julia hljs">using RxInfer, Plots</code></pre><h2 id="The-mountain-and-physics"><a class="docs-heading-anchor" href="#The-mountain-and-physics">The mountain and physics</a><a id="The-mountain-and-physics-1"></a><a class="docs-heading-anchor-permalink" href="#The-mountain-and-physics" title="Permalink"></a></h2><p>For the purpose of this example we create a simple mountain valley with hard-coded physics, such that we do not depend on any external complex library. We have several configurable parameters for the experiment:</p><ul><li>Engine-force limit</li><li>Tires friction coefficient</li></ul><pre><code class="language-julia hljs">import HypergeometricFunctions: _₂F₁
+
+function create_physics(; engine_force_limit = 0.04, friction_coefficient = 0.1)
+    
+    # Engine force as function of action
+    Fa = (a::Real) -&gt; engine_force_limit * tanh(a) 
+    # Derivative of the engine force
+    Fa_prime = (a::Real) -&gt; engine_force_limit - engine_force_limit * tanh(a)^2 
+    # Friction force as function of velocity
+    Ff = (y_dot::Real) -&gt; -friction_coefficient * y_dot 
+    # Derivative of the friction force
+    Ff_prime = (y_dot::Real) -&gt; -friction_coefficient 
+    
+    # Gravitational force (horizontal component) as function of position
+    Fg = (y::Real) -&gt; begin
+        if y &lt; 0
+            0.05*(-2*y - 1)
+        else
+            0.05*(-(1 + 5*y^2)^(-0.5) - (y^2)*(1 + 5*y^2)^(-3/2) - (y^4)/16)
+        end
+    end
+
+    # Derivative of the gravitational force
+    Fg_prime = (y::Real) -&gt; begin 
+        if y &lt; 0
+            -0.1
+        else
+            0.05*((-4*y^3)/16 + (5*y)/(1 + 5*y^2)^1.5 + (3*5*y^3)/(1 + 5*y^2)^(5/2) - (2*y)/(1 + 5*y^2)^(3/2))
+        end
+    end
+    
+    # The height of the landscape as a function of the horizontal coordinate
+    height = (x::Float64) -&gt; begin
+        if x &lt; 0
+            h = x^2 + x
+        else
+            h = x * _₂F₁(0.5,0.5,1.5, -5*x^2) + x^3 * _₂F₁(1.5, 1.5, 2.5, -5*x^2) / 3 + x^5 / 80
+        end
+        return 0.05*h
+    end
+    
+    return (Fa, Fa_prime, Ff, Ff_prime, Fg, Fg_prime, height)
+end</code></pre><pre><code class="nohighlight hljs">create_physics (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">engine_force_limit   = 0.04
+friction_coefficient = 0.1
+
+Fa, Fa_prime, Ff, Ff_prime, Fg, Fg_prime, height = create_physics(
+    engine_force_limit = engine_force_limit,
+    friction_coefficient = friction_coefficient
+);
+
+initial_position = -0.5
+initial_velocity = 0.0
+
+x_target = [0.5, 0.0] 
+
+valley_x = range(-2, 2, length=400)
+valley_y = [ height(xs) for xs in valley_x ]
+plot(valley_x, valley_y, title = &quot;Mountain valley&quot;, label = &quot;Landscape&quot;, color = &quot;black&quot;)
+scatter!([ initial_position ], [ height(initial_position) ], label=&quot;initial position&quot;)   
+scatter!([x_target[1]], [height(x_target[1])], label=&quot;goal&quot;)</code></pre><p><img src="../../assets/examples/Active Inference Mountain car_4_1.png" alt/></p><h1 id="World-agent-interaction"><a class="docs-heading-anchor" href="#World-agent-interaction">World - agent interaction</a><a id="World-agent-interaction-1"></a><a class="docs-heading-anchor-permalink" href="#World-agent-interaction" title="Permalink"></a></h1><p>Because the states of the world are unknown to the agent, we wrap them in a comprehension. The comprehension returns only the functions for interacting with the world and not the hidden states. This way, we introduce a stateful world whose states cannot be directly observed.</p><pre><code class="language-julia hljs">function create_world(; Fg, Ff, Fa, initial_position = -0.5, initial_velocity = 0.0)
+
+    y_t_min = initial_position
+    y_dot_t_min = initial_velocity
+    
+    y_t = y_t_min
+    y_dot_t = y_dot_t_min
+    
+    execute = (a_t::Float64) -&gt; begin
+        # Compute next state
+        y_dot_t = y_dot_t_min + Fg(y_t_min) + Ff(y_dot_t_min) + Fa(a_t)
+        y_t = y_t_min + y_dot_t
+    
+        # Reset state for next step
+        y_t_min = y_t
+        y_dot_t_min = y_dot_t
+    end
+    
+    observe = () -&gt; begin 
+        return [y_t, y_dot_t]
+    end
+        
+    return (execute, observe)
+end</code></pre><pre><code class="nohighlight hljs">create_world (generic function with 1 method)</code></pre><h2 id="Naive-approach"><a class="docs-heading-anchor" href="#Naive-approach">Naive approach</a><a id="Naive-approach-1"></a><a class="docs-heading-anchor-permalink" href="#Naive-approach" title="Permalink"></a></h2><p>In this simulation we are going to perform a naive action policy for tight full-power only. In this case, with limited engine power, the agent should not be able to achieve its goal:</p><pre><code class="language-julia hljs">N_naive  = 100 # Total simulation time
+pi_naive = 100.0 * ones(N_naive) # Naive policy for right full-power only
+
+# Let there be a world
+(execute_naive, observe_naive) = create_world(; 
+    Fg = Fg, Ff = Ff, Fa = Fa, 
+    initial_position = initial_position, 
+    initial_velocity = initial_velocity
+);
+
+y_naive = Vector{Vector{Float64}}(undef, N_naive)
+for t = 1:N_naive
+    execute_naive(pi_naive[t]) # Execute environmental process
+    y_naive[t] = observe_naive() # Observe external states
+end
+
+animation_naive = @animate for i in 1:N_naive
+    plot(valley_x, valley_y, title = &quot;Naive policy&quot;, label = &quot;Landscape&quot;, color = &quot;black&quot;, size = (800, 400))
+    scatter!([y_naive[i][1]], [height(y_naive[i][1])], label=&quot;car&quot;)
+    scatter!([x_target[1]], [height(x_target[1])], label=&quot;goal&quot;)   
+end
+
+gif(animation_naive, &quot;./../assets/examples/ai-mountain-car-naive.gif&quot;, fps = 24, show_msg = false);</code></pre><p><img src="../../assets/examples/ai-mountain-car-naive.gif" alt/></p><h1 id="Active-inference-approach"><a class="docs-heading-anchor" href="#Active-inference-approach">Active inference approach</a><a id="Active-inference-approach-1"></a><a class="docs-heading-anchor-permalink" href="#Active-inference-approach" title="Permalink"></a></h1><p>In the active inference approach we are going to create an agent that models the environment around itself as well as the best possible actions in a probabilistic manner. That should help agent to understand that the brute-force approach is not the most efficient one and hopefully to realise that a little bit of swing is necessary to achieve its goal.</p><p>The code in the next block defines the agent&#39;s internal beliefs over the external dynamics and its probabilistic model of the environment, which correspond accurately by directly using the functions defined above. We use the <code>@model</code> macro from <code>RxInfer</code> to define the probabilistic model and the <code>meta</code> block to define approximation methods for the nonlinear state-transition functions.</p><p>In the model specification we in addition to the current state of the agent we include the beliefs over its future states (up to <code>T</code> steps ahead):</p><pre><code class="language-julia hljs">@model function mountain_car(; T, Fg, Fa, Ff, engine_force_limit)
+    
+    # Transition function modeling transition due to gravity and friction
+    g = (s_t_min::AbstractVector) -&gt; begin 
+        s_t = similar(s_t_min) # Next state
+        s_t[2] = s_t_min[2] + Fg(s_t_min[1]) + Ff(s_t_min[2]) # Update velocity
+        s_t[1] = s_t_min[1] + s_t[2] # Update position
+        return s_t
+    end
+    
+    # Function for modeling engine control
+    h = (u::AbstractVector) -&gt; [0.0, Fa(u[1])] 
+    
+    # Inverse engine force, from change in state to corresponding engine force
+    h_inv = (delta_s_dot::AbstractVector) -&gt; [atanh(clamp(delta_s_dot[2], -engine_force_limit+1e-3, engine_force_limit-1e-3)/engine_force_limit)] 
+    
+    # Internal model perameters
+    Gamma = 1e4*diageye(2) # Transition precision
+    Theta = 1e-4*diageye(2) # Observation variance
+    
+    m_s_t_min = datavar(Vector{Float64})
+    V_s_t_min = datavar(Matrix{Float64})
+
+    s_t_min ~ MvNormal(mean = m_s_t_min, cov = V_s_t_min)
+    s_k_min = s_t_min
+    
+    m_u = datavar(Vector{Float64}, T)
+    V_u = datavar(Matrix{Float64}, T)
+    
+    m_x = datavar(Vector{Float64}, T)
+    V_x = datavar(Matrix{Float64}, T)
+    
+    u = randomvar(T)
+    s = randomvar(T)
+    x = randomvar(T)
+    
+    u_h_k = randomvar(T)
+    s_g_k = randomvar(T)
+    u_s_sum = randomvar(T)
+    
+    for k in 1:T
+        u[k] ~ MvNormal(mean = m_u[k], cov = V_u[k])
+        u_h_k[k] ~ h(u[k]) where { meta = DeltaMeta(method = Linearization(), inverse = h_inv) }
+        s_g_k[k] ~ g(s_k_min) where { meta = DeltaMeta(method = Linearization()) }
+        u_s_sum[k] ~ s_g_k[k] + u_h_k[k]
+        s[k] ~ MvNormal(mean = u_s_sum[k], precision = Gamma)
+        x[k] ~ MvNormal(mean = s[k], cov = Theta)
+        x[k] ~ MvNormal(mean = m_x[k], cov = V_x[k]) # goal
+        s_k_min = s[k]
+    end
+    
+    return (s, )
+end</code></pre><p>Because states of the agent are unknown to the world, we wrap them in a comprehension. The comprehension only returns functions for interacting with the agent. Internal beliefs cannot be directly observed, and interaction is only allowed through the Markov blanket</p><pre><code class="language-julia hljs"># We are going to use some private functionality from ReactiveMP, 
+# in the future we should expose a proper API for this
+import ReactiveMP: getrecent, messageout
+
+function create_agent(; T = 20, Fg, Fa, Ff, engine_force_limit, x_target, initial_position, initial_velocity)
+    Epsilon = fill(huge, 1, 1)                # Control prior variance
+    m_u = Vector{Float64}[ [ 0.0] for k=1:T ] # Set control priors
+    V_u = Matrix{Float64}[ Epsilon for k=1:T ]
+
+    Sigma    = 1e-4*diageye(2) # Goal prior variance
+    m_x      = [zeros(2) for k=1:T]
+    V_x      = [huge*diageye(2) for k=1:T]
+    V_x[end] = Sigma # Set prior to reach goal at t=T
+
+    # Set initial brain state prior
+    m_s_t_min = [initial_position, initial_velocity] 
+    V_s_t_min = tiny * diageye(2)
+    
+    # Set current inference results
+    result = nothing
+
+    # The `infer` function is the heart of the agent
+    # It calls the `RxInfer.inference` function to perform Bayesian inference by message passing
+    infer = (upsilon_t::Float64, y_hat_t::Vector{Float64}) -&gt; begin
+        m_u[1] = [ upsilon_t ] # Register action with the generative model
+        V_u[1] = fill(tiny, 1, 1) # Clamp control prior to performed action
+
+        m_x[1] = y_hat_t # Register observation with the generative model
+        V_x[1] = tiny*diageye(2) # Clamp goal prior to observation
+
+        data = Dict(:m_u       =&gt; m_u, 
+                    :V_u       =&gt; V_u, 
+                    :m_x       =&gt; m_x, 
+                    :V_x       =&gt; V_x,
+                    :m_s_t_min =&gt; m_s_t_min,
+                    :V_s_t_min =&gt; V_s_t_min)
+        
+        model  = mountain_car(; T = T, Fg = Fg, Fa = Fa, Ff = Ff, engine_force_limit = engine_force_limit) 
+        result = inference(model = model, data = data)
+    end
+    
+    # The `act` function returns the inferred best possible action
+    act = () -&gt; begin
+        if result !== nothing
+            return mode(result.posteriors[:u][2])[1]
+        else
+            return 0.0 # Without inference result we return some &#39;random&#39; action
+        end
+    end
+    
+    # The `future` function returns the inferred future states
+    future = () -&gt; begin 
+        if result !== nothing 
+            return getindex.(mode.(result.posteriors[:s]), 1)
+        else
+            return zeros(T)
+        end
+    end
+
+    # The `slide` function modifies the `(m_s_t_min, V_s_t_min)` for the next step
+    # and shifts (or slides) the array of future goals `(m_x, V_x)` and inferred actions `(m_u, V_u)`
+    slide = () -&gt; begin
+        (s, ) = result.returnval
+        
+        slide_msg_idx = 3 # This index is model dependend
+        (m_s_t_min, V_s_t_min) = mean_cov(getrecent(messageout(s[2], slide_msg_idx)))
+
+        m_u = circshift(m_u, -1)
+        m_u[end] = [0.0]
+        V_u = circshift(V_u, -1)
+        V_u[end] = Epsilon
+
+        m_x = circshift(m_x, -1)
+        m_x[end] = x_target
+        V_x = circshift(V_x, -1)
+        V_x[end] = Sigma
+    end
+
+    return (infer, act, slide, future)    
+end</code></pre><pre><code class="nohighlight hljs">create_agent (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">(execute_ai, observe_ai) = create_world(
+    Fg = Fg, Ff = Ff, Fa = Fa, 
+    initial_position = initial_position, 
+    initial_velocity = initial_velocity
+) # Let there be a world
+
+T_ai = 50
+
+(infer_ai, act_ai, slide_ai, future_ai) = create_agent(; # Let there be an agent
+    T  = T_ai, 
+    Fa = Fa,
+    Fg = Fg, 
+    Ff = Ff, 
+    engine_force_limit = engine_force_limit,
+    x_target = x_target,
+    initial_position = initial_position,
+    initial_velocity = initial_velocity
+) 
+
+N_ai = 100
+
+# Step through experimental protocol
+agent_a = Vector{Float64}(undef, N_ai) # Actions
+agent_f = Vector{Vector{Float64}}(undef, N_ai) # Predicted future
+agent_x = Vector{Vector{Float64}}(undef, N_ai) # Observations
+
+for t=1:N_ai
+    agent_a[t] = act_ai()            # Invoke an action from the agent
+    agent_f[t] = future_ai()         # Fetch the predicted future states
+    execute_ai(agent_a[t])           # The action influences hidden external states
+    agent_x[t] = observe_ai()        # Observe the current environmental outcome (update p)
+    infer_ai(agent_a[t], agent_x[t]) # Infer beliefs from current model state (update q)
+    slide_ai()                       # Prepare for next iteration
+end
+
+animation_ai = @animate for i in 1:N_ai
+    # pls - plot landscape
+    pls = plot(valley_x, valley_y, title = &quot;Active inference results&quot;, label = &quot;Landscape&quot;, color = &quot;black&quot;)
+    pls = scatter!(pls, [agent_x[i][1]], [height(agent_x[i][1])], label=&quot;car&quot;)
+    pls = scatter!(pls, [x_target[1]], [height(x_target[1])], label=&quot;goal&quot;)   
+    pls = scatter!(pls, agent_f[i], height.(agent_f[i]), label = &quot;Predicted future&quot;, alpha = map(i -&gt; 0.5 / i, 1:T_ai))
+    
+    # pef - plot engine force
+    pef = plot(Fa.(agent_a[1:i]), title = &quot;Engine force (agents actions)&quot;, xlim = (0, N_ai), ylim = (-0.05, 0.05))
+    
+    plot(pls, pef, size = (800, 400))
+end
+    
+gif(animation_ai, &quot;./../assets/examples/ai-mountain-car-ai.gif&quot;, fps = 24, show_msg = false);</code></pre><p><img src="../../assets/examples/ai-mountain-car-ai.gif" alt/></p><p>As we can see the agent does indeed swing in order to reach its goal. Its interesting though that in the beginning the agent does not attempt to do that but only after some time has passed. That can be explained by the fact that we set <code>T_ai = 50</code>, which means that the agent must reach its goal after 50 time steps. In the beginning of the simulation this time horizon appears to be so far in the future that the agent decides not to do anything (in this way the Active Inference agent proved that procrastinating is smart!). After around <code>30</code> time steps the goal target becomes closer in time (agent has less than 20 time steps left to achieve the goal) and agent finally decides to act, predicts its future states and realises that in order to achieve its goal it must swing.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Linear Regression/">« Bayesian Linear Regression</a><a class="docs-footer-nextpage" href="../Assessing People Skills/">Assessing People’s Skills »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 13 December 2022 17:44">Tuesday 13 December 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
