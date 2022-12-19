@@ -178,16 +178,16 @@ uresult = inference(
     iterations = 15, 
     showprogress = false
 )</code></pre><pre><code class="nohighlight hljs">Benchmark for n = 500 and AR 1 order inference
-BenchmarkTools.Trial: 17 samples with 1 evaluation.
- Range (min … max):  244.640 ms … 362.691 ms  ┊ GC (min … max):  0.00% … 24
-.40%
- Time  (median):     310.066 ms               ┊ GC (median):    16.59%
- Time  (mean ± σ):   297.773 ms ±  41.591 ms  ┊ GC (mean ± σ):  13.39% ± 10
-.57%
+BenchmarkTools.Trial: 16 samples with 1 evaluation.
+ Range (min … max):  259.345 ms … 367.662 ms  ┊ GC (min … max):  0.00% … 22
+.64%
+ Time  (median):     315.668 ms               ┊ GC (median):    15.75%
+ Time  (mean ± σ):   315.477 ms ±  37.429 ms  ┊ GC (mean ± σ):  11.54% ±  9
+.82%
 
-  ▁█▁▁  ▁          ▁           ▁   ▁▁  ▁ ▁  ▁▁       ▁       ▁▁  
-  ████▁▁█▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁█▁▁▁██▁▁█▁█▁▁██▁▁▁▁▁▁▁█▁▁▁▁▁▁▁██ ▁
-  245 ms           Histogram: frequency by time          363 ms &lt;
+  ▁     █  ▁  ▁▁              ▁ ▁  ▁        ▁▁     ▁ ▁     ▁▁ ▁  
+  █▁▁▁▁▁█▁▁█▁▁██▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁█▁▁█▁▁▁▁▁▁▁▁██▁▁▁▁▁█▁█▁▁▁▁▁██▁█ ▁
+  259 ms           Histogram: frequency by time          368 ms &lt;
 
  Memory estimate: 94.09 MiB, allocs estimate: 1945568.</code></pre><pre><code class="language-julia hljs">println(&quot;Benchmark for n = $n and AR $(morder) order inference&quot;);
 
@@ -202,14 +202,14 @@ BenchmarkTools.Trial: 17 samples with 1 evaluation.
     showprogress = false
 )</code></pre><pre><code class="nohighlight hljs">Benchmark for n = 500 and AR 5 order inference
 BenchmarkTools.Trial: 8 samples with 1 evaluation.
- Range (min … max):  634.266 ms … 752.407 ms  ┊ GC (min … max): 11.06% … 16
-.79%
- Time  (median):     699.784 ms               ┊ GC (median):    17.61%
- Time  (mean ± σ):   701.476 ms ±  35.921 ms  ┊ GC (mean ± σ):  16.79% ±  3
-.25%
+ Range (min … max):  633.028 ms … 696.756 ms  ┊ GC (min … max): 10.25% … 17
+.63%
+ Time  (median):     682.983 ms               ┊ GC (median):    17.17%
+ Time  (mean ± σ):   675.289 ms ±  21.785 ms  ┊ GC (mean ± σ):  15.39% ±  3
+.93%
 
-  ▁                        ▁ ▁     █             ▁▁           ▁  
-  █▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁█▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁██▁▁▁▁▁▁▁▁▁▁▁█ ▁
-  634 ms           Histogram: frequency by time          752 ms &lt;
+  ▁                     ▁          ▁             ▁▁ ▁         █  
+  █▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁██▁█▁▁▁▁▁▁▁▁▁█ ▁
+  633 ms           Histogram: frequency by time          697 ms &lt;
 
- Memory estimate: 299.48 MiB, allocs estimate: 2698594.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Hidden Markov Model/">« Ensemble Learning of a Hidden Markov Model</a><a class="docs-footer-nextpage" href="../Hierarchical Gaussian Filter/">Hierarchical Gaussian Filter »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 19 December 2022 08:52">Monday 19 December 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ Memory estimate: 299.48 MiB, allocs estimate: 2698594.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Hidden Markov Model/">« Ensemble Learning of a Hidden Markov Model</a><a class="docs-footer-nextpage" href="../Hierarchical Gaussian Filter/">Hierarchical Gaussian Filter »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 19 December 2022 13:33">Monday 19 December 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
