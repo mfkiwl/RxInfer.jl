@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Global Parameter Optimisation · RxInfer.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link rel="canonical" href="https://biaslab.github.io/RxInfer.jl/examples/Global Parameter Optimisation/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/theme.css" rel="stylesheet" type="text/css"/><link href="../../assets/header.css" rel="stylesheet" type="text/css"/><script src="../../assets/header.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.svg" alt="RxInfer.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.svg" alt="RxInfer.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">RxInfer.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">User guide</span><ul><li><a class="tocitem" href="../../manuals/getting-started/">Getting started</a></li><li><a class="tocitem" href="../../manuals/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../manuals/constraints-specification/">Constraints specification</a></li><li><a class="tocitem" href="../../manuals/meta-specification/">Meta specification</a></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">Inference specification</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../manuals/inference/overview/">Overview</a></li><li><a class="tocitem" href="../../manuals/inference/inference/">Static dataset</a></li><li><a class="tocitem" href="../../manuals/inference/rxinference/">Real-time dataset / reactive inference</a></li><li><a class="tocitem" href="../../manuals/inference/postprocess/">Inference results postprocessing</a></li><li><a class="tocitem" href="../../manuals/inference/manual/">Manual inference specification</a></li></ul></li></ul></li><li><span class="tocitem">Library</span><ul><li><a class="tocitem" href="../../library/functional-forms/">Built-in functional form constraints</a></li><li><a class="tocitem" href="../../library/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../library/bethe-free-energy/">Bethe Free Energy</a></li><li><a class="tocitem" href="../../library/exported-methods/">Exported methods</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../overview/">Overview</a></li><li><a class="tocitem" href="../Coin Toss Model/">Coin toss model (Beta-Bernoulli)</a></li><li><a class="tocitem" href="../Linear Regression/">Bayesian Linear Regression</a></li><li><a class="tocitem" href="../Active Inference Mountain car/">Active Inference Mountain car</a></li><li><a class="tocitem" href="../Assessing People Skills/">Assessing People’s Skills</a></li><li><a class="tocitem" href="../Gaussian Linear Dynamical System/">Gaussian Linear Dynamical System</a></li><li><a class="tocitem" href="../Hidden Markov Model/">Ensemble Learning of a Hidden Markov Model</a></li><li><a class="tocitem" href="../Autoregressive Model/">Autoregressive Model</a></li><li><a class="tocitem" href="../Hierarchical Gaussian Filter/">Hierarchical Gaussian Filter</a></li><li><a class="tocitem" href="../Bayesian ARMA/">Bayesian ARMA model</a></li><li><a class="tocitem" href="../Infinite Data Stream/">Infinite Data Stream</a></li><li><a class="tocitem" href="../Identification Problem/">System Identification Problem</a></li><li><a class="tocitem" href="../Gaussian Mixture Univariate/">Univariate Gaussian Mixture Model</a></li><li><a class="tocitem" href="../Gaussian Mixtures Multivariate/">Multivariate Gaussian Mixture Model</a></li><li><a class="tocitem" href="../Gamma Mixture/">Gamma Mixture Model</a></li><li><a class="tocitem" href="../Universal Mixtures/">Universal Mixtures</a></li><li class="is-active"><a class="tocitem" href>Global Parameter Optimisation</a><ul class="internal"><li><a class="tocitem" href="#Univariate-case"><span>Univariate case</span></a></li><li><a class="tocitem" href="#Multivariate-case"><span>Multivariate case</span></a></li></ul></li><li><a class="tocitem" href="../Invertible Neural Network Tutorial/">Invertible neural networks: a tutorial</a></li><li><a class="tocitem" href="../Conjugate-Computational Variational Message Passing/">Conjugate-Computational Variational Message Passing (CVI)</a></li><li><a class="tocitem" href="../GPRegression by SSM/">Solve GP regression by SDE</a></li><li><a class="tocitem" href="../Nonlinear Noisy Pendulum/">Nonlinear Smoothing: Noisy Pendulum</a></li><li><a class="tocitem" href="../Nonlinear Rabbit Population/">Nonlinear Smoothing: Rabbit Population</a></li><li><a class="tocitem" href="../Nonlinear Virus Spread/">Nonlinear Virus Spread</a></li><li><a class="tocitem" href="../Nonlinear Sensor Fusion/">Nonlinear Sensor Fusion</a></li><li><a class="tocitem" href="../Kalman filter with LSTM network driven dynamic/">Kalman filter with LSTM network driven dynamic</a></li><li><a class="tocitem" href="../Handling Missing Data/">Handling Missing Data</a></li><li><a class="tocitem" href="../Custom nonlinear node/">Custom Nonlinear Node</a></li><li><a class="tocitem" href="../Probit Model (EP)/">Probit Model (EP)</a></li><li><a class="tocitem" href="../RTS vs BIFM Smoothing/">RTS vs BIFM Smoothing</a></li><li><a class="tocitem" href="../Advanced Tutorial/">Advanced Tutorial</a></li></ul></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../contributing/overview/">Overview</a></li><li><a class="tocitem" href="../../contributing/new-example/">Adding a new example</a></li><li><a class="tocitem" href="../../contributing/new-release/">Publishing a new release</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Global Parameter Optimisation</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Global Parameter Optimisation</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/biaslab/RxInfer.jl/blob/main/docs/src/examples/Global Parameter Optimisation.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><p>This example has been auto-generated from the <a href="https://github.com/biaslab/RxInfer.jl/tree/main/examples"><code>examples/</code></a> folder at GitHub repository.</p><h1 id="examples-global-parameter-optimisation"><a class="docs-heading-anchor" href="#examples-global-parameter-optimisation">Global Parameter Optimisation</a><a id="examples-global-parameter-optimisation-1"></a><a class="docs-heading-anchor-permalink" href="#examples-global-parameter-optimisation" title="Permalink"></a></h1><pre><code class="language-julia hljs"># Activate local environment, see `Project.toml`
+import Pkg; Pkg.activate(&quot;.&quot;); Pkg.instantiate();</code></pre><p>This notebook demonstrates how to optimize the parameters of the state-space model (implemented in <strong>RxInfer.jl</strong>) through an external optimization packages such as <a href="https://github.com/JuliaNLSolvers/Optim.jl/">Optim.jl</a></p><h2 id="Univariate-case"><a class="docs-heading-anchor" href="#Univariate-case">Univariate case</a><a id="Univariate-case-1"></a><a class="docs-heading-anchor-permalink" href="#Univariate-case" title="Permalink"></a></h2><p>First, lets try use the following simple model (multivariate version is presented below):</p><p class="math-container">\[\begin{aligned}
+    {x}_t &amp;= {x}_{t-1} + c \\
+    {y}_t &amp;\sim \mathcal{N}\left({x}_{t}, p \right) 
+\end{aligned}\]</p><p>with prior <span>${x}_0 \sim \mathcal{N}({m_{{x}_0}}, {v_{{x}_0}})$</span>. Our goal is to optimize parameters <span>$c$</span> and <span>${m_{{x}_0}}$</span>.</p><pre><code class="language-julia hljs">using RxInfer, BenchmarkTools, Random, LinearAlgebra, Plots</code></pre><pre><code class="language-julia hljs">@model function smoothing(n, x0, c::ConstVariable, P::ConstVariable)
+    
+    x_prior ~ NormalMeanVariance(mean(x0), cov(x0)) 
+
+    x = randomvar(n)
+    y = datavar(Float64, n)
+
+    x_prev = x_prior
+
+    for i in 1:n
+        x[i] ~ x_prev + c
+        y[i] ~ NormalMeanVariance(x[i], P)
+        
+        x_prev = x[i]
+    end
+
+    return x, y
+end</code></pre><pre><code class="language-julia hljs">rng = MersenneTwister(42)
+
+P      = 1.0
+n      = 250
+c_real = -5.0
+data   = c_real .+ collect(1:n) + rand(rng, Normal(0.0, sqrt(P)), n);</code></pre><pre><code class="language-julia hljs"># c[1] is C
+# c[2] is μ0
+function f(c)
+    x0_prior = NormalMeanVariance(c[2], 100.0)
+    result = inference(
+        model = smoothing(n, x0_prior, c[1], P), 
+        data  = (y = data,), 
+        free_energy = true
+    )
+    return result.free_energy[end]
+end</code></pre><pre><code class="nohighlight hljs">f (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">using Optim</code></pre><pre><code class="language-julia hljs">res = optimize(f, ones(2), GradientDescent(), Optim.Options(g_tol = 1e-3, iterations = 100, store_trace = true, show_trace = true, show_every = 10))</code></pre><pre><code class="nohighlight hljs">Iter     Function value   Gradient norm 
+     0     3.683766e+02     7.580911e+02
+ * time: 0.018672943115234375
+    10     3.679682e+02     2.192867e+01
+ * time: 5.498099088668823
+ * Status: success
+
+ * Candidate solution
+    Final objective value:     3.679676e+02
+
+ * Found with
+    Algorithm:     Gradient Descent
+
+ * Convergence measures
+    |x - x&#39;|               = 7.41e-06 ≰ 0.0e+00
+    |x - x&#39;|/|x&#39;|          = 1.46e-06 ≰ 0.0e+00
+    |f(x) - f(x&#39;)|         = 3.57e-05 ≰ 0.0e+00
+    |f(x) - f(x&#39;)|/|f(x&#39;)| = 9.71e-08 ≰ 0.0e+00
+    |g(x)|                 = 7.54e-04 ≤ 1.0e-03
+
+ * Work counters
+    Seconds run:   9  (vs limit Inf)
+    Iterations:    19
+    f(x) calls:    143
+    ∇f(x) calls:   143</code></pre><pre><code class="language-julia hljs">res.minimizer # Real values are indeed (c = 1.0 and μ0 = -5.0)</code></pre><pre><code class="nohighlight hljs">2-element Vector{Float64}:
+  1.0005879970247287
+ -5.064261176334881</code></pre><pre><code class="language-julia hljs">println(&quot;Real value vs Optimized&quot;)
+println(&quot;Real:      &quot;, [ 1.0, c_real ])
+println(&quot;Optimized: &quot;, res.minimizer)</code></pre><pre><code class="nohighlight hljs">Real value vs Optimized
+Real:      [1.0, -5.0]
+Optimized: [1.0005879970247287, -5.064261176334881]</code></pre><h2 id="Multivariate-case"><a class="docs-heading-anchor" href="#Multivariate-case">Multivariate case</a><a id="Multivariate-case-1"></a><a class="docs-heading-anchor-permalink" href="#Multivariate-case" title="Permalink"></a></h2><p>We could perform the same experiment with more complex model and multivariate observations:</p><p class="math-container">\[\begin{aligned}
+    \mathbf{x}_t &amp;\sim \mathcal{N}\left(\mathbf{Ax}_{t-1}, \mathbf{Q} \right) \\
+    \mathbf{y}_t &amp;\sim \mathcal{N}\left(\mathbf{x}_{t}, \mathbf{P} \right) 
+\end{aligned}\]</p><p>with prior </p><p class="math-container">\[\begin{aligned}
+\mathbf{x}_0 \sim \mathcal{N}(\mathbf{m_{{x}_0}}, \mathbf{V_{{x}_0}})\
+\end{aligned}\]</p><p>and transition matrix </p><p class="math-container">\[\begin{aligned}
+\mathbf{A} = \begin{bmatrix} \cos\theta &amp; -\sin\theta \\ \sin\theta &amp; \cos\theta \end{bmatrix}
+\end{aligned}\]</p><p>Covariance matrices <span>$\mathbf{V_{{x}_0}}$</span>, <span>$\mathbf{P}$</span> and <span>$\mathbf{Q}$</span> are known. Our goal is to optimize parameters <span>$\mathbf{m_{{x}_0}}$</span> and <span>$\theta$</span>.</p><pre><code class="language-julia hljs">@model function rotate_ssm(n, θ, x0, Q::ConstVariable, P::ConstVariable)
+    
+    x = randomvar(n)
+    y = datavar(Vector{Float64}, n)
+    
+    x_prior ~ MvNormalMeanCovariance(mean(x0), cov(x0))
+    
+    x_prev = x_prior
+    
+    A = constvar([ cos(θ) -sin(θ); sin(θ) cos(θ) ])
+    
+    for i in 1:n
+        x[i] ~ MvNormalMeanCovariance(A * x_prev, Q)
+        y[i] ~ MvNormalMeanCovariance(x[i], P)
+        
+        x_prev = x[i]
+    end
+    
+end</code></pre><pre><code class="language-julia hljs"># Generate data
+function generate_rotate_ssm_data()
+    rng = MersenneTwister(1234)
+
+    θ = π / 8
+    A = [ cos(θ) -sin(θ); sin(θ) cos(θ) ]
+    Q = Matrix(Diagonal(1.0 * ones(2)))
+    P = Matrix(Diagonal(1.0 * ones(2)))
+
+    n = 300
+
+    x_prev = [ 10.0, -10.0 ]
+
+    x = Vector{Vector{Float64}}(undef, n)
+    y = Vector{Vector{Float64}}(undef, n)
+
+    for i in 1:n
+        
+        x[i] = rand(rng, MvNormal(A * x_prev, Q))
+        y[i] = rand(rng, MvNormal(x[i], Q))
+        
+        x_prev = x[i]
+    end
+
+    return θ, A, Q, P, n, x, y
+end</code></pre><pre><code class="nohighlight hljs">generate_rotate_ssm_data (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">θ, A, Q, P, n, x, y = generate_rotate_ssm_data();</code></pre><pre><code class="language-julia hljs">px = plot()
+
+px = plot!(px, getindex.(x, 1), ribbon = diag(Q)[1] .|&gt; sqrt, fillalpha = 0.2, label = &quot;dim1&quot;)
+px = plot!(px, getindex.(x, 2), ribbon = diag(Q)[2] .|&gt; sqrt, fillalpha = 0.2, label = &quot;dim2&quot;)
+
+plot(px, size = (1200, 450))</code></pre><p><img src="../../assets/examples/Global Parameter Optimisation_13_1.png" alt/></p><pre><code class="language-julia hljs">function f(θ)
+    x0 = MvNormalMeanCovariance([ θ[2], θ[3] ], Matrix(Diagonal(0.01 * ones(2))))
+    result = inference(
+        model = rotate_ssm(n, θ[1], x0, Q, P), 
+        data  = (y = y,), 
+        free_energy = true
+    )
+    return result.free_energy[end]
+end</code></pre><pre><code class="nohighlight hljs">f (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">res = optimize(f, zeros(3), LBFGS(), Optim.Options(f_tol = 1e-14, g_tol = 1e-12, show_trace = true, show_every = 10))</code></pre><pre><code class="nohighlight hljs">Iter     Function value   Gradient norm 
+     0     2.192003e+04     9.032537e+04
+ * time: 8.392333984375e-5
+ * Status: success (objective increased between iterations)
+
+ * Candidate solution
+    Final objective value:     1.161372e+03
+
+ * Found with
+    Algorithm:     L-BFGS
+
+ * Convergence measures
+    |x - x&#39;|               = 1.55e-08 ≰ 0.0e+00
+    |x - x&#39;|/|x&#39;|          = 1.37e-09 ≰ 0.0e+00
+    |f(x) - f(x&#39;)|         = 4.55e-13 ≰ 0.0e+00
+    |f(x) - f(x&#39;)|/|f(x&#39;)| = 3.92e-16 ≤ 1.0e-14
+    |g(x)|                 = 1.13e-07 ≰ 1.0e-12
+
+ * Work counters
+    Seconds run:   10  (vs limit Inf)
+    Iterations:    7
+    f(x) calls:    46
+    ∇f(x) calls:   46</code></pre><pre><code class="language-julia hljs">println(&quot;Real value vs Optimized&quot;)
+println(&quot;Real:      &quot;, θ)
+println(&quot;Optimized: &quot;, res.minimizer[1])
+
+@show sin(θ), sin(res.minimizer[1])
+@show cos(θ), cos(res.minimizer[1])</code></pre><pre><code class="nohighlight hljs">Real value vs Optimized
+Real:      0.39269908169872414
+Optimized: 0.39293324813932734
+(sin(θ), sin(res.minimizer[1])) = (0.3826834323650898, 0.38289976345277027)
+(cos(θ), cos(res.minimizer[1])) = (0.9238795325112867, 0.923789895564902)
+(0.9238795325112867, 0.923789895564902)</code></pre><pre><code class="language-julia hljs">x0 = MvNormalMeanCovariance([ res.minimizer[2], res.minimizer[3] ], Matrix(Diagonal(100.0 * ones(2))))
+
+result = inference(
+    model = rotate_ssm(n, res.minimizer[1], x0, Q, P), 
+    data  = (y = y,), 
+    free_energy = true
+)
+
+xmarginals = result.posteriors[:x]
+
+px = plot()
+
+px = plot!(px, getindex.(x, 1), ribbon = diag(Q)[1] .|&gt; sqrt, fillalpha = 0.2, label = &quot;dim1&quot;)
+px = plot!(px, getindex.(x, 2), ribbon = diag(Q)[2] .|&gt; sqrt, fillalpha = 0.2, label = &quot;dim2&quot;)
+px = plot!(px, getindex.(mean.(xmarginals), 1), ribbon = getindex.(var.(xmarginals), 1) .|&gt; sqrt, fillalpha = 0.5, label = &quot;dim1_e&quot;)
+px = plot!(px, getindex.(mean.(xmarginals), 2), ribbon = getindex.(var.(xmarginals), 2) .|&gt; sqrt, fillalpha = 0.5, label = &quot;dim2_e&quot;)
+
+plot(px, size = (1200, 450))</code></pre><p><img src="../../assets/examples/Global Parameter Optimisation_17_1.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Universal Mixtures/">« Universal Mixtures</a><a class="docs-footer-nextpage" href="../Invertible Neural Network Tutorial/">Invertible neural networks: a tutorial »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Wednesday 21 December 2022 14:45">Wednesday 21 December 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
