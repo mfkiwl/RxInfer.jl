@@ -48,10 +48,10 @@ plot(prb, psb, size = (1000, 200))</code></pre><p><img src="../../assets/example
 b = results.posteriors[:b]
 
 println(&quot;Real a: &quot;, reala, &quot; | Estimated a: &quot;, mean_var(a), &quot; | Error: &quot;, abs(mean(a) - reala))
-println(&quot;Real b: &quot;, realb, &quot; | Estimated b: &quot;, mean_var(b), &quot; | Error: &quot;, abs(mean(b) - realb))</code></pre><pre><code class="nohighlight hljs">Real a: 0.5 | Estimated a: (0.499309095596421, 1.9152402435219974e-7) | Err
-or: 0.0006909044035789957
-Real b: 25.0 | Estimated b: (25.183864857711264, 0.004015967531215887) | Er
-ror: 0.1838648577112636</code></pre><p>We can see that ReactiveMP.jl estimated real values of linear regression coefficients with high precision. </p><h2 id="Univariate-regression-with-unknown-noise"><a class="docs-heading-anchor" href="#Univariate-regression-with-unknown-noise">Univariate regression with unknown noise</a><a id="Univariate-regression-with-unknown-noise-1"></a><a class="docs-heading-anchor-permalink" href="#Univariate-regression-with-unknown-noise" title="Permalink"></a></h2><p>For this demo we are going to increase the amount of noise in the dataset, but also instead of using a fixed value for the noise in the model we are going to make it a random variable with its own prior:</p><p class="math-container">\[\begin{aligned}
+println(&quot;Real b: &quot;, realb, &quot; | Estimated b: &quot;, mean_var(b), &quot; | Error: &quot;, abs(mean(b) - realb))</code></pre><pre><code class="nohighlight hljs">Real a: 0.5 | Estimated a: (0.49856468695861783, 1.9152402435219974e-7) | E
+rror: 0.001435313041382169
+Real b: 25.0 | Estimated b: (25.22811152763831, 0.004015967531215887) | Err
+or: 0.22811152763830833</code></pre><p>We can see that ReactiveMP.jl estimated real values of linear regression coefficients with high precision. </p><h2 id="Univariate-regression-with-unknown-noise"><a class="docs-heading-anchor" href="#Univariate-regression-with-unknown-noise">Univariate regression with unknown noise</a><a id="Univariate-regression-with-unknown-noise-1"></a><a class="docs-heading-anchor-permalink" href="#Univariate-regression-with-unknown-noise" title="Permalink"></a></h2><p>For this demo we are going to increase the amount of noise in the dataset, but also instead of using a fixed value for the noise in the model we are going to make it a random variable with its own prior:</p><p class="math-container">\[\begin{aligned}
 p(s) = \mathcal{IG}(s|\alpha, \theta)
 \end{aligned}\]</p><pre><code class="language-julia hljs">@model function linear_regression_unknown_noise(n)
     a ~ NormalMeanVariance(0.0, 1.0)
@@ -166,9 +166,9 @@ ydata_mv = map(i -&gt; getindex.(y_mv, i), 1:N_mv);</code></pre><pre><code class
     constraints = MeanField()
 )</code></pre><pre><code class="nohighlight hljs">Inference results:
   Posteriors       | available for (a, b, W)
-  Free Energy:     | Real[910.103, 1039.72, 1033.05, 1027.19, 1023.39, 1020
-.24, 1017.54, 1015.28, 1013.39, 1011.82  …  1003.96, 1003.95, 1003.94, 1003
-.93, 1003.92, 1003.91, 1003.9, 1003.9, 1003.89, 1003.88]</code></pre><pre><code class="language-julia hljs">p = plot(title = &quot;Multivariate linear regression inference results&quot;, legend = :topleft)
+  Free Energy:     | Real[921.737, 1056.22, 1048.51, 1041.87, 1037.39, 1033
+.61, 1030.38, 1027.66, 1025.4, 1023.55  …  1016.14, 1016.13, 1016.13, 1016.
+13, 1016.13, 1016.13, 1016.13, 1016.13, 1016.13, 1016.13]</code></pre><pre><code class="language-julia hljs">p = plot(title = &quot;Multivariate linear regression inference results&quot;, legend = :topleft)
 
 # how many lines to plot
 r = 50
@@ -231,9 +231,9 @@ plot(ps_b...)</code></pre><p><img src="../../assets/examples/Linear Regression_2
  32.21105133173212
  16.228513601930295
  64.33685320974074</code></pre><pre><code class="language-julia hljs">diag(mean(results_mv.posteriors[:W]))</code></pre><pre><code class="nohighlight hljs">6-element Vector{Float64}:
- 48.51351631855487
- 11.795457739629326
- 60.0564165688666
- 35.06641036663392
- 20.9357373769999
- 49.35045238738262</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Coin Toss Model/">« Coin toss model (Beta-Bernoulli)</a><a class="docs-footer-nextpage" href="../Active Inference Mountain car/">Active Inference Mountain car »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 26 December 2022 08:40">Monday 26 December 2022</span>. Using Julia version 1.8.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ 70.49700291462456
+ 18.30879207910898
+ 59.2779779012172
+ 23.955164682611837
+ 20.120775974520235
+ 64.6672129273721</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Coin Toss Model/">« Coin toss model (Beta-Bernoulli)</a><a class="docs-footer-nextpage" href="../Active Inference Mountain car/">Active Inference Mountain car »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 26 December 2022 19:42">Monday 26 December 2022</span>. Using Julia version 1.8.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
