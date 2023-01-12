@@ -37,9 +37,9 @@ function f(c)
     return result.free_energy[end]
 end</code></pre><pre><code class="nohighlight hljs">f (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">using Optim</code></pre><pre><code class="language-julia hljs">res = optimize(f, ones(2), GradientDescent(), Optim.Options(g_tol = 1e-3, iterations = 100, store_trace = true, show_trace = true, show_every = 10))</code></pre><pre><code class="nohighlight hljs">Iter     Function value   Gradient norm 
      0     3.683766e+02     7.580911e+02
- * time: 0.018344879150390625
-    10     3.679682e+02     2.192867e+01
- * time: 5.505660772323608
+ * time: 0.023569107055664062
+    10     3.679681e+02     2.277267e+01
+ * time: 9.019627094268799
  * Status: success
 
  * Candidate solution
@@ -49,23 +49,23 @@ end</code></pre><pre><code class="nohighlight hljs">f (generic function with 1 m
     Algorithm:     Gradient Descent
 
  * Convergence measures
-    |x - x&#39;|               = 7.41e-06 ≰ 0.0e+00
-    |x - x&#39;|/|x&#39;|          = 1.46e-06 ≰ 0.0e+00
-    |f(x) - f(x&#39;)|         = 3.57e-05 ≰ 0.0e+00
-    |f(x) - f(x&#39;)|/|f(x&#39;)| = 9.71e-08 ≰ 0.0e+00
-    |g(x)|                 = 7.54e-04 ≤ 1.0e-03
+    |x - x&#39;|               = 5.09e-06 ≰ 0.0e+00
+    |x - x&#39;|/|x&#39;|          = 1.01e-06 ≰ 0.0e+00
+    |f(x) - f(x&#39;)|         = 1.69e-05 ≰ 0.0e+00
+    |f(x) - f(x&#39;)|/|f(x&#39;)| = 4.59e-08 ≰ 0.0e+00
+    |g(x)|                 = 9.57e-04 ≤ 1.0e-03
 
  * Work counters
-    Seconds run:   9  (vs limit Inf)
+    Seconds run:   15  (vs limit Inf)
     Iterations:    19
-    f(x) calls:    143
-    ∇f(x) calls:   143</code></pre><pre><code class="language-julia hljs">res.minimizer # Real values are indeed (c = 1.0 and μ0 = -5.0)</code></pre><pre><code class="nohighlight hljs">2-element Vector{Float64}:
-  1.0005879970247287
- -5.064261176334881</code></pre><pre><code class="language-julia hljs">println(&quot;Real value vs Optimized&quot;)
+    f(x) calls:    142
+    ∇f(x) calls:   142</code></pre><pre><code class="language-julia hljs">res.minimizer # Real values are indeed (c = 1.0 and μ0 = -5.0)</code></pre><pre><code class="nohighlight hljs">2-element Vector{Float64}:
+  1.0005879774879456
+ -5.043988393663863</code></pre><pre><code class="language-julia hljs">println(&quot;Real value vs Optimized&quot;)
 println(&quot;Real:      &quot;, [ 1.0, c_real ])
 println(&quot;Optimized: &quot;, res.minimizer)</code></pre><pre><code class="nohighlight hljs">Real value vs Optimized
 Real:      [1.0, -5.0]
-Optimized: [1.0005879970247287, -5.064261176334881]</code></pre><h2 id="Multivariate-case"><a class="docs-heading-anchor" href="#Multivariate-case">Multivariate case</a><a id="Multivariate-case-1"></a><a class="docs-heading-anchor-permalink" href="#Multivariate-case" title="Permalink"></a></h2><p>We could perform the same experiment with more complex model and multivariate observations:</p><p class="math-container">\[\begin{aligned}
+Optimized: [1.0005879774879456, -5.043988393663863]</code></pre><h2 id="Multivariate-case"><a class="docs-heading-anchor" href="#Multivariate-case">Multivariate case</a><a id="Multivariate-case-1"></a><a class="docs-heading-anchor-permalink" href="#Multivariate-case" title="Permalink"></a></h2><p>We could perform the same experiment with more complex model and multivariate observations:</p><p class="math-container">\[\begin{aligned}
     \mathbf{x}_t &amp;\sim \mathcal{N}\left(\mathbf{Ax}_{t-1}, \mathbf{Q} \right) \\
     \mathbf{y}_t &amp;\sim \mathcal{N}\left(\mathbf{x}_{t}, \mathbf{P} \right) 
 \end{aligned}\]</p><p>with prior </p><p class="math-container">\[\begin{aligned}
@@ -130,7 +130,7 @@ plot(px, size = (1200, 450))</code></pre><p><img src="../../assets/examples/Glob
     return result.free_energy[end]
 end</code></pre><pre><code class="nohighlight hljs">f (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">res = optimize(f, zeros(3), LBFGS(), Optim.Options(f_tol = 1e-14, g_tol = 1e-12, show_trace = true, show_every = 10))</code></pre><pre><code class="nohighlight hljs">Iter     Function value   Gradient norm 
      0     2.192003e+04     9.032537e+04
- * time: 6.198883056640625e-5
+ * time: 9.298324584960938e-5
  * Status: success (objective increased between iterations)
 
  * Candidate solution
@@ -140,27 +140,27 @@ end</code></pre><pre><code class="nohighlight hljs">f (generic function with 1 m
     Algorithm:     L-BFGS
 
  * Convergence measures
-    |x - x&#39;|               = 1.55e-08 ≰ 0.0e+00
-    |x - x&#39;|/|x&#39;|          = 1.37e-09 ≰ 0.0e+00
-    |f(x) - f(x&#39;)|         = 4.55e-13 ≰ 0.0e+00
-    |f(x) - f(x&#39;)|/|f(x&#39;)| = 3.92e-16 ≤ 1.0e-14
-    |g(x)|                 = 1.13e-07 ≰ 1.0e-12
+    |x - x&#39;|               = 1.41e-08 ≰ 0.0e+00
+    |x - x&#39;|/|x&#39;|          = 1.24e-09 ≰ 0.0e+00
+    |f(x) - f(x&#39;)|         = 2.27e-13 ≰ 0.0e+00
+    |f(x) - f(x&#39;)|/|f(x&#39;)| = 1.96e-16 ≤ 1.0e-14
+    |g(x)|                 = 9.39e-08 ≰ 1.0e-12
 
  * Work counters
-    Seconds run:   10  (vs limit Inf)
+    Seconds run:   19  (vs limit Inf)
     Iterations:    7
-    f(x) calls:    46
-    ∇f(x) calls:   46</code></pre><pre><code class="language-julia hljs">println(&quot;Real value vs Optimized&quot;)
+    f(x) calls:    47
+    ∇f(x) calls:   47</code></pre><pre><code class="language-julia hljs">println(&quot;Real value vs Optimized&quot;)
 println(&quot;Real:      &quot;, θ)
 println(&quot;Optimized: &quot;, res.minimizer[1])
 
 @show sin(θ), sin(res.minimizer[1])
 @show cos(θ), cos(res.minimizer[1])</code></pre><pre><code class="nohighlight hljs">Real value vs Optimized
 Real:      0.39269908169872414
-Optimized: 0.39293324813932734
-(sin(θ), sin(res.minimizer[1])) = (0.3826834323650898, 0.38289976345277027)
-(cos(θ), cos(res.minimizer[1])) = (0.9238795325112867, 0.923789895564902)
-(0.9238795325112867, 0.923789895564902)</code></pre><pre><code class="language-julia hljs">x0 = MvNormalMeanCovariance([ res.minimizer[2], res.minimizer[3] ], Matrix(Diagonal(100.0 * ones(2))))
+Optimized: 0.392933248139125
+(sin(θ), sin(res.minimizer[1])) = (0.3826834323650898, 0.38289976345258336)
+(cos(θ), cos(res.minimizer[1])) = (0.9238795325112867, 0.9237898955649795)
+(0.9238795325112867, 0.9237898955649795)</code></pre><pre><code class="language-julia hljs">x0 = MvNormalMeanCovariance([ res.minimizer[2], res.minimizer[3] ], Matrix(Diagonal(100.0 * ones(2))))
 
 result = inference(
     model = rotate_ssm(n, res.minimizer[1], x0, Q, P), 
@@ -177,4 +177,4 @@ px = plot!(px, getindex.(x, 2), ribbon = diag(Q)[2] .|&gt; sqrt, fillalpha = 0.2
 px = plot!(px, getindex.(mean.(xmarginals), 1), ribbon = getindex.(var.(xmarginals), 1) .|&gt; sqrt, fillalpha = 0.5, label = &quot;dim1_e&quot;)
 px = plot!(px, getindex.(mean.(xmarginals), 2), ribbon = getindex.(var.(xmarginals), 2) .|&gt; sqrt, fillalpha = 0.5, label = &quot;dim2_e&quot;)
 
-plot(px, size = (1200, 450))</code></pre><p><img src="../../assets/examples/Global Parameter Optimisation_17_1.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Universal Mixtures/">« Universal Mixtures</a><a class="docs-footer-nextpage" href="../Invertible Neural Network Tutorial/">Invertible neural networks: a tutorial »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 12 January 2023 12:14">Thursday 12 January 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+plot(px, size = (1200, 450))</code></pre><p><img src="../../assets/examples/Global Parameter Optimisation_17_1.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Universal Mixtures/">« Universal Mixtures</a><a class="docs-footer-nextpage" href="../Invertible Neural Network Tutorial/">Invertible neural networks: a tutorial »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 12 January 2023 12:48">Thursday 12 January 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
