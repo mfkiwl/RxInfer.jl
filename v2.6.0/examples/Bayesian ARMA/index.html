@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Bayesian ARMA model · RxInfer.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link rel="canonical" href="https://biaslab.github.io/RxInfer.jl/examples/Bayesian ARMA/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/theme.css" rel="stylesheet" type="text/css"/><link href="../../assets/header.css" rel="stylesheet" type="text/css"/><script src="../../assets/header.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.svg" alt="RxInfer.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.svg" alt="RxInfer.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">RxInfer.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">User guide</span><ul><li><a class="tocitem" href="../../manuals/getting-started/">Getting started</a></li><li><a class="tocitem" href="../../manuals/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../manuals/constraints-specification/">Constraints specification</a></li><li><a class="tocitem" href="../../manuals/meta-specification/">Meta specification</a></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">Inference specification</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../manuals/inference/overview/">Overview</a></li><li><a class="tocitem" href="../../manuals/inference/inference/">Static dataset</a></li><li><a class="tocitem" href="../../manuals/inference/rxinference/">Real-time dataset / reactive inference</a></li><li><a class="tocitem" href="../../manuals/inference/postprocess/">Inference results postprocessing</a></li><li><a class="tocitem" href="../../manuals/inference/manual/">Manual inference specification</a></li></ul></li></ul></li><li><span class="tocitem">Library</span><ul><li><a class="tocitem" href="../../library/functional-forms/">Built-in functional form constraints</a></li><li><a class="tocitem" href="../../library/model-specification/">Model specification</a></li><li><a class="tocitem" href="../../library/bethe-free-energy/">Bethe Free Energy</a></li><li><a class="tocitem" href="../../library/exported-methods/">Exported methods</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../overview/">Overview</a></li><li><a class="tocitem" href="../Coin Toss Model/">Coin toss model (Beta-Bernoulli)</a></li><li><a class="tocitem" href="../Linear Regression/">Bayesian Linear Regression</a></li><li><a class="tocitem" href="../Active Inference Mountain car/">Active Inference Mountain car</a></li><li><a class="tocitem" href="../Assessing People Skills/">Assessing People’s Skills</a></li><li><a class="tocitem" href="../Gaussian Linear Dynamical System/">Gaussian Linear Dynamical System</a></li><li><a class="tocitem" href="../Hidden Markov Model/">Ensemble Learning of a Hidden Markov Model</a></li><li><a class="tocitem" href="../Autoregressive Model/">Autoregressive Model</a></li><li><a class="tocitem" href="../Hierarchical Gaussian Filter/">Hierarchical Gaussian Filter</a></li><li class="is-active"><a class="tocitem" href>Bayesian ARMA model</a><ul class="internal"><li><a class="tocitem" href="#Prediction"><span>Prediction</span></a></li></ul></li><li><a class="tocitem" href="../Infinite Data Stream/">Infinite Data Stream</a></li><li><a class="tocitem" href="../Identification Problem/">System Identification Problem</a></li><li><a class="tocitem" href="../Gaussian Mixture Univariate/">Univariate Gaussian Mixture Model</a></li><li><a class="tocitem" href="../Gaussian Mixtures Multivariate/">Multivariate Gaussian Mixture Model</a></li><li><a class="tocitem" href="../Gamma Mixture/">Gamma Mixture Model</a></li><li><a class="tocitem" href="../Universal Mixtures/">Universal Mixtures</a></li><li><a class="tocitem" href="../Global Parameter Optimisation/">Global Parameter Optimisation</a></li><li><a class="tocitem" href="../Invertible Neural Network Tutorial/">Invertible neural networks: a tutorial</a></li><li><a class="tocitem" href="../Conjugate-Computational Variational Message Passing/">Conjugate-Computational Variational Message Passing (CVI)</a></li><li><a class="tocitem" href="../GPRegression by SSM/">Solve GP regression by SDE</a></li><li><a class="tocitem" href="../Nonlinear Noisy Pendulum/">Nonlinear Smoothing: Noisy Pendulum</a></li><li><a class="tocitem" href="../Nonlinear Rabbit Population/">Nonlinear Smoothing: Rabbit Population</a></li><li><a class="tocitem" href="../Nonlinear Virus Spread/">Nonlinear Virus Spread</a></li><li><a class="tocitem" href="../Nonlinear Sensor Fusion/">Nonlinear Sensor Fusion</a></li><li><a class="tocitem" href="../Kalman filter with LSTM network driven dynamic/">Kalman filter with LSTM network driven dynamic</a></li><li><a class="tocitem" href="../Handling Missing Data/">Handling Missing Data</a></li><li><a class="tocitem" href="../Custom nonlinear node/">Custom Nonlinear Node</a></li><li><a class="tocitem" href="../Probit Model (EP)/">Probit Model (EP)</a></li><li><a class="tocitem" href="../RTS vs BIFM Smoothing/">RTS vs BIFM Smoothing</a></li><li><a class="tocitem" href="../Advanced Tutorial/">Advanced Tutorial</a></li></ul></li><li><span class="tocitem">Contributing</span><ul><li><a class="tocitem" href="../../contributing/overview/">Overview</a></li><li><a class="tocitem" href="../../contributing/new-example/">Adding a new example</a></li><li><a class="tocitem" href="../../contributing/new-release/">Publishing a new release</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Bayesian ARMA model</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Bayesian ARMA model</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/biaslab/RxInfer.jl/blob/main/docs/src/examples/Bayesian ARMA.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><p>This example has been auto-generated from the <a href="https://github.com/biaslab/RxInfer.jl/tree/main/examples"><code>examples/</code></a> folder at GitHub repository.</p><h1 id="examples-bayesian-arma-model"><a class="docs-heading-anchor" href="#examples-bayesian-arma-model">Bayesian ARMA model</a><a id="examples-bayesian-arma-model-1"></a><a class="docs-heading-anchor-permalink" href="#examples-bayesian-arma-model" title="Permalink"></a></h1><pre><code class="language-julia hljs"># Activate local environment, see `Project.toml`
+import Pkg; Pkg.activate(&quot;.&quot;); Pkg.instantiate();</code></pre><p>This notebook shows how Bayesian <a href="https://en.wikipedia.org/wiki/Autoregressive%E2%80%93moving-average_model#Applications">ARMA model</a> can be implemeted in <strong>RxInfer.jl</strong>. For theoretical details on Varitional Inference for ARMA model, we refer the reader to the following <a href="https://ieeexplore.ieee.org/document/7798432">paper</a>. The Bayesian ARMA model can be written as follows:</p><p class="math-container">\[\begin{aligned}
+e_t \sim \mathcal{N}(0, \gamma^{-1}) \quad
+\theta &amp;\sim \mathcal{MN}(\mathbf{0}, \mathbf{I}) \quad
+\eta \sim \mathcal{MN}(\mathbf{0}, \mathbf{I}) \\
+\mathbf{h}_0 &amp;\sim \mathcal{MN}\left(\begin{bmatrix}
+e_{-1} \\
+e_{-2}
+\end{bmatrix}, \mathbf{I}\right) \\
+\mathbf{h}_t &amp;= \mathbf{S}\mathbf{h}_{t-1} + \mathbf{c} e_{t-1} \\
+\mathbf{x}_t &amp;= \boldsymbol{\theta}^\top\mathbf{x}_{t-1} + \boldsymbol{\eta}^\top\mathbf{h}_{t} + e_t 
+\end{aligned}\]</p><p>where shift matrix <span>$\mathbf{S}$</span> is</p><p class="math-container">\[\begin{aligned}
+\mathbf{S} = \begin{pmatrix}
+0 &amp; 0 \\
+1 &amp; 0 
+\end{pmatrix}
+\end{aligned}\]</p><p>and unit vector <span>$\mathbf{c}$</span>: </p><p class="math-container">\[\begin{aligned}
+\mathbf{c}=[1, 0]
+\end{aligned}\]</p><p>when MA order is <span>$2$</span></p><p>In this way, <span>$\mathbf{h}_t$</span> containing errors <span>$e_t$</span> can be viewed as hidden state.</p><p>In short, the Bayesian ARMA model has two intractabilities: (1) induced by the multiplication of two Gaussian RVs, i.e., <span>$\boldsymbol{\eta}^\top\mathbf{h}_{t}$</span>, (2) induced by errors <span>$e_t$</span> that prevents analytical update of precision parameter <span>$\gamma$</span> (this can be easily seen when constructing the Factor Graph, i.e. there is a loop). Both problems can be easily resolved in <strong>RxInfer.jl</strong>, by creating a hybrid inference algorithm based on Loopy Variational Message Passing.</p><pre><code class="language-julia hljs"># Load packages
+using RxInfer, LinearAlgebra, CSV, DataFrames, Plots</code></pre><pre><code class="language-julia hljs"># Define shift function
+function shift(dim)
+    S = Matrix{Float64}(I, dim, dim)
+    for i in dim:-1:2
+           S[i,:] = S[i-1, :]
+    end
+    S[1, :] = zeros(dim)
+    return S
+end</code></pre><pre><code class="nohighlight hljs">shift (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">@model function ARMA(n, x_prev, h_prior, γ_prior, τ_prior, η_prior, θ_prior, p, q)
+        
+    c = zeros(p); c[1] = 1.0; # AR
+    b = zeros(q); b[1] = 1.0; # MA
+    S = shift(q); # MA
+    
+    # initialize variables
+    h  = randomvar(n-1)
+    e  = randomvar(n)
+    z  = randomvar(n)
+    
+    x  = datavar(Float64, n) where { allow_missing = true }
+    
+    # priors
+    γ  ~ Gamma(shape = shape(γ_prior), rate = rate(γ_prior))
+    η  ~ MvNormal(mean = mean(η_prior), precision = precision(η_prior))
+    θ  ~ MvNormal(mean = mean(θ_prior), precision = precision(θ_prior))
+    τ  ~ Gamma(shape = shape(τ_prior), rate = rate(τ_prior))
+    
+    # initial
+    h_0  ~ MvNormal(mean = mean(h_prior), precision = precision(h_prior))
+    z[1] ~ AR(h_0, η, τ) where { meta = ARMeta(Multivariate, q, ARsafe()) }
+    e[1] ~ Normal(mean = 0.0, precision = γ)
+
+    x[1] ~ dot(b, z[1]) + dot(θ, x_prev[1]) + e[1]
+    
+    h_prev = h_0
+    for t in 1:n-1
+        
+        e[t+1] ~ Normal(mean = 0.0, precision = γ)
+        h[t] ~ S*h_prev + b*e[t]
+        z[t+1] ~ AR(h[t], η, τ) where { meta = ARMeta(Multivariate, q, ARsafe()) }
+        x[t+1] ~ dot(z[t+1], b) + dot(θ, x_prev[t]) + e[t+1]
+        h_prev = h[t]
+    end
+end</code></pre><h3 id="Load-dataset"><a class="docs-heading-anchor" href="#Load-dataset">Load dataset</a><a id="Load-dataset-1"></a><a class="docs-heading-anchor-permalink" href="#Load-dataset" title="Permalink"></a></h3><p>To validate our model and inference, we will use American Airlines stock data downloaded from <a href="https://www.kaggle.com/code/purvasingh/time-series-analysis-with-arma-and-arima/data?select=all_stocks_5yr.csv">Kaggle</a></p><p>Once the dataset is downloaded, we can load it into DataFrame.</p><pre><code class="language-julia hljs">x_df = CSV.read(&quot;data/arma/aal_stock.csv&quot;, DataFrame)</code></pre><pre><code class="nohighlight hljs">1259×7 DataFrame
+  Row │ date        open     high     low      close    volume    Name
+      │ Date        Float64  Float64  Float64  Float64  Int64     String3
+──────┼───────────────────────────────────────────────────────────────────
+    1 │ 2013-02-08    15.07    15.12   14.63     14.75   8407500  AAL
+    2 │ 2013-02-11    14.89    15.01   14.26     14.46   8882000  AAL
+    3 │ 2013-02-12    14.45    14.51   14.1      14.27   8126000  AAL
+    4 │ 2013-02-13    14.3     14.94   14.25     14.66  10259500  AAL
+    5 │ 2013-02-14    14.94    14.96   13.16     13.99  31879900  AAL
+    6 │ 2013-02-15    13.93    14.61   13.93     14.5   15628000  AAL
+    7 │ 2013-02-19    14.33    14.56   14.08     14.26  11354400  AAL
+    8 │ 2013-02-20    14.17    14.26   13.15     13.33  14725200  AAL
+  ⋮   │     ⋮          ⋮        ⋮        ⋮        ⋮        ⋮         ⋮
+ 1253 │ 2018-01-30    52.45    53.05   52.36     52.59   4741808  AAL
+ 1254 │ 2018-01-31    53.08    54.71   53.0      54.32   5962937  AAL
+ 1255 │ 2018-02-01    54.0     54.64   53.59     53.88   3623078  AAL
+ 1256 │ 2018-02-02    53.49    53.99   52.03     52.1    5109361  AAL
+ 1257 │ 2018-02-05    51.99    52.39   49.75     49.76   6878284  AAL
+ 1258 │ 2018-02-06    49.32    51.5    48.79     51.18   6782480  AAL
+ 1259 │ 2018-02-07    50.91    51.98   50.89     51.4    4845831  AAL
+                                                         1244 rows omitted</code></pre><pre><code class="language-julia hljs"># we will use &quot;close&quot; column
+x_data = filter(!ismissing, x_df[:, 5]);</code></pre><pre><code class="language-julia hljs"># Plot data
+plot(x_data, xlabel=&quot;day&quot;, ylabel=&quot;price&quot;, label=false)</code></pre><p><img src="../../assets/examples/Bayesian ARMA_7_1.png" alt/></p><pre><code class="language-julia hljs">p_order = 10 # AR
+q_order = 4 # MA</code></pre><pre><code class="nohighlight hljs">4</code></pre><pre><code class="language-julia hljs"># Training set
+train_size = 1000
+x_prev_train = [Float64.(x_data[i+p_order-1:-1:i]) for i in 1:length(x_data)-p_order][1:train_size]
+x_train = Float64.(x_data[p_order+1:end])[1:train_size];</code></pre><pre><code class="language-julia hljs"># Test set
+x_prev_test = [Float64.(x_data[i+p_order-1:-1:i]) for i in 1:length(x_data)-p_order][train_size+1:end]
+x_test = Float64.(x_data[p_order+1:end])[train_size+1:end];</code></pre><h3 id="Inference"><a class="docs-heading-anchor" href="#Inference">Inference</a><a id="Inference-1"></a><a class="docs-heading-anchor-permalink" href="#Inference" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Constraints are needed for performing VMP
+arma_constraints = @constraints begin
+    q(z, h_0, h, η, τ, γ,e) = q(h_0)q(z, h)q(η)q(τ)q(γ)q(e)
+end;</code></pre><pre><code class="language-julia hljs"># This cell defines prior knowledge for model parameters
+h_prior = MvNormalMeanPrecision(zeros(q_order), diageye(q_order))
+γ_prior = GammaShapeRate(1e4, 1.0)
+τ_prior = GammaShapeRate(1e2, 1.0)
+η_prior = MvNormalMeanPrecision(zeros(q_order), diageye(q_order))
+θ_prior = MvNormalMeanPrecision(zeros(p_order), diageye(p_order));</code></pre><pre><code class="language-julia hljs"># Model&#39;s graph has structural loops, hence, it requires pre-initialisation
+arma_imarginals = (h_0 = h_prior, h = h_prior, γ = γ_prior, τ = τ_prior, η = η_prior, θ = θ_prior);
+arma_imessages  = (h_0 = h_prior, h = h_prior);</code></pre><pre><code class="language-julia hljs">result = inference(
+    model = ARMA(length(x_train), x_prev_train, h_prior, γ_prior, τ_prior, η_prior, θ_prior, p_order, q_order), 
+    data  = (x = x_train, ),
+    initmarginals = arma_imarginals,
+    initmessages  = arma_imessages,
+    constraints   = arma_constraints,
+    iterations    = 50,
+    options       = (limit_stack_depth = 100, ),
+);</code></pre><pre><code class="language-julia hljs">plot(mean.(result.posteriors[:e][end]), ribbon=std.(result.posteriors[:e][end]))</code></pre><p><img src="../../assets/examples/Bayesian ARMA_15_1.png" alt/></p><pre><code class="language-julia hljs"># extract posteriors
+h_posterior = result.posteriors[:h][end][end]
+γ_posterior = result.posteriors[:γ][end]
+τ_posterior = result.posteriors[:τ][end]
+η_posterior = result.posteriors[:η][end]
+θ_posterior = result.posteriors[:θ][end];</code></pre><h2 id="Prediction"><a class="docs-heading-anchor" href="#Prediction">Prediction</a><a id="Prediction-1"></a><a class="docs-heading-anchor-permalink" href="#Prediction" title="Permalink"></a></h2><p>Here we are going to use our inference results in order to predict the dataset itself</p><pre><code class="language-julia hljs"># The prediction function is aimed at approximating the predictive posterior distribution
+# It triggers the rules in the generative order (in future, RxInfer.jl will provide this function out of the box)
+function prediction(x_prev, h_posterior, γ_posterior, τ_posterior, η_posterior, θ_posterior, p, q)
+    h_out = MvNormalMeanPrecision(mean(h_posterior), precision(h_posterior))
+    ar_out = @call_rule AR(:y, Marginalisation) (m_x=h_out, q_θ=η_posterior, q_γ=τ_posterior, meta=ARMeta(Multivariate, p, ARsafe()))
+    c = zeros(p); c[1] = 1.0
+    b = zeros(q); b[1] = 1.0
+    ar_dot_out = @call_rule typeof(dot)(:out, Marginalisation) (m_in1=PointMass(b), m_in2=ar_out, meta=ReactiveMP.TinyCorrection())
+    θ_out = MvNormalMeanPrecision(mean(θ_posterior), precision(θ_posterior))
+    ma_dot_out = @call_rule typeof(dot)(:out, Marginalisation) (m_in1=PointMass(x_prev), m_in2=θ_out, meta=ReactiveMP.TinyCorrection())
+    e_out = @call_rule NormalMeanPrecision(:out, Marginalisation) (q_μ=PointMass(0.0), q_τ=mean(γ_posterior))
+    ar_ma = @call_rule typeof(+)(:out, Marginalisation) (m_in1=ar_dot_out, m_in2=ma_dot_out)  
+    @call_rule typeof(+)(:out, Marginalisation) (m_in1=ar_ma, m_in2=e_out)  
+end</code></pre><pre><code class="nohighlight hljs">prediction (generic function with 1 method)</code></pre><pre><code class="language-julia hljs">predictions = []
+for x_prev in x_prev_test
+    push!(predictions, prediction(x_prev, h_posterior, γ_posterior, τ_posterior, η_posterior, θ_posterior, p_order, q_order))
+    # after every new prediction we can actually &quot;retrain&quot; the model to use the power of Bayesian approach
+    # we will skip this part for now
+end</code></pre><pre><code class="language-julia hljs">plot(x_test, label=&quot;test data&quot;, legend=:topleft)
+plot!(mean.(predictions)[1:end], ribbon=std.(predictions)[1:end], label=&quot;predicted&quot;, xlabel=&quot;day&quot;, ylabel=&quot;price&quot;)</code></pre><p><img src="../../assets/examples/Bayesian ARMA_19_1.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Hierarchical Gaussian Filter/">« Hierarchical Gaussian Filter</a><a class="docs-footer-nextpage" href="../Infinite Data Stream/">Infinite Data Stream »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Wednesday 1 February 2023 12:19">Wednesday 1 February 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
