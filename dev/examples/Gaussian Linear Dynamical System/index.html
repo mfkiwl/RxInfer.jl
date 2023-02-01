@@ -81,15 +81,15 @@ plot(px)</code></pre><p><img src="../../assets/examples/Gaussian Linear Dynamica
  1882.2434870101347</code></pre><p>We may be also interested in performance of our resulting Belief Propagation algorithm:</p><pre><code class="language-julia hljs">@benchmark inference(
     model = rotate_ssm(length($y), $x0, $A, $B, $Q, $P), 
     data = (y = $y,)
-)</code></pre><pre><code class="nohighlight hljs">BenchmarkTools.Trial: 131 samples with 1 evaluation.
- Range (min … max):  29.553 ms … 89.883 ms  ┊ GC (min … max): 0.00% … 54.89
-%
- Time  (median):     33.947 ms              ┊ GC (median):    0.00%
- Time  (mean ± σ):   38.230 ms ± 12.905 ms  ┊ GC (mean ± σ):  9.59% ± 14.94
-%
+)</code></pre><pre><code class="nohighlight hljs">BenchmarkTools.Trial: 165 samples with 1 evaluation.
+ Range (min … max):  25.518 ms … 69.580 ms  ┊ GC (min … max):  0.00% … 57.7
+0%
+ Time  (median):     27.114 ms              ┊ GC (median):     0.00%
+ Time  (mean ± σ):   30.348 ms ± 10.373 ms  ┊ GC (mean ± σ):  10.02% ± 15.3
+5%
 
-    ▂█▅▂                                                       
-  ▄▆████▆▆▆▄▄▃▁▃▃▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▃▁▃▃▁▃▃▁▁▃▁▁▃▁▁▃▃▃ ▃
-  29.6 ms         Histogram: frequency by time        84.7 ms &lt;
+  ▆██▆▁▁                                                       
+  ██████▅▁▅▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▅▁▆▅▅▅▁▆▁▆▁▅▅▅ ▅
+  25.5 ms      Histogram: log(frequency) by time      66.7 ms &lt;
 
- Memory estimate: 12.00 MiB, allocs estimate: 243002.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Assessing People Skills/">« Assessing People’s Skills</a><a class="docs-footer-nextpage" href="../Hidden Markov Model/">Ensemble Learning of a Hidden Markov Model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Monday 30 January 2023 08:33">Monday 30 January 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ Memory estimate: 12.00 MiB, allocs estimate: 243002.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Assessing People Skills/">« Assessing People’s Skills</a><a class="docs-footer-nextpage" href="../Hidden Markov Model/">Ensemble Learning of a Hidden Markov Model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Wednesday 1 February 2023 11:18">Wednesday 1 February 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
