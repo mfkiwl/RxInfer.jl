@@ -55,7 +55,7 @@ p = plot(title = &quot;posterior beliefs&quot;)
 plot!(rθ, (x) -&gt; pdf(result_john.posteriors[:θ], x), fillalpha=0.3, fillrange = 0, label=&quot;P(θ|y) John&quot;, c=1)
 plot!(rθ, (x) -&gt; pdf(result_jane.posteriors[:θ], x), fillalpha=0.3, fillrange = 0, label=&quot;p(θ|y) Jane&quot;, c=3,)</code></pre><p><img src="../../assets/examples/Universal Mixtures_8_1.png" alt/></p><p>What John and Jane did not know, was that Mary, their neighbour, was overhearing their conversation. She was also curious, but could not see the coin. She did not really know how to formulate a prior distribution over <span>$\theta$</span>, so instead she combined both John and Jane their prior beliefs. She had the feeling that John his assessment was more correct, as he was often going to the casino. As a result, she mixed the prior beliefs of John and Jane with proportions 0.7 and 0.3, respecively. Her prior distribution over <span>$\theta$</span> now became</p><pre><code class="language-julia hljs">rθ = range(0, 1, length = 1000)
 p = plot(title = &quot;prior belief&quot;)
-plot!(rθ, (x) -&gt; pdf(MixtureModel([Beta(7.0, 2.0), Beta(2.0, 7.0)], Bernoulli(0.7)), x), fillalpha=0.3, fillrange = 0, label=&quot;P(θ) Mary&quot;, c=1)
+plot!(rθ, (x) -&gt; pdf(MixtureDistribution([Beta(2.0, 7.0), Beta(7.0, 2.0)], [ 0.3, 0.7 ]), x), fillalpha=0.3, fillrange = 0, label=&quot;P(θ) Mary&quot;, c=1)
 plot!(rθ, (x) -&gt; 0.7*pdf(Beta(7.0, 2.0), x), c=3, label=&quot;&quot;)
 plot!(rθ, (x) -&gt; 0.3*pdf(Beta(2.0, 7.0), x), c=3, label=&quot;&quot;)</code></pre><p><img src="../../assets/examples/Universal Mixtures_9_1.png" alt/></p><p>She was also interested in the results and used the new <code>Switch</code> node and addons in <code>ReactiveMP.jl</code>. She specified her model as follows and performed inference in this model:</p><pre><code class="language-julia hljs">@model function beta_model_mary(nr_throws)
 
@@ -63,14 +63,14 @@ plot!(rθ, (x) -&gt; 0.3*pdf(Beta(2.0, 7.0), x), c=3, label=&quot;&quot;)</code>
     y = datavar(Int64, nr_throws)
 
     # specify John&#39;s and Jane&#39;s prior models over θ
-    θ_john ~ Beta(7.0, 2.0)
     θ_jane ~ Beta(2.0, 7.0)
+    θ_john ~ Beta(7.0, 2.0)
 
     # specify initial guess as to who is right
-    john_is_right ~ Bernoulli(0.7)
+    john_is_right ~ Bernoulli(0.7) 
 
     # specify mixture prior Distribution
-    θ ~ Switch(john_is_right, (θ_john, θ_jane))
+    θ ~ Switch(john_is_right, (θ_jane, θ_john))
 
     # create likelihood models
     for i in 1:nr_throws
@@ -89,5 +89,5 @@ end</code></pre><pre><code class="language-julia hljs">result_mary = inference(
   Posteriors       | available for (john_is_right, θ_john, θ, θ_jane)</code></pre><p>Mary was happy, with her mixture prior, she beat John in terms of performance. However, it was not the best decision to think that John was right. In fact, after the experiment there was only a minor possibility remaining that John was right. Her posterior distribution over <span>$\theta$</span> also changed, and as expected the estimate from Jane was more prominent.</p><pre><code class="language-julia hljs">rθ = range(0, 1, length = 1000)
 p = plot(title = &quot;posterior belief&quot;)
 plot!(rθ, (x) -&gt; pdf(result_mary.posteriors[:θ], x), fillalpha=0.3, fillrange = 0, label=&quot;P(θ|y) Mary&quot;, c=1)
-plot!(rθ, (x) -&gt; probvec(result_mary.posteriors[:θ].prior)[1]*pdf(result_mary.posteriors[:θ].components[1], x), label=&quot;&quot;, c=3)
-plot!(rθ, (x) -&gt; probvec(result_mary.posteriors[:θ].prior)[2]*pdf(result_mary.posteriors[:θ].components[2], x), label=&quot;&quot;, c=3)</code></pre><p><img src="../../assets/examples/Universal Mixtures_12_1.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Gamma Mixture/">« Gamma Mixture Model</a><a class="docs-footer-nextpage" href="../Global Parameter Optimisation/">Global Parameter Optimisation »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Monday 6 February 2023 08:37">Monday 6 February 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+plot!(rθ, (x) -&gt; result_mary.posteriors[:θ].weights[1] * pdf(result_mary.posteriors[:θ].components[1], x), label=&quot;&quot;, c=3)
+plot!(rθ, (x) -&gt; result_mary.posteriors[:θ].weights[2] * pdf(result_mary.posteriors[:θ].components[2], x), label=&quot;&quot;, c=3)</code></pre><p><img src="../../assets/examples/Universal Mixtures_12_1.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../Gamma Mixture/">« Gamma Mixture Model</a><a class="docs-footer-nextpage" href="../Global Parameter Optimisation/">Global Parameter Optimisation »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Monday 6 February 2023 15:33">Monday 6 February 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
